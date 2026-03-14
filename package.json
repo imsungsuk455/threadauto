@@ -1,0 +1,22 @@
+{
+  "name": "threads-auto",
+  "version": "1.0.0",
+  "description": "Threads 자동화 프로그램 - 자동 업로드, 예약 업로드, 다계정 관리, AI 콘텐츠 생성",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "axios": "^1.13.6",
+    "cheerio": "^1.2.0",
+    "express": "^4.18.2",
+    "multer": "^1.4.5-lts.1",
+    "node-cron": "^3.0.3",
+    "puppeteer": "^24.39.0",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2",
+    "rss-parser": "^3.13.0",
+    "uuid": "^9.0.0"
+  }
+}

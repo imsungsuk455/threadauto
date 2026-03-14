@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Threads Auto — 스레드 자동화 대시보드</title>
+    <meta name="description" content="Threads 자동 업로드, 예약 업로드, 다계정 관리, AI 콘텐츠 생성">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <div class="app">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-brand">
+                <div class="brand-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                        <path d="M2 17l10 5 10-5"></path>
+                        <path d="M2 12l10 5 10-5"></path>
+                    </svg>
+                </div>
+                <span class="brand-text">Threads Auto</span>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-label">메뉴</div>
+                <button class="nav-item active" data-tab="dashboard" id="nav-dashboard">
+                    <span class="nav-icon">📊</span>
+                    <span>대시보드</span>
+                </button>
+                <button class="nav-item" data-tab="pipeline" id="nav-pipeline">
+                    <span class="nav-icon">🤖</span>
+                    <span>AI 자동 콘텐츠 생성</span>
+                </button>
+                <button class="nav-item" data-tab="upload" id="nav-upload">
+                    <span class="nav-icon">📤</span>
+                    <span>업로드</span>
+                </button>
+                <button class="nav-item" data-tab="persona" id="nav-persona">
+                    <span class="nav-icon">👤</span>
+                    <span>페르소나 관리</span>
+                </button>
+                <button class="nav-item" data-tab="ai" id="nav-ai">
+                    <span class="nav-icon">✍️</span>
+                    <span>AI 글쓰기 도구</span>
+                </button>
+
+                <button class="nav-item" data-tab="accounts" id="nav-accounts">
+                    <span class="nav-icon">👥</span>
+                    <span>계정 관리</span>
+                </button>
+                <button class="nav-item" data-tab="threads-scrape" id="nav-threads-scrape">
+                    <span class="nav-icon">🕷️</span>
+                    <span>스레드 스크래핑</span>
+                </button>
+                <button class="nav-item" data-tab="tiktok-scrape" id="nav-tiktok-scrape">
+                    <span class="nav-icon">🎵</span>
+                    <span>틱톡 스크래핑</span>
+                </button>
+                <button class="nav-item" data-tab="history" id="nav-history">
+                    <span class="nav-icon">📋</span>
+                    <span>히스토리</span>
+                </button>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="server-status">
+                    <span class="status-dot online"></span>
+                    <span>서버 실행중</span>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- 대시보드 탭 -->
+            <section class="tab-content active" id="tab-dashboard">
+                <div class="page-header">
+                    <h1>📊 대시보드</h1>
+                    <p class="page-desc">Threads 자동화 현황을 한눈에 확인하세요</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card gradient-purple">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="stat-accounts">0</div>
+                            <div class="stat-label">등록 계정</div>
+                        </div>
+                    </div>
+                    <div class="stat-card gradient-blue">
+                        <div class="stat-icon">📤</div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="stat-uploads-today">0</div>
+                            <div class="stat-label">오늘 업로드</div>
+                        </div>
+                    </div>
+                    <div class="stat-card gradient-green">
+                        <div class="stat-icon">📅</div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="stat-schedules">0</div>
+                            <div class="stat-label">활성 예약</div>
+                        </div>
+                    </div>
+                    <div class="stat-card gradient-orange">
+                        <div class="stat-icon">🤖</div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="stat-ai-status">—</div>
+                            <div class="stat-label">AI 상태</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="card">
+                        <h3>📋 최근 활동</h3>
+                        <div id="recent-activity" class="activity-list">
+                            <div class="empty-state">아직 활동 내역이 없습니다</div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3>👥 계정 현황</h3>
+                        <div id="accounts-overview" class="accounts-overview">
+                            <div class="empty-state">등록된 계정이 없습니다</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- AI 자동 콘텐츠 생성 (기존 파이프라인) 탭 -->
+            <section class="tab-content" id="tab-pipeline">
+                <div class="page-header">
+                    <h1>🤖 AI 자동 콘텐츠 생성</h1>
+                    <p class="page-desc">수집 → 가공 → 발행의 전 과정을 자동으로 처리합니다.</p>
+                </div>
+
+                <!-- 설정 카드 (API 키 및 RSS 소스) -->
+                <div class="card mb-4">
+                    <div class="card-header-row">
+                        <h3>⚙️ 수집 환경 및 제휴 API 설정</h3>
+                        <button class="btn btn-sm btn-primary" onclick="savePipelineConfig()">설정 저장</button>
+                    </div>
+                    <div class="dashboard-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+                        <div class="form-group">
+                            <label>쿠팡 파트너스 API 설정</label>
+                            <input type="text" id="cfg-coupang-access" class="form-input mb-2" placeholder="Access Key">
+                            <input type="password" id="cfg-coupang-secret" class="form-input" placeholder="Secret Key">
+                        </div>
+                        <div class="form-group">
+                            <label>네이버 쇼핑 API 설정</label>
+                            <input type="text" id="cfg-naver-id" class="form-input mb-2" placeholder="Client ID">
+                            <input type="password" id="cfg-naver-secret" class="form-input" placeholder="Client Secret">
+                        </div>
+                        <div class="form-group" style="grid-column: 1 / -1;">
+                            <label>기본 RSS 수집 소스 (줄바꿈으로 구분)</label>
+                            <textarea id="cfg-rss-feeds" class="form-textarea" rows="3"
+                                placeholder="https://example.com/rss&#10;https://another.com/feed"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <!-- 수집 영역 -->
+                    <div class="card">
+                        <h3>1단계: 즉시 콘텐츠 수집 <span class="badge" id="pipeline-pending-count">0건</span></h3>
+                        <div class="form-group">
+                            <label>쿠팡 키워드 수집</label>
+                            <div class="input-with-button">
+                                <input type="text" id="pipe-coupang-keyword" class="form-control"
+                                    placeholder="예: 홈카페 용품">
+                                <button class="btn btn-secondary" onclick="runPipelineCollect('coupang')">수집</button>
+                            </div>
+                        </div>
+                        <div class="form-group"
+                            style="background: rgba(139, 92, 246, 0.05); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                            <label
+                                style="color: var(--accent-purple-light); font-weight: 700; margin-bottom: 12px; display: block;">🛍️
+                                네이버 쇼핑 & 제휴 수집</label>
+                            <div class="d-flex flex-column gap-3">
+                                <div class="form-group mb-0">
+                                    <span class="form-hint mb-1">🔍 검색 키워드 (필수)</span>
+                                    <input type="text" id="pipe-naver-keyword" class="form-input"
+                                        placeholder="예: 스텐김치통, 홈카페 용품">
+                                </div>
+                                <div class="form-group mb-0">
+                                    <span class="form-hint mb-1">🔗 내 제휴 링크 (선택)</span>
+                                    <input type="text" id="pipe-naver-link" class="form-input"
+                                        placeholder="https://naver.me/...">
+                                </div>
+                                <button class="btn btn-secondary w-100" onclick="runPipelineCollect('naver')"
+                                    style="padding: 12px;">위 정보로 수집 시작하기</button>
+                            </div>
+                            <span class="form-hint mt-3" style="opacity: 0.7;">제휴 링크를 입력하면 발행 시 링크가 자동으로 삽입됩니다.</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>웹 페이지 수집 (URL)</label>
+                            <div class="input-with-button">
+                                <input type="text" id="pipe-url" class="form-control" placeholder="https://...">
+                                <button class="btn btn-secondary" onclick="runPipelineCollect('url')">수집</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>RSS 소스 수집</label>
+                            <div class="input-with-button">
+                                <input type="text" id="pipe-rss" class="form-control" placeholder="https://...">
+                                <button class="btn btn-secondary" onclick="runPipelineCollect('rss')">수집</button>
+                                <button class="btn btn-outline-primary" style="min-width: 60px;"
+                                    onclick="saveSavedRssFeed()" title="즐겨찾기에 저장">⭐ 저장</button>
+                            </div>
+                            <span class="form-hint">위 설정에서 등록한 소스들을 한꺼번에 수집하려면 버튼만 누르세요.</span>
+
+                            <!-- 즐겨찾기 RSS 목록 -->
+                            <div id="saved-rss-container" class="mt-3 p-3"
+                                style="background: rgba(0,0,0,0.02); border-radius: var(--radius-md); border: 1px dashed var(--border-color);"
+                                hidden>
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span style="font-size: 13px; font-weight: 600; color: var(--text-muted);">📁 자주 쓰는
+                                        RSS 피드</span>
+                                </div>
+                                <div id="saved-rss-list" class="d-flex flex-wrap gap-2">
+                                    <!-- JS 동적 생성 -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 작동 영역 -->
+                    <div class="card">
+                        <h3>자동 생성 실행</h3>
+                        <div class="pipeline-actions">
+                            <div class="pipeline-step">
+                                <div class="step-icon">🤖</div>
+                                <div class="step-info">
+                                    <h4>2단계: AI 가공</h4>
+                                    <p>수집 대기열의 콘텐츠를 Threads 양식으로 재작성합니다.</p>
+                                    <select id="pipe-persona" class="form-select mt-1" style="max-width: 200px;">
+                                        <option value="">적용할 페르소나 선택 (기본값)</option>
+                                    </select>
+                                </div>
+                                <button class="btn btn-primary" onclick="runPipelineProcess()">가공 시작</button>
+                            </div>
+
+                            <div class="pipeline-step">
+                                <div class="step-icon">📤</div>
+                                <div class="step-info">
+                                    <h4>3단계: 자동 발행</h4>
+                                    <p>가공 완료된 콘텐츠를 선택한 계정으로 발행합니다.</p>
+                                    <select id="pipe-account" class="form-select mt-1" style="max-width: 200px;">
+                                        <option value="">계정 선택...</option>
+                                    </select>
+                                </div>
+                                <button class="btn btn-success" onclick="runPipelinePublish()">발행 시작</button>
+                            </div>
+
+                            <hr style="margin: 1.5rem 0; opacity: 0.1;">
+
+                            <div class="pipeline-step">
+                                <div class="step-icon">⚡</div>
+                                <div class="step-info">
+                                    <h4>전체 자동화</h4>
+                                    <p>수집부터 발행까지 전체 공정을 원클릭으로 실행합니다.</p>
+                                </div>
+                                <button class="btn btn-danger" onclick="runPipelineFull()">전체 코스 실행</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 대기열 테이블 -->
+                <div class="card mt-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h3>📋 콘텐츠 자동 생성 대기열</h3>
+                        <div class="filter-group d-flex gap-2">
+                            <select id="pipe-filter" class="form-select" onchange="loadPipelineQueue()">
+                                <option value="all">전체 보기</option>
+                                <option value="pending">수집됨 (가공 대기)</option>
+                                <option value="processed">가공됨 (발행 대기)</option>
+                                <option value="published">발행 완료</option>
+                                <option value="failed">오류/실패</option>
+                            </select>
+                            <button class="btn btn-outline-danger btn-sm" onclick="clearPipelineQueue()"
+                                title="필터링된 항목 모두 삭제">전체 삭제</button>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>상태</th>
+                                    <th>유형</th>
+                                    <th>제목</th>
+                                    <th>미디어</th>
+                                    <th>생성일</th>
+                                    <th>액션</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pipeline-queue-list">
+                                <!-- JS 동적 생성 -->
+                                <tr>
+                                    <td colspan="6" class="text-center text-muted">로딩 중...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 업로드 탭 -->
+            <section class="tab-content" id="tab-upload">
+                <div class="page-header">
+                    <h1>📤 게시물 업로드</h1>
+                    <p class="page-desc">Threads에 새 게시물을 업로드합니다</p>
+                </div>
+
+                <div class="card upload-card">
+                    <div class="form-group">
+                        <label>계정 선택</label>
+                        <select id="upload-account" class="form-select">
+                            <option value="">계정을 선택하세요</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>게시물 내용</label>
+                        <textarea id="upload-content" class="form-textarea" rows="6"
+                            placeholder="스레드에 올릴 내용을 입력하세요... (최대 500자)" maxlength="500"></textarea>
+                        <div class="char-count">
+                            <span id="upload-char-count">0</span>/500
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="upload-thumb-title-group"
+                        style="background: rgba(139, 92, 246, 0.08); padding: 18px; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-bottom: 24px;">
+                        <label
+                            style="color: var(--accent-purple-light); font-weight: 700; display: block; margin-bottom: 10px;">✨
+                            썸네일 제목 (수정 후 디자인 생성)</label>
+                        <input type="text" id="upload-thumb-title" class="form-input"
+                            style="font-weight: 600; font-size: 1.1rem; border-color: var(--accent-purple-light);"
+                            placeholder="디자인 썸네일에 들어갈 제목을 입력하세요">
+                        
+                        <div class="thumbnail-settings mt-3 p-3" style="background: white; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+                            <div class="form-row" style="gap: 15px;">
+                                <div class="form-group flex-1 mb-0">
+                                    <label style="font-size: 11px; color: var(--text-muted); margin-bottom: 4px;">스타일</label>
+                                    <select id="thumb-style" class="form-select form-select-sm" style="font-size: 13px;">
+                                        <option value="outline" selected>흰색 + 검정 외곽선 (추천)</option>
+                                        <option value="minimal">프리미엄 미니멀 (솔리드 그레이)</option>
+                                        <option value="gradient">그라데이션 오버레이</option>
+                                    </select>
+                                </div>
+                                <div class="form-group flex-1 mb-0">
+                                    <label style="font-size: 11px; color: var(--text-muted); margin-bottom: 4px;">위치</label>
+                                    <select id="thumb-pos" class="form-select form-select-sm" style="font-size: 13px;">
+                                        <option value="center">가운데 (Center)</option>
+                                        <option value="bottom">하단 (Bottom)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-3 d-flex flex-column gap-2">
+                            <button class="btn btn-sm btn-outline-secondary" onclick="document.getElementById('upload-local-thumb-bg').click()">
+                                🖼️ 내 PC에서 배경 이미지 선택 & 생성
+                            </button>
+                            <button class="btn btn-sm btn-outline-primary" id="btn-design-thumb-manual" onclick="generateThumbWithCurrentMedia()">
+                                🎨 현재 메인 이미지로 디자인 썸네일 생성
+                            </button>
+                            <input type="file" id="upload-local-thumb-bg" accept="image/*" hidden onchange="handleLocalThumbBackground(this)">
+                        </div>
+
+                        <p class="form-hint" style="margin-top: 12px; color: var(--text-muted);">설정을 조정한 후 버튼을 누르면 새로운 디자인이 적용됩니다.</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>이미지/동영상 첨부 (선택)</label>
+                        <div class="file-upload-area" id="upload-image-area">
+                            <input type="file" id="upload-image" accept="image/*,video/*" multiple hidden>
+                            <input type="hidden" id="upload-remote-image-url">
+                            <div class="file-upload-placeholder" id="upload-image-placeholder">
+                                <span class="upload-icon">🖼️</span>
+                                <span>이미지/동영상을 드래그하거나 클릭하여 첨부</span>
+                            </div>
+                            <div class="file-upload-preview" id="upload-image-preview" hidden>
+                                <img id="upload-preview-img" alt="미리보기">
+                                <button class="btn-remove-image" id="upload-remove-image">✕</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="upload-reply-check"
+                                onchange="document.getElementById('upload-reply-content').hidden = !this.checked">
+                            <span>💬 댓글 링크 달기 (제휴 마케팅 등)</span>
+                        </label>
+                        <textarea id="upload-reply-content" class="form-textarea mt-2" rows="3"
+                            placeholder="첫 번째 댓글로 달릴 내용을 입력하세요..." hidden></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>업로드 방식</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="upload-mode" value="now" checked
+                                    onchange="toggleUploadMode()">
+                                <span>🚀 즉시 업로드</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="upload-mode" value="schedule" onchange="toggleUploadMode()">
+                                <span>📅 예약 업로드</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div id="schedule-options-container" hidden>
+                        <div class="form-group">
+                            <label>예약 유형</label>
+                            <div class="radio-group">
+                                <label class="radio-label">
+                                    <input type="radio" name="schedule-type" value="once" checked
+                                        onchange="toggleScheduleType()">
+                                    <span>📌 1회성</span>
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="schedule-type" value="repeat"
+                                        onchange="toggleScheduleType()">
+                                    <span>🔁 반복</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div id="schedule-once-options">
+                            <div class="form-group">
+                                <label>날짜 & 시간</label>
+                                <input type="datetime-local" id="schedule-datetime" class="form-input">
+                            </div>
+                        </div>
+
+                        <div id="schedule-repeat-options" hidden>
+                            <div class="form-group">
+                                <label>반복 프리셋</label>
+                                <div class="preset-grid">
+                                    <button class="preset-btn" onclick="setCron('0 9 * * *', '매일 오전 9시')">☀️ 매일
+                                        9시</button>
+                                    <button class="preset-btn" onclick="setCron('0 12 * * *', '매일 낮 12시')">🌤️ 매일
+                                        12시</button>
+                                    <button class="preset-btn" onclick="setCron('0 18 * * *', '매일 저녁 6시')">🌙 매일
+                                        18시</button>
+                                    <button class="preset-btn" onclick="setCron('0 9 * * 1-5', '평일 오전 9시')">💼 평일
+                                        9시</button>
+                                    <button class="preset-btn" onclick="setCron('0 10 * * 0,6', '주말 오전 10시')">🏖️ 주말
+                                        10시</button>
+                                    <button class="preset-btn" onclick="setCron('0 9,18 * * *', '1일 2회')">⏰
+                                        9시&amp;18시</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Cron 표현식 (고급)</label>
+                                <input type="text" id="schedule-cron" class="form-input"
+                                    placeholder="분 시 일 월 요일 (예: 0 9 * * *)">
+                                <span class="form-hint" id="schedule-cron-label"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary btn-lg" id="btn-upload" onclick="doUpload()">
+                        <span class="btn-icon">🚀</span> 업로드 실행
+                    </button>
+                </div>
+
+                <div class="card" id="schedule-list-card">
+                    <h3>📋 예약 목록</h3>
+                    <div id="schedule-list" class="schedule-list">
+                        <div class="empty-state">등록된 예약이 없습니다</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 페르소나 관리 탭 -->
+            <section class="tab-content" id="tab-persona">
+                <div class="page-header">
+                    <h1>👤 페르소나 관리</h1>
+                    <p class="page-desc">글의 말투(Tone & Manner)를 결정하는 AI 페르소나를 학습시키고 관리하세요</p>
+                </div>
+
+                <div class="card persona-management-card">
+                    <div class="card-header">
+                        <h3>🧠 페르소나 학습 및 추가</h3>
+                        <p class="form-hint">URL이나 예시 글을 통해 AI에게 특정 스타일을 학습시킬 수 있습니다.</p>
+                    </div>
+
+                    <div class="persona-form" style="margin-top: 20px;">
+                        <div class="form-group">
+                            <label>페르소나 이름</label>
+                            <input type="text" id="persona-name" class="form-input" placeholder="예: 직장인 서씨, 테크 리뷰어 노아">
+                        </div>
+
+                        <div class="form-group"
+                            style="padding: 16px; border: 2px dashed var(--border-color); border-radius: var(--radius-md); background: rgba(139, 92, 246, 0.05); margin-bottom: 20px;">
+                            <label>🔗 URL로 스타일 자동 학습 (추천)</label>
+                            <div class="input-group">
+                                <input type="text" id="persona-learn-url" class="form-input"
+                                    placeholder="분석할 블로그, 기사, 또는 SNS 링크">
+                                <button class="btn btn-secondary" onclick="learnPersonaFromUrl()">
+                                    <span class="btn-icon">🧠</span> 스타일 분석하기
+                                </button>
+                            </div>
+                            <p class="form-hint" style="margin-top: 8px;">입력된 링크의 글을 분석하여 아래 톤과 예시 문장을 자동으로 채워줍니다.</p>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group flex-1">
+                                <label>톤 & 매너</label>
+                                <input type="text" id="persona-tone" class="form-input"
+                                    placeholder="예: 친절한, 유머러스한, 비판적인">
+                            </div>
+                            <div class="form-group flex-1">
+                                <label>핵심 키워드</label>
+                                <input type="text" id="persona-keywords" class="form-input"
+                                    placeholder="예: 앱테크, 육아, 경제">
+                            </div>
+                        </div>
+
+                        <input type="hidden" id="persona-edit-id">
+
+                        <div class="form-group">
+                            <label>글쓰기 스타일 예시 (학습 데이터)</label>
+                            <textarea id="persona-samples" class="form-textarea" rows="5"
+                                placeholder="실제로 작성한 글을 2~3개 직접 입력하면 훨씬 정확해집니다."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>추가 프롬프트 지시사항 (커스텀)</label>
+                            <textarea id="persona-custom-instructions" class="form-textarea" rows="3"
+                                placeholder="예: '글은 무조건 한 문장으로 작성해줘', '반말을 사용해줘' 등 상세 규칙 입력"></textarea>
+                            <p class="form-hint">작성된 모든 글에 공통으로 적용될 추가 규칙입니다. (예: 문장은 반드시 1줄로 작성하라)</p>
+                        </div>
+
+                        <div class="btn-row" style="justify-content: flex-end; gap: 8px;">
+                            <button id="btn-persona-cancel" class="btn btn-outline-secondary" onclick="resetPersonaForm()" style="display:none;">취소</button>
+                            <button class="btn btn-primary" id="btn-persona-save" onclick="savePersona()">
+                                <span class="btn-icon">✅</span> 페르소나 저장 및 적용
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-top: 24px;">
+                    <h3>📋 내 페르소나 목록</h3>
+                    <div id="persona-list" class="persona-list-grid">
+                        <div class="empty-state">등록된 페르소나가 없습니다. 스타일을 학습시켜보세요!</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- AI 생성 탭 -->
+            <section class="tab-content" id="tab-ai">
+                <div class="page-header">
+                    <h1>🤖 AI 콘텐츠 생성</h1>
+                    <p class="page-desc">AI로 Threads 게시물을 자동 생성합니다</p>
+                </div>
+
+                <!-- AI 설정 -->
+                <div class="card ai-config-card">
+                    <h3>⚙️ AI 설정</h3>
+                    <div class="form-row">
+                        <div class="form-group flex-1">
+                            <label>Gemini API 키</label>
+                            <div class="input-group">
+                                <input type="password" id="ai-api-key" class="form-input" placeholder="API 키를 입력하세요">
+                                <button class="btn btn-sm" onclick="toggleApiKeyVisibility()">👁️</button>
+                                <button class="btn btn-sm btn-primary" onclick="saveAIConfig()">저장</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>모델</label>
+                            <select id="ai-model" class="form-select" onchange="checkCustomModel(this.value)">
+                                <option value="gemini-2.0-flash">Gemini 2.0 Flash (최신 안정화버전)</option>
+                                <option value="gemini-3-flash-preview">Gemini 3 Flash Preview (최신 프리뷰)</option>
+                                <option value="gemini-3.1-flash-lite-preview">Gemini 3.1 Flash-Lite (최신 경량)</option>
+                                <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
+                                <option value="gemini-1.5-flash-8b">Gemini 1.5 Flash-8b</option>
+                                <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
+                                <option value="custom">직접 입력 (Custom)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row" id="custom-model-row" style="display:none">
+                        <div class="form-group flex-1">
+                            <label>커스텀 모델 아이디</label>
+                            <input type="text" id="ai-model-custom" class="form-input"
+                                placeholder="예: gemini-3-flash-experimental">
+                        </div>
+                    </div>
+                    <div class="ai-status-bar" id="ai-status-bar">
+                        <span class="status-dot" id="ai-key-status"></span>
+                        <span id="ai-key-status-text">API 키 상태 확인 중...</span>
+                    </div>
+                </div>
+
+                <!-- 모드 선택 서브탭 -->
+                <div class="ai-mode-tabs">
+                    <button class="ai-mode-tab active" data-aimode="affiliate" onclick="switchAIMode('affiliate')">
+                        🚀 초간편 제휴 홍보
+                    </button>
+                    <button class="ai-mode-tab" data-aimode="brand" onclick="switchAIMode('brand')">
+                        ✍️ 페르소나 글쓰기
+                    </button>
+                    <button class="ai-mode-tab" data-aimode="crawl" onclick="switchAIMode('crawl')">
+                        🕷️ 일반 URL 크롤링
+                    </button>
+                </div>
+
+                <!-- 모드 1: 제휴마케팅 (Direct) -->
+                <div class="ai-mode-content active" id="aimode-affiliate">
+                    <div class="card">
+                        <h3>🔗 원클릭 제휴 홍보글 생성</h3>
+                        <p class="form-hint" style="margin-bottom: 24px;">상품 링크만 넣으세요. AI가 정보를 분석하고 페르소나 스타일로 글을 완성합니다.
+                        </p>
+
+                        <div class="form-group">
+                            <label>상품/제휴 URL</label>
+                            <input type="text" id="affiliate-crawl-url" class="form-input input-lg"
+                                style="font-size: 16px; padding: 14px;" placeholder="예: 쿠팡 파트너스 링크, 네이버 상품 링크">
+                        </div>
+
+                        <div class="form-row" style="margin-top: 20px;">
+                            <div class="form-group flex-1">
+                                <label>페르소나 스타일 선택</label>
+                                <select id="affiliate-persona-select" class="form-select">
+                                    <option value="">✨ 기본 마케터 스타일</option>
+                                </select>
+                            </div>
+                            <div class="form-group flex-1">
+                                <label>추가 강조사항 (선택)</label>
+                                <input type="text" id="affiliate-topic" class="form-input"
+                                    placeholder="예: 한정 수량, 가성비 최고">
+                            </div>
+                        </div>
+
+                        <div class="btn-row" style="margin-top: 32px; justify-content: center;">
+                            <button class="btn btn-primary btn-lg"
+                                style="padding: 16px 60px; font-size: 18px; font-weight: 700; width: 100%; max-width: 400px;"
+                                onclick="generateAffiliateContentDirect()">
+                                <span class="btn-icon">✨</span> 홍보 콘텐츠 즉시 생성
+                            </button>
+                        </div>
+
+                        <!-- 내부 저장용 숨김 필드 -->
+                        <div id="affiliate-product-summary" hidden>
+                            <input type="hidden" id="affiliate-product">
+                            <input type="hidden" id="affiliate-platform">
+                            <input type="hidden" id="affiliate-link">
+                            <textarea id="affiliate-desc" hidden></textarea>
+                            <input type="hidden" id="affiliate-image-urls">
+                        </div>
+
+                        <div id="affiliate-result-area" class="ai-result-area" style="margin-top: 40px;" hidden>
+                            <div class="result-header"
+                                style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">
+                                <h4 style="margin:0;">📝 생성 결과</h4>
+                                <div id="affiliate-media-preview-btn" class="btn-row" style="gap:8px;">
+                                    <button class="btn btn-sm btn-secondary" onclick="searchMedia('ddg')">🖼️ 이미지
+                                        검색</button>
+                                    <button class="btn btn-sm btn-secondary" onclick="searchMedia('pinterest')">📌
+                                        핀터레스트</button>
+                                </div>
+                            </div>
+                            <div id="affiliate-results" class="ai-results"></div>
+                            <div id="media-search-results" class="mt-3 d-flex gap-2 overflow-auto pb-2" style="max-height: 120px;" hidden>
+                                <!-- 검색 결과 보조 컨테이너 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 모드 2: 브랜드 페르소나 글쓰기 -->
+                <div class="ai-mode-content" id="aimode-brand">
+                    <div class="card">
+                        <h3>✍️ 페르소나 맞춤 일반 글</h3>
+                        <p class="form-hint">특정 주제에 대해 페르소나의 말투로 글을 씁니다.</p>
+                        <div class="form-group">
+                            <label>페르소나 선택</label>
+                            <select id="brand-persona-select-ai" class="form-select">
+                                <option value="">페르소나를 선택하세요</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>작성할 내용/주제</label>
+                            <textarea id="brand-topic-ai" class="form-textarea" rows="4"
+                                placeholder="예: 오늘 기분이 어때?, 가상 화폐에 대해 어떻게 생각하니?"></textarea>
+                        </div>
+                        <div class="btn-row">
+                            <button class="btn btn-primary" onclick="generateBrandContent()">
+                                <span class="btn-icon">✨</span> 글 생성하기
+                            </button>
+                        </div>
+                        <div id="brand-result-area" class="ai-result-area" hidden>
+                            <h4>📝 완성된 콘텐츠</h4>
+                            <div id="brand-results" class="ai-results"></div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- 모드 3: 크롤링 -->
+                <div class="ai-mode-content" id="aimode-crawl">
+                    <div class="card">
+                        <h3>🕷️ 웹 크롤링</h3>
+                        <div class="form-group">
+                            <label>크롤링할 URL</label>
+                            <div class="input-group">
+                                <input type="text" id="crawl-url" class="form-input"
+                                    placeholder="https://example.com/article/...">
+                                <button class="btn btn-primary" onclick="startCrawl()">
+                                    <span class="btn-icon">🔍</span> 크롤링
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="crawl-preview" hidden>
+                            <h4>📄 크롤링 결과</h4>
+                            <div class="crawl-result-card">
+                                <div class="crawl-title" id="crawl-title"></div>
+                                <div class="crawl-desc" id="crawl-desc"></div>
+                                <div class="crawl-body" id="crawl-body"></div>
+                                <div class="crawl-images" id="crawl-images"></div>
+                            </div>
+                            <div class="btn-row" style="margin-top:12px">
+                                <button class="btn btn-primary" onclick="convertCrawledContent()">
+                                    <span class="btn-icon">✨</span> Threads 게시물로 변환
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="crawl-result-area" class="ai-result-area" hidden>
+                            <h4>📝 변환된 콘텐츠</h4>
+                            <div id="crawl-results" class="ai-results"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+
+
+            <!-- 계정 관리 탭 -->
+            <section class="tab-content" id="tab-accounts">
+                <div class="page-header">
+                    <h1>👥 계정 관리</h1>
+                    <p class="page-desc">Threads 계정을 등록하고 관리합니다</p>
+                </div>
+
+                <div class="card">
+                    <h3>➕ API 계정 추가</h3>
+                    <div class="form-row">
+                        <div class="form-group flex-1">
+                            <label>Threads API 액세스 토큰 (Access Token)</label>
+                            <input type="password" id="add-access-token" class="form-input"
+                                placeholder="Meta 개발자 센터에서 발급받은 Access Token">
+                            <span class="form-hint">토큰을 입력하면 사용자 정보가 자동으로 연동됩니다. (권한: threads_basic,
+                                threads_content_publish)</span>
+                        </div>
+                        <div class="form-group">
+                            <label>&nbsp;</label>
+                            <button class="btn btn-primary" onclick="addAccount()">
+                                <span class="btn-icon">➕</span> 토큰으로 인증/추가
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>📋 등록된 계정</h3>
+                    <div id="account-list" class="account-list">
+                        <div class="empty-state">등록된 계정이 없습니다</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 히스토리 탭 -->
+            <section class="tab-content" id="tab-history">
+                <div class="page-header">
+                    <h1>📋 히스토리</h1>
+                    <p class="page-desc">업로드 및 활동 기록을 확인합니다</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-header-row">
+                        <h3>📋 업로드 기록</h3>
+                        <button class="btn btn-sm btn-secondary" onclick="loadHistory()">🔄 새로고침</button>
+                    </div>
+                    <div id="history-list" class="history-list">
+                        <div class="empty-state">아직 히스토리가 없습니다</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 스레드 스크래핑 탭 -->
+            <section class="tab-content" id="tab-threads-scrape">
+                <div class="page-header">
+                    <h1>🕷️ 스레드 스크래핑</h1>
+                    <p class="page-desc">오픈소스를 활용하여 Threads의 게시물을 수집합니다</p>
+                </div>
+
+                <div class="card mb-4">
+                    <h3>🔍 검색 및 수집 설정</h3>
+                    <div class="form-row">
+                        <div class="form-group flex-1">
+                            <label>수집 유형</label>
+                            <select id="threads-scrape-type" class="form-select">
+                                <option value="user">특정 사용자 (@username)</option>
+                                <option value="url">특정 스레드 (URL)</option>
+                                <option value="search">키워드 검색</option>
+                            </select>
+                        </div>
+                        <div class="form-group flex-2">
+                            <label id="threads-scrape-label">사용자 아이디 (예: zuck)</label>
+                            <div class="input-group">
+                                <input type="text" id="threads-scrape-input" class="form-input" placeholder="입력하세요...">
+                                <button class="btn btn-primary" onclick="startThreadsScrape()">
+                                    <span class="btn-icon">⚡</span> 수집 시작
+                                </button>
+                                <button class="btn btn-outline-primary" style="min-width: 60px;"
+                                    onclick="saveSortedThreadsAccount()" title="계정 즐겨찾기에 저장">⭐ 저장</button>
+                            </div>
+                            
+                            <!-- 즐겨찾기 계정 목록 -->
+                            <div id="saved-threads-accounts-container" class="mt-2" hidden>
+                                <div id="saved-threads-accounts-list" class="d-flex flex-wrap gap-2">
+                                    <!-- JS 동적 생성 -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row mt-3">
+                        <div class="form-group flex-1">
+                            <label>수집 개수 (최대 50)</label>
+                            <input type="number" id="threads-scrape-limit" class="form-input" value="10" min="1" max="50">
+                        </div>
+                        <div class="form-group flex-1">
+                            <label>수집 옵션</label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="threads-scrape-images" checked>
+                                <span>이미지/미디어 포함</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="threads-scrape-results-area" class="card" hidden>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h3>📋 수집된 스레드 목록</h3>
+                        <div class="btn-row">
+                            <button class="btn btn-outline-primary btn-sm" onclick="addAllThreadsToQueue()">전체 대기열 추가</button>
+                        </div>
+                    </div>
+                    <div id="threads-scrape-list" class="threads-list">
+                    </div>
+                </div>
+            </section>
+
+            <!-- 틱톡 스크래핑 탭 -->
+            <section class="tab-content" id="tab-tiktok-scrape">
+                <div class="page-header">
+                    <h1>🎵 틱톡 스크래핑</h1>
+                    <p class="page-desc">오픈소스를 활용하여 TikTok의 비디오 게시물을 수집합니다</p>
+                </div>
+
+                <div class="card mb-4">
+                    <h3>🔍 검색 및 수집 설정</h3>
+                    <div class="form-row">
+                        <div class="form-group flex-1">
+                            <label>수집 유형</label>
+                            <select id="tiktok-scrape-type" class="form-select">
+                                <option value="user">특정 사용자 (@username)</option>
+                                <option value="url">특정 틱톡 (URL)</option>
+                            </select>
+                        </div>
+                        <div class="form-group flex-2">
+                            <label id="tiktok-scrape-label">사용자 아이디 (예: tiktok)</label>
+                            <div class="input-group">
+                                <input type="text" id="tiktok-scrape-input" class="form-input" placeholder="입력하세요...">
+                                <button class="btn btn-primary" onclick="startTiktokScrape()">
+                                    <span class="btn-icon">⚡</span> 수집 시작
+                                </button>
+                                <button class="btn btn-outline-primary" style="min-width: 60px;"
+                                    onclick="saveSortedTiktokAccount()" title="계정 즐겨찾기에 저장">⭐ 저장</button>
+                            </div>
+                            
+                            <!-- 즐겨찾기 계정 목록 -->
+                            <div id="saved-tiktok-accounts-container" class="mt-2" hidden>
+                                <div id="saved-tiktok-accounts-list" class="d-flex flex-wrap gap-2">
+                                    <!-- JS 동적 생성 -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row mt-3">
+                        <div class="form-group flex-1">
+                            <label>수집 개수 (최대 50)</label>
+                            <input type="number" id="tiktok-scrape-limit" class="form-input" value="10" min="1" max="50">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tiktok-scrape-results-area" class="card" hidden>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h3>📋 수집된 틱톡 목록</h3>
+                        <div class="btn-row">
+                            <button class="btn btn-outline-primary btn-sm" onclick="addAllTiktokToQueue()">전체 대기열 추가</button>
+                        </div>
+                    </div>
+                    <div id="tiktok-scrape-list" class="threads-list">
+                        <!-- 수집 결과가 여기에 표시됨 -->
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- 토스트 알림 -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- 로딩 오버레이 -->
+    <div class="loading-overlay" id="loading-overlay" hidden>
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <span id="loading-text">처리중...</span>
+        </div>
+    </div>
+
+    <!-- 썸네일 생성을 위한 숨김 캔버스 -->
+    <canvas id="thumbnail-canvas" width="1080" height="1080" style="display: none;"></canvas>
+
+    <script src="/js/app.js"></script>
+</body>
+
+</html>

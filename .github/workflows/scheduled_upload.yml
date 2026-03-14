@@ -1,0 +1,45 @@
+name: Scheduled Threads Upload
+
+on:
+  schedule:
+    # 3시간마다 실행 (0시, 3시, 6시 ... 정각 근처)
+    - cron: '0 */3 * * *'
+  workflow_dispatch: # 수동 실행 버튼 추가
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write # 갱신된 schedule.json을 다시 push하기 위해 필요
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: true
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci || npm install # package-lock.json이 있으면 ci, 없으면 install
+
+      - name: Run scheduler
+        env:
+          # GitHub Secrets에서 보안 키를 가져와 환경 변수로 주입
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
+          THREADS_USER_ID: ${{ secrets.THREADS_USER_ID }}
+          THREADS_USERNAME: ${{ secrets.THREADS_USERNAME }}
+        run: node src/gh-actions-runner.js
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/schedules.json data/history.json || true
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Update schedule and history [skip ci]" && git push)

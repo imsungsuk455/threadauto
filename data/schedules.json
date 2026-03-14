@@ -1,0 +1,18 @@
+{
+  "schedules": [
+    {
+      "id": "2f218622-3d33-42ca-b945-ac07e40ebee4",
+      "accountId": "3f858412-2fbf-433d-9cc7-f0546499c2f0",
+      "content": "와…진짜 낭만 그 자체네🌅",
+      "imagePath": null,
+      "scheduleType": "once",
+      "dateTime": "2026-03-13T21:03",
+      "cronExpression": null,
+      "repeatLabel": "",
+      "status": "completed",
+      "createdAt": "2026-03-13T10:37:52.793Z",
+      "lastRun": null,
+      "runCount": 0
+    }
+  ]
+}

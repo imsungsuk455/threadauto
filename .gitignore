@@ -1,0 +1,8 @@
+node_modules/
+config/accounts.json
+data/ai-config.json
+data/app.log
+sessions/
+uploads/
+.env
+.DS_Store

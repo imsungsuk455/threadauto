@@ -1,0 +1,19 @@
+{
+  "coupangAccessKey": "",
+  "coupangSecretKey": "",
+  "coupangPartnerId": "",
+  "naverClientId": "",
+  "naverClientSecret": "",
+  "defaultRssFeeds": [],
+  "savedRssFeeds": [
+    "https://news.sbs.co.kr/news/SectionRssFeed.do?sectionId=14&plink=RSSREADER",
+    "https://news.google.com/rss/search?q=연예&hl=ko&gl=KR&ceid=KR:ko",
+    "https://www.ppomppu.co.kr/rss.php?id=humor"
+  ],
+  "savedThreadsAccounts": [
+    {
+      "input": "eattt.zin",
+      "type": "user"
+    }
+  ]
+}
