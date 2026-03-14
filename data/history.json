@@ -1,6 +1,16 @@
 {
   "history": [
     {
+      "type": "upload",
+      "accountId": "3f858412-2fbf-433d-9cc7-f0546499c2f0",
+      "accountUsername": "uzzatoday",
+      "content": "홍석천이 고무신이된 이유",
+      "hasImage": true,
+      "status": "success",
+      "mediaId": "18157138672381943",
+      "timestamp": "2026-03-14T11:54:26.018Z"
+    },
+    {
       "type": "reply",
       "accountId": "e335a502-ec69-4266-a517-1b0c29a248e7",
       "accountUsername": "battleofwin45",

@@ -209,6 +209,8 @@ body {
     flex: 1;
     padding: 24px 32px;
     min-height: 100vh;
+    max-width: calc(100vw - var(--sidebar-width));
+    overflow-x: hidden;
 }
 
 .page-header {
@@ -328,6 +330,8 @@ body {
     box-shadow: var(--shadow-sm);
     margin-bottom: 16px;
     transition: var(--transition);
+    max-width: 100%;
+    overflow: hidden;
 }
 
 .card:hover {
@@ -502,6 +506,11 @@ body {
 .btn-sm {
     padding: 6px 12px;
     font-size: 12px;
+}
+
+.btn-xs {
+    padding: 4px 8px;
+    font-size: 11px;
 }
 
 .btn-lg {
@@ -1005,7 +1014,19 @@ body {
 .crawl-images {
     display: flex;
     gap: 8px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding: 10px 5px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: var(--radius-sm);
+    scrollbar-width: thin;
+}
+
+.crawl-images img {
+    height: 150px;
+    width: auto;
+    border-radius: 4px;
+    flex-shrink: 0;
 }
 
 .crawl-preview-media {
@@ -1626,10 +1647,26 @@ body {
 }
 
 /* ===== Threads Scraper Results ===== */
+.threads-scrape-results-container {
+    width: 100%;
+    overflow-x: hidden;
+}
+
 .threads-list {
     display: flex;
     flex-direction: column;
     gap: 20px;
+}
+
+.sticky-header {
+    position: sticky;
+    top: 0; 
+    background: #0f0f28; 
+    z-index: 100;
+    padding: 15px 10px;
+    margin: -16px -16px 15px -16px; 
+    border-bottom: 1px solid var(--border-light);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 .threads-media-scroll {
@@ -1639,6 +1676,7 @@ body {
     padding-bottom: 8px;
     scrollbar-width: thin;
     scrollbar-color: var(--accent-purple) var(--bg-secondary);
+    max-width: 100%;
 }
 
 .threads-media-scroll::-webkit-scrollbar {

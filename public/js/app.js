@@ -1193,8 +1193,8 @@ function refreshUploadPreview() {
 
     if (allMedias.length > 0) {
         html = `
-            <div style="display: flex; flex-direction: column; gap: 12px; padding: 15px; background: #f9f9f9; border-radius: 8px;">
-                <div style="display: flex; flex-wrap: wrap; gap: 12px;">
+            <div style="display: flex; flex-direction: column; gap: 12px; padding: 15px; background: #f9f9f9; border-radius: 8px; width: 100%; box-sizing: border-box;">
+                <div class="threads-media-scroll" style="width: 100%; flex-wrap: nowrap; padding-bottom: 15px;">
                     ${allMedias.map((m, idx) => {
                         const srcLower = m.src.toLowerCase();
                         const isVideo = srcLower.includes('.mp4') || srcLower.includes('.mov') || srcLower.includes('video') || srcLower.includes('_v.');
@@ -1352,29 +1352,53 @@ async function addSchedule() {
     const accountId = document.getElementById('upload-account').value;
     const content = document.getElementById('upload-content').value.trim();
     const scheduleType = document.querySelector('input[name="schedule-type"]:checked').value;
+    const remoteImageUrl = document.getElementById('upload-remote-image-url').value;
 
     if (!accountId) return showToast('계정을 선택하세요', 'warning');
     if (!content) return showToast('게시물 내용을 입력하세요', 'warning');
 
-    const data = { accountId, content, scheduleType };
+    const formData = new FormData();
+    formData.append('accountId', accountId);
+    formData.append('content', content);
+    formData.append('scheduleType', scheduleType);
 
     if (scheduleType === 'once') {
-        data.dateTime = document.getElementById('schedule-datetime').value;
-        if (!data.dateTime) return showToast('예약 날짜/시간을 설정하세요', 'warning');
+        const dateTime = document.getElementById('schedule-datetime').value;
+        if (!dateTime) return showToast('예약 날짜/시간을 설정하세요', 'warning');
+        formData.append('dateTime', dateTime);
     } else {
-        data.cronExpression = document.getElementById('schedule-cron').value.trim();
-        data.repeatLabel = document.getElementById('schedule-cron-label').textContent;
-        if (!data.cronExpression) return showToast('Cron 표현식을 입력하세요', 'warning');
+        const cronExpression = document.getElementById('schedule-cron').value.trim();
+        const repeatLabel = document.getElementById('schedule-cron-label').textContent;
+        if (!cronExpression) return showToast('Cron 표현식을 입력하세요', 'warning');
+        formData.append('cronExpression', cronExpression);
+        formData.append('repeatLabel', repeatLabel);
+    }
+
+    // 미디어 추가
+    const imageInput = document.getElementById('upload-image');
+    if (imageInput.files && imageInput.files.length > 0) {
+        for (let i = 0; i < imageInput.files.length; i++) {
+            formData.append('image', imageInput.files[i]);
+        }
+    }
+    
+    if (window._designedThumbnailFile) {
+        formData.append('image', window._designedThumbnailFile);
+    }
+
+    if (remoteImageUrl) {
+        formData.append('imageUrl', remoteImageUrl);
     }
 
     showLoading('예약 등록 중...');
-    const res = await api('POST', '/schedules', data);
+    const res = await apiFormData('/schedules', formData);
     hideLoading();
 
     if (res.success) {
         showToast('예약 등록 완료! 📅', 'success');
         document.getElementById('upload-content').value = '';
         document.getElementById('upload-char-count').textContent = '0';
+        clearUploadImages();
         loadScheduleList();
     } else {
         showToast(res.message, 'error');
@@ -2437,35 +2461,40 @@ function renderThreadsScrapeResults(threads) {
         const firstMedia = hasMedia ? t.mediaUrls[0] : null;
         
         return `
-            <div class="card mb-3 p-3">
-                <div class="d-flex justify-content-between">
+            <div class="card mb-3 p-3 result-card">
+                <div class="d-flex justify-content-between align-items-center mb-2">
                     <div>
                         <strong>@${escapeHtml(t.author)}</strong>
                         <small class="text-muted ml-2">${formatTime(t.createdAt)}</small>
                     </div>
-                    <a href="${t.url}" target="_blank" class="text-primary" style="font-size:12px;">원문 보기 ↗</a>
+                    <div class="d-flex gap-2 align-items-center">
+                        <button class="btn btn-xs btn-success" onclick="addThreadToQueue(${idx})">
+                            ➕ 추가
+                        </button>
+                        <a href="${t.url}" target="_blank" class="text-primary" style="font-size:12px;">원문 보기 ↗</a>
+                    </div>
                 </div>
-                <div class="mt-2" style="white-space: pre-wrap; font-size: 14px;">${escapeHtml(t.content)}</div>
+                <div style="white-space: pre-wrap; font-size: 14px; margin-bottom: 10px;">${escapeHtml(t.content)}</div>
                 ${hasMedia ? `
-                    <div class="mt-2" style="display:flex; gap:8px; overflow-x:auto; padding-bottom: 8px;">
+                    <div class="threads-media-scroll mb-2">
                         ${t.mediaUrls.map(u => {
                             const isVideo = u.toLowerCase().includes('.mp4') || u.toLowerCase().includes('.mov');
                             if (isVideo) {
                                 return `
-                                    <video src="${escapeAttr(u)}" style="height:120px; border-radius:8px; border:1px solid var(--border-color);" controls muted></video>
+                                    <video src="${escapeAttr(u)}" class="threads-media-item" controls muted></video>
                                 `;
                             } else {
                                 // 이미지의 경우 프록시 사용 (CORS 회피)
                                 const proxiedUrl = `/api/proxy-image?url=${encodeURIComponent(u)}`;
                                 return `
-                                    <img src="${proxiedUrl}" style="height:120px; border-radius:8px; border:1px solid var(--border-color); object-fit: cover; cursor: pointer;" 
+                                    <img src="${proxiedUrl}" class="threads-media-item" 
                                          onclick="window.open('${escapeAttr(u)}', '_blank')">
                                 `;
                             }
                         }).join('')}
                     </div>
                 ` : ''}
-                <div class="mt-3 d-flex justify-content-between align-items-center">
+                <div class="d-flex justify-content-between align-items-center" style="border-top: 1px solid var(--border-light); pt-2; margin-top: 5px; padding-top: 8px;">
                     <div style="font-size:12px; color:var(--text-muted);">
                         ❤️ ${t.likeCount}  💬 ${t.replyCount}
                     </div>
@@ -2653,27 +2682,32 @@ function renderTiktokScrapeResults(videos) {
         const hasMedia = v.mediaUrls && v.mediaUrls.length > 0;
         
         return `
-            <div class="card mb-3 p-3">
-                <div class="d-flex justify-content-between">
+            <div class="card mb-3 p-3 result-card">
+                <div class="d-flex justify-content-between align-items-center mb-2">
                     <div>
                         <strong>@${escapeHtml(v.author)}</strong>
                         <small class="text-muted ml-2">${v.views || ''}</small>
                     </div>
-                    <a href="${v.url}" target="_blank" class="text-primary" style="font-size:12px;">원문 보기 ↗</a>
+                    <div class="d-flex gap-2 align-items-center">
+                        <button class="btn btn-xs btn-success" onclick="addTiktokToQueue(${idx})">
+                            ➕ 추가
+                        </button>
+                        <a href="${v.url}" target="_blank" class="text-primary" style="font-size:12px;">원문 보기 ↗</a>
+                    </div>
                 </div>
-                <div class="mt-2" style="white-space: pre-wrap; font-size: 14px;">${escapeHtml(v.content)}</div>
+                <div style="white-space: pre-wrap; font-size: 14px; margin-bottom: 10px;">${escapeHtml(v.content)}</div>
                 ${hasMedia ? `
-                    <div class="mt-2" style="display:flex; gap:8px; overflow-x:auto; padding-bottom: 8px;">
+                    <div class="threads-media-scroll mb-2">
                         ${v.mediaUrls.map(u => {
                             const proxiedUrl = `/api/proxy-image?url=${encodeURIComponent(u)}`;
                             return `
-                                <img src="${proxiedUrl}" style="height:120px; border-radius:8px; border:1px solid var(--border-color); object-fit: cover; cursor: pointer;" 
+                                <img src="${proxiedUrl}" class="threads-media-item" 
                                      onclick="window.open('${escapeAttr(u)}', '_blank')">
                             `;
                         }).join('')}
                     </div>
                 ` : ''}
-                <div class="mt-3 d-flex justify-content-between align-items-center">
+                <div class="mt-3 d-flex justify-content-end">
                     <button class="btn btn-sm btn-outline-success" onclick="addTiktokToQueue(${idx})">
                         ➕ 대기열 추가
                     </button>

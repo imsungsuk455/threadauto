@@ -1,12 +1,52 @@
 const axios = require('axios');
+const fs = require('fs');
+const FormData = require('form-data');
 const accounts = require('./accounts');
 const { log, readJSON, writeJSON, PATHS, formatTimestamp } = require('./utils');
 
 const THREADS_API_BASE = 'https://graph.threads.net/v1.0';
 
 /**
+ * 로컬 파일 경로를 공용 URL로 변환 (Threads API는 공용 URL만 지원)
+ * Catbox.moe를 사용하여 임시 업로드
+ */
+async function ensurePublicUrl(pathOrUrl) {
+    if (!pathOrUrl) return null;
+    if (typeof pathOrUrl !== 'string') return null;
+    if (pathOrUrl.startsWith('http')) return pathOrUrl;
+
+    try {
+        log('INFO', `로컬 파일을 공용 URL로 변환 중 (Catbox): ${pathOrUrl}`);
+        
+        if (!fs.existsSync(pathOrUrl)) {
+            log('WARN', `파일이 존재하지 않습니다: ${pathOrUrl}`);
+            return null;
+        }
+
+        const form = new FormData();
+        form.append('reqtype', 'fileupload');
+        form.append('fileToUpload', fs.createReadStream(pathOrUrl));
+
+        const res = await axios.post('https://catbox.moe/user/api.php', form, {
+            headers: form.getHeaders(),
+            timeout: 30000
+        });
+
+        if (res.data && typeof res.data === 'string' && res.data.startsWith('http')) {
+            log('INFO', `URL 변환 성공: ${res.data}`);
+            return res.data;
+        }
+        
+        throw new Error(`Catbox 응답 오류: ${res.data}`);
+    } catch (e) {
+        log('ERROR', `파일 공개 URL 변환 실패: ${e.message}`);
+        return null;
+    }
+}
+
+/**
  * 게시물 업로드 (공식 Threads API)
- * imagePath: 단일 문자열(URL/로컬경로) 또는 배열(다중 URL)
+ * imagePath: 단일 문자열(URL/로컬경로) 또는 배열(다중 URL/로컬경로)
  */
 async function uploadPost(accountId, content, imagePath = null) {
     log('INFO', `API 업로드 시작 (계정 ID: ${accountId})`);
@@ -46,15 +86,21 @@ async function uploadPost(accountId, content, imagePath = null) {
             log('INFO', `Carousel 업로드 진행 (${imagePath.length}개 항목)`);
             
             const childIds = [];
-            for (const url of imagePath) {
+            for (let url of imagePath) {
                 if (childIds.length >= 10) {
                     log('WARN', 'Carousel 항목이 10개를 초과하여 나머지는 제외되었습니다.');
                     break;
                 }
                 
+                // 로컬 경로 변환 시도
                 if (!url.startsWith('http')) {
-                    log('WARN', `로컬 경로는 Carousel에서 지원되지 않습니다: ${url}`);
-                    continue;
+                    const publicUrl = await ensurePublicUrl(url);
+                    if (publicUrl) {
+                        url = publicUrl;
+                    } else {
+                        log('WARN', `로컬 경로 변환 실패로 Carousel 항목 제외: ${url}`);
+                        continue;
+                    }
                 }
 
                 const isVideo = url.toLowerCase().match(/\.(mp4|mov)/i) || url.toLowerCase().includes('video') || url.toLowerCase().includes('_v.');
@@ -88,7 +134,16 @@ async function uploadPost(accountId, content, imagePath = null) {
             finalContainerId = carouselRes.data?.id;
         } else {
             // 단일 미디어 업로드
-            const singlePath = isMultiple ? imagePath[0] : imagePath;
+            let singlePath = isMultiple ? imagePath[0] : imagePath;
+            
+            // 로컬 경로 변환 시도
+            if (singlePath && typeof singlePath === 'string' && !singlePath.startsWith('http')) {
+                const publicUrl = await ensurePublicUrl(singlePath);
+                if (publicUrl) {
+                    singlePath = publicUrl;
+                }
+            }
+
             if (singlePath && typeof singlePath === 'string' && singlePath.startsWith('http')) {
                 const isVideo = singlePath.toLowerCase().match(/\.(mp4|mov)/i) || singlePath.toLowerCase().includes('video') || singlePath.toLowerCase().includes('_v.');
                 mediaType = isVideo ? 'VIDEO' : 'IMAGE';
@@ -103,11 +158,10 @@ async function uploadPost(accountId, content, imagePath = null) {
                 });
                 finalContainerId = res.data?.id;
             } else {
-                // 로컬 이미지 (Multer 등으로 저장된 경로)
-                log('WARN', '로컬 이미지는 공개 URL이 아니면 공식 API에서 지원하지 않습니다.');
+                // 로컬 이미지 변환 실패 또는 미디어 없음 -> TEXT로 진행
+                log('WARN', '미디어가 없거나 로컬 경로 변환에 실패했습니다. 텍스트로만 발행합니다.');
                 mediaType = 'TEXT';
                 
-                // 일단 텍스트로만이라도 발행
                 const res = await axios.post(`${THREADS_API_BASE}/${account.threadsUserId}/threads`, null, {
                     params: {
                         media_type: 'TEXT',

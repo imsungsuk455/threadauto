@@ -856,13 +856,15 @@
                 </div>
 
                 <div id="threads-scrape-results-area" class="card" hidden>
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h3>📋 수집된 스레드 목록</h3>
+                    <div class="d-flex justify-content-between align-items-center mb-3 sticky-header">
+                        <h3 style="margin:0;">📋 수집된 스레드 목록</h3>
                         <div class="btn-row">
                             <button class="btn btn-outline-primary btn-sm" onclick="addAllThreadsToQueue()">전체 대기열 추가</button>
                         </div>
                     </div>
-                    <div id="threads-scrape-list" class="threads-list">
+                    <div class="threads-scrape-results-container">
+                        <div id="threads-scrape-list" class="threads-list">
+                        </div>
                     </div>
                 </div>
             </section>
@@ -912,14 +914,16 @@
                 </div>
 
                 <div id="tiktok-scrape-results-area" class="card" hidden>
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h3>📋 수집된 틱톡 목록</h3>
+                    <div class="d-flex justify-content-between align-items-center mb-3 sticky-header">
+                        <h3 style="margin:0;">📋 수집된 틱톡 목록</h3>
                         <div class="btn-row">
                             <button class="btn btn-outline-primary btn-sm" onclick="addAllTiktokToQueue()">전체 대기열 추가</button>
                         </div>
                     </div>
-                    <div id="tiktok-scrape-list" class="threads-list">
-                        <!-- 수집 결과가 여기에 표시됨 -->
+                    <div class="threads-scrape-results-container">
+                        <div id="tiktok-scrape-list" class="threads-list">
+                            <!-- 수집 결과가 여기에 표시됨 -->
+                        </div>
                     </div>
                 </div>
             </section>

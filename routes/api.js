@@ -134,9 +134,28 @@ router.get('/schedules', (req, res) => {
     }
 });
 
-router.post('/schedules', (req, res) => {
+router.post('/schedules', upload.array('image'), (req, res) => {
     try {
-        const result = scheduler.addSchedule(req.body);
+        const data = { ...req.body };
+        
+        // 미디어 파일 처리
+        let mediaList = [];
+        if (req.files && req.files.length > 0) {
+            req.files.forEach(f => mediaList.push(f.path));
+        }
+
+        if (req.body.imageUrl) {
+            const urls = typeof req.body.imageUrl === 'string' 
+                ? req.body.imageUrl.split(',').map(u => u.trim()).filter(u => u) 
+                : (Array.isArray(req.body.imageUrl) ? req.body.imageUrl : [req.body.imageUrl]);
+            mediaList = mediaList.concat(urls);
+        }
+
+        if (mediaList.length > 0) {
+            data.imagePath = mediaList.length > 1 ? mediaList : mediaList[0];
+        }
+
+        const result = scheduler.addSchedule(data);
         res.json(result);
     } catch (e) {
         res.status(500).json({ success: false, message: e.message });
