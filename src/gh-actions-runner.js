@@ -1,10 +1,24 @@
 const { readJSON, writeJSON, PATHS, log, ensureDirectories } = require('./utils');
 const { uploadPost } = require('./uploader');
 const { runFull } = require('./pipeline');
+const { verifyAccessToken } = require('./auth');
 
 async function runGhaTasks() {
     ensureDirectories();
     log('INFO', '🚀 GitHub Actions 예약 업로드 체크 시작');
+
+    // THREADS_USER_ID가 없으면 토큰을 통해 자동 조회
+    if (process.env.THREADS_ACCESS_TOKEN && !process.env.THREADS_USER_ID) {
+        log('INFO', 'THREADS_USER_ID가 없어 토큰으로 자동 조회를 시도합니다...');
+        const authInfo = await verifyAccessToken(process.env.THREADS_ACCESS_TOKEN);
+        if (authInfo.success) {
+            process.env.THREADS_USER_ID = authInfo.threadsUserId;
+            process.env.THREADS_USERNAME = authInfo.username;
+            log('INFO', `계정 정보 자동 조회 성공: @${authInfo.username} (${authInfo.threadsUserId})`);
+        } else {
+            log('ERROR', `계정 정보 조회 실패: ${authInfo.message}`);
+        }
+    }
     
     const data = readJSON(PATHS.schedules);
     if (!data || !data.schedules || data.schedules.length === 0) {

@@ -1340,12 +1340,14 @@ function toggleScheduleType() {
     document.getElementById('schedule-repeat-options').hidden = type !== 'repeat';
 }
 
-function setCron(expression, label) {
+function setCron(event, expression, label) {
     document.getElementById('schedule-cron').value = expression;
     document.getElementById('schedule-cron-label').textContent = label;
 
     document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
-    event.target.classList.add('active');
+    if (event && event.target) {
+        event.target.classList.add('active');
+    }
 }
 
 async function addSchedule() {
