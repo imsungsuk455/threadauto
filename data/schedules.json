@@ -17,8 +17,29 @@
       "dateTime": "2026-03-15T13:08",
       "cronExpression": null,
       "repeatLabel": "",
-      "status": "pending",
+      "status": "completed",
       "createdAt": "2026-03-15T04:06:35.209Z",
+      "lastRun": null,
+      "runCount": 0
+    },
+    {
+      "id": "3746ded8-fe15-4eef-a730-6fc6d8c69247",
+      "accountId": "3f858412-2fbf-433d-9cc7-f0546499c2f0",
+      "content": "세탁기 이혼 결말 😨...",
+      "imagePath": [
+        "C:\\Users\\iss59\\Desktop\\antigravity\\thread auto\\uploads\\1773548220837-designed-thumbnail.jpg",
+        "https://scontent-ssn1-1.cdninstagram.com/v/t51.82787-15/650083632_17890006665441323_8542187070077095017_n.jpg?stp=dst-jpg_e35_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InRocmVhZHMuQ0FST1VTRUxfSVRFTS5pbWFnZV91cmxnZW4uMTQ0MHgxODAwLnNkci5mODI3ODcuZGVmYXVsdF9pbWFnZS5jMiJ9&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=111&_nc_oc=Q6cZ2QFBj1M9qrYAKkEaMwFSblNcZGqSiFILQFssSQ8tVm4OtJLK76u_7YhFnnsw4NorRU4&_nc_ohc=f8SL88jvEQ8Q7kNvwH-K2Hm&_nc_gid=C-rS0xYKoEukcFgz9FSGQA&edm=APs17CUBAAAA&ccb=7-5&ig_cache_key=Mzg1MzA0OTYzMjUzMzI1NjE4Mg%3D%3D.3-ccb7-5&oh=00_AfzSWe-RIiSs1WWPHqa6PMaE6G1LAncpfyw8rG6i47hrww&oe=69BBE8FD&_nc_sid=10d13b",
+        "https://scontent-ssn1-1.cdninstagram.com/v/t51.82787-15/651455786_17890006674441323_77651384056545585_n.jpg?stp=dst-jpg_e35_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InRocmVhZHMuQ0FST1VTRUxfSVRFTS5pbWFnZV91cmxnZW4uMTQ0MHgxODAwLnNkci5mODI3ODcuZGVmYXVsdF9pbWFnZS5jMiJ9&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=111&_nc_oc=Q6cZ2QFBj1M9qrYAKkEaMwFSblNcZGqSiFILQFssSQ8tVm4OtJLK76u_7YhFnnsw4NorRU4&_nc_ohc=oWlxAG6HkUkQ7kNvwH6OZSR&_nc_gid=C-rS0xYKoEukcFgz9FSGQA&edm=APs17CUBAAAA&ccb=7-5&ig_cache_key=Mzg1MzA0OTYzMDM2MDYyNDkxMQ%3D%3D.3-ccb7-5&oh=00_Afyn0zARp-vs92PBLhgVhLit7iGjMbPsVlg6W2DzPgRULw&oe=69BC1223&_nc_sid=10d13b",
+        "https://scontent-ssn1-1.cdninstagram.com/v/t51.82787-15/651040433_17890006656441323_3073924269485499452_n.jpg?stp=dst-jpg_e35_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InRocmVhZHMuQ0FST1VTRUxfSVRFTS5pbWFnZV91cmxnZW4uMTQ0MHgxODAwLnNkci5mODI3ODcuZGVmYXVsdF9pbWFnZS5jMiJ9&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=111&_nc_oc=Q6cZ2QFBj1M9qrYAKkEaMwFSblNcZGqSiFILQFssSQ8tVm4OtJLK76u_7YhFnnsw4NorRU4&_nc_ohc=_oBvGyiD_fIQ7kNvwHGgWrg&_nc_gid=C-rS0xYKoEukcFgz9FSGQA&edm=APs17CUBAAAA&ccb=7-5&ig_cache_key=Mzg1MzA0OTYzMDM2MDY1MzQ2Mw%3D%3D.3-ccb7-5&oh=00_AfwXChwsLhYwpRCUXpbO9-pDxyqn8HXFnY2A1ajRXC7N7w&oe=69BBF7B4&_nc_sid=10d13b",
+        "https://scontent-ssn1-1.cdninstagram.com/v/t51.82787-15/653674447_17890006695441323_7604102879704688932_n.jpg?stp=dst-jpg_e35_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InRocmVhZHMuQ0FST1VTRUxfSVRFTS5pbWFnZV91cmxnZW4uMTQ0MHgxODAwLnNkci5mODI3ODcuZGVmYXVsdF9pbWFnZS5jMiJ9&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=111&_nc_oc=Q6cZ2QFBj1M9qrYAKkEaMwFSblNcZGqSiFILQFssSQ8tVm4OtJLK76u_7YhFnnsw4NorRU4&_nc_ohc=eSu0-upbp8QQ7kNvwHp6-jT&_nc_gid=C-rS0xYKoEukcFgz9FSGQA&edm=APs17CUBAAAA&ccb=7-5&ig_cache_key=Mzg1MzA0OTYzMDQxOTM2MTEwMw%3D%3D.3-ccb7-5&oh=00_AfwN-3jkypNp-zGuW7sgpB8fFFZXhzweM3pXvJZQEHW1Vw&oe=69BC1419&_nc_sid=10d13b",
+        "https://scontent-ssn1-1.cdninstagram.com/v/t51.82787-15/651405074_17890006683441323_2276108117335792355_n.jpg?stp=dst-jpg_e35_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InRocmVhZHMuQ0FST1VTRUxfSVRFTS5pbWFnZV91cmxnZW4uMTQ0MHgxODAwLnNkci5mODI3ODcuZGVmYXVsdF9pbWFnZS5jMiJ9&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=111&_nc_oc=Q6cZ2QFBj1M9qrYAKkEaMwFSblNcZGqSiFILQFssSQ8tVm4OtJLK76u_7YhFnnsw4NorRU4&_nc_ohc=nWhEheQxfngQ7kNvwGwG0Zj&_nc_gid=C-rS0xYKoEukcFgz9FSGQA&edm=APs17CUBAAAA&ccb=7-5&ig_cache_key=Mzg1MzA0OTYzMDk5ODE5NTE3MQ%3D%3D.3-ccb7-5&oh=00_AfxkD2RDlnlhlhf-n8aemgvCcwNIc27A5-mdgCJfSk-FbA&oe=69BC10E1&_nc_sid=10d13b"
+      ],
+      "scheduleType": "once",
+      "dateTime": "2026-03-15T13:21",
+      "cronExpression": null,
+      "repeatLabel": "",
+      "status": "pending",
+      "createdAt": "2026-03-15T04:17:00.842Z",
       "lastRun": null,
       "runCount": 0
     }
