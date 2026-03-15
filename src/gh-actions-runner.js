@@ -34,9 +34,21 @@ async function runGhaTasks() {
     // 실행 대상 예약 필터링 (pending/active 상태이면서 시간이 지남)
     const targetSchedules = schedules
         .filter(s => (s.status === 'pending' || s.status === 'active') && s.scheduleType === 'once')
-        .filter(s => new Date(s.dateTime) <= now)
+        .filter(s => {
+            if (!s.dateTime) return false;
+            let scheduledDate = new Date(s.dateTime);
+            // 날짜 문자열에 타임존 정보(Z 또는 +)가 없으면 한국 시간(+09:00)으로 처리
+            if (!s.dateTime.includes('Z') && !s.dateTime.includes('+')) {
+                scheduledDate = new Date(s.dateTime + '+09:00');
+            }
+            return scheduledDate <= now;
+        })
         // 가장 오래된 예약이 먼저 오도록 정렬
-        .sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime));
+        .sort((a, b) => {
+            const dateA = a.dateTime.includes('Z') || a.dateTime.includes('+') ? new Date(a.dateTime) : new Date(a.dateTime + '+09:00');
+            const dateB = b.dateTime.includes('Z') || b.dateTime.includes('+') ? new Date(b.dateTime) : new Date(b.dateTime + '+09:00');
+            return dateA - dateB;
+        });
 
     if (targetSchedules.length > 0) {
         // 이번 회차에는 가장 오래된 것 1개만 처리 (도배 방지)
