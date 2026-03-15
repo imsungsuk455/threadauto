@@ -3,6 +3,6 @@ config/accounts.json
 data/ai-config.json
 data/app.log
 sessions/
-uploads/
+# uploads/ (Git 업로드를 위해 마스킹 해제)
 .env
 .DS_Store
