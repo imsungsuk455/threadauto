@@ -1,3 +1,4 @@
+const path = require('path');
 const { readJSON, writeJSON, PATHS, log, ensureDirectories } = require('./utils');
 const { uploadPost } = require('./uploader');
 const { runFull } = require('./pipeline');
@@ -30,52 +31,71 @@ async function runGhaTasks() {
     const now = new Date();
     let updated = false;
 
-    for (const schedule of schedules) {
-        // 'pending' 또는 'active' 상태인 1회성 예약 확인
-        if ((schedule.status === 'pending' || schedule.status === 'active') && schedule.scheduleType === 'once') {
-            const targetTime = new Date(schedule.dateTime);
-            
-            // 예약 시간이 현재 시간보다 이전(이미 지남)이면 실행
-            if (targetTime <= now) {
-                log('INFO', `⏳ 예약 실행 대상 발견: ${schedule.id} (${schedule.dateTime})`);
-                
-                try {
-                    let result;
-                    if (schedule.isPipeline) {
-                        log('INFO', '파이프라인 전체 실행 모드로 진행합니다.');
-                        const options = {
-                            accountId: schedule.accountId,
-                            urls: schedule.pipelineUrls || [],
-                            rssFeeds: schedule.pipelineRss || [],
-                            coupangKeyword: schedule.pipelineCoupangKeyword || null,
-                            naverKeyword: schedule.pipelineNaverKeyword || null,
-                        };
-                        result = await runFull(options);
-                    } else {
-                        log('INFO', '일반 게시물 단독 업로드로 진행합니다.');
-                        result = await uploadPost(schedule.accountId, schedule.content, schedule.imagePath);
-                    }
+    // 실행 대상 예약 필터링 (pending/active 상태이면서 시간이 지남)
+    const targetSchedules = schedules
+        .filter(s => (s.status === 'pending' || s.status === 'active') && s.scheduleType === 'once')
+        .filter(s => new Date(s.dateTime) <= now)
+        // 가장 오래된 예약이 먼저 오도록 정렬
+        .sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime));
 
-                    if (result.success || (result.phases && result.success !== false)) {
-                        schedule.status = 'completed';
-                        schedule.lastRun = now.toISOString();
-                        schedule.runCount = (schedule.runCount || 0) + 1;
-                        log('INFO', `✅ 예약 실행 완료: ${schedule.id}`);
-                    } else {
-                        schedule.status = 'failed';
-                        schedule.errorMessage = result.message || '알 수 없는 오류';
-                        log('ERROR', `❌ 예약 실행 실패: ${schedule.id} - ${schedule.errorMessage}`);
-                    }
-                } catch (error) {
-                    schedule.status = 'failed';
-                    schedule.errorMessage = error.message;
-                    log('ERROR', `❌ 예약 실행 중 치명적 오류: ${error.message}`);
+    if (targetSchedules.length > 0) {
+        // 이번 회차에는 가장 오래된 것 1개만 처리 (도배 방지)
+        const schedule = targetSchedules[0];
+        log('INFO', `⏳ 예약 실행 대상 발견: ${schedule.id} (${schedule.dateTime})`);
+        log('INFO', `남은 대기 작업 수: ${targetSchedules.length - 1}`);
+
+        // 경로 변환 로직 추가 (로컬 절대 경로 -> GHA 상대 경로)
+        if (schedule.imagePath) {
+            const fixPath = (p) => {
+                if (p && typeof p === 'string' && p.includes('\\thread auto\\')) {
+                    const relativePart = p.split('\\thread auto\\')[1].replace(/\\/g, '/');
+                    const newPath = path.join(PATHS.root, relativePart);
+                    log('INFO', `경로 변환: ${p} -> ${newPath}`);
+                    return newPath;
                 }
-                updated = true;
+                return p;
+            };
+
+            if (Array.isArray(schedule.imagePath)) {
+                schedule.imagePath = schedule.imagePath.map(fixPath);
+            } else {
+                schedule.imagePath = fixPath(schedule.imagePath);
             }
         }
-        // 반복 예약(repeat)의 경우 GHA의 자체 cron 설정과 맞추는 것이 좋으므로 
-        // 여기서는 일단 1회성 예약 위주로 처리하거나, GHA 전용 플래그가 있는 경우만 처리하게 확장 가능합니다.
+        
+        try {
+            let result;
+            if (schedule.isPipeline) {
+                log('INFO', '파이프라인 전체 실행 모드로 진행합니다.');
+                const options = {
+                    accountId: schedule.accountId,
+                    urls: schedule.pipelineUrls || [],
+                    rssFeeds: schedule.pipelineRss || [],
+                    coupangKeyword: schedule.pipelineCoupangKeyword || null,
+                    naverKeyword: schedule.pipelineNaverKeyword || null,
+                };
+                result = await runFull(options);
+            } else {
+                log('INFO', '일반 게시물 단독 업로드로 진행합니다.');
+                result = await uploadPost(schedule.accountId, schedule.content, schedule.imagePath);
+            }
+
+            if (result.success || (result.phases && result.success !== false)) {
+                schedule.status = 'completed';
+                schedule.lastRun = now.toISOString();
+                schedule.runCount = (schedule.runCount || 0) + 1;
+                log('INFO', `✅ 예약 실행 완료: ${schedule.id}`);
+            } else {
+                schedule.status = 'failed';
+                schedule.errorMessage = result.message || '알 수 없는 오류';
+                log('ERROR', `❌ 예약 실행 실패: ${schedule.id} - ${schedule.errorMessage}`);
+            }
+        } catch (error) {
+            schedule.status = 'failed';
+            schedule.errorMessage = error.message;
+            log('ERROR', `❌ 예약 실행 중 치명적 오류: ${error.message}`);
+        }
+        updated = true;
     }
 
     if (updated) {

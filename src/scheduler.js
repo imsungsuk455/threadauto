@@ -1,7 +1,9 @@
 const cron = require('node-cron');
 const { v4: uuidv4 } = require('uuid');
-const { log, readJSON, writeJSON, PATHS, formatTimestamp } = require('./utils');
-const { uploadPost } = require('./uploader');
+const { log, readJSON, writeJSON, PATHS, formatTimestamp, gitSync } = require('./utils');
+const { uploadPost, ensurePublicUrl } = require('./uploader');
+const accounts = require('./accounts');
+const axios = require('axios');
 
 const activeJobs = new Map(); // scheduleId -> cron job
 
@@ -40,6 +42,12 @@ function addSchedule({ accountId, content, imagePath, scheduleType, dateTime, cr
 
     schedules.push(schedule);
     saveSchedules(schedules);
+
+    // GitHub Actions를 위한 로컬 변경사항 푸시 (썸네일 포함)
+    gitSync(`Add schedule: ${schedule.id}`);
+
+    // Cloudflare Worker와 동기화 (정밀 예약 업로드용)
+    syncToCloudflare(schedule).catch(err => log('ERROR', `Cloudflare 동기화 실패: ${err.message}`));
 
     // cron job 등록
     if (scheduleType === 'repeat' && cronExpression) {
@@ -201,6 +209,55 @@ function restoreSchedules() {
     }
 
     log('INFO', `예약 복원 완료: ${restored}개`);
+}
+
+/**
+ * Cloudflare Worker로 예약 정보 전송
+ */
+async function syncToCloudflare(schedule) {
+    const config = readJSON(PATHS.cloudflareConfig);
+    if (!config || !config.workerUrl || !config.apiSecret) {
+        log('INFO', 'Cloudflare 설정이 없어 Worker 동기화를 건너뜁니다.');
+        return;
+    }
+
+    log('INFO', `Cloudflare Worker로 예약 전송 중: ${schedule.id}`);
+
+    try {
+        const account = accounts.getAccount(schedule.accountId);
+        if (!account) throw new Error('계정 정보를 찾을 수 없습니다.');
+
+        // 미디어 경로가 로컬인 경우 공용 URL로 변환
+        let publicImagePath = schedule.imagePath;
+        if (schedule.imagePath) {
+            if (Array.isArray(schedule.imagePath)) {
+                publicImagePath = await Promise.all(schedule.imagePath.map(p => ensurePublicUrl(p)));
+            } else {
+                publicImagePath = await ensurePublicUrl(schedule.imagePath);
+            }
+        }
+
+        const payload = {
+            ...schedule,
+            imagePath: publicImagePath,
+            accessToken: account.accessToken,
+            threadsUserId: account.threadsUserId
+        };
+
+        const res = await axios.post(`${config.workerUrl}/add-schedule`, payload, {
+            headers: {
+                'Authorization': `Bearer ${config.apiSecret}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (res.data && res.data.success) {
+            log('INFO', `✅ Cloudflare Worker 예약 등록 완료: ${schedule.id}`);
+        }
+    } catch (e) {
+        const msg = e.response?.data || e.message;
+        throw new Error(`Worker API 오류: ${msg}`);
+    }
 }
 
 module.exports = { addSchedule, deleteSchedule, getSchedules, restoreSchedules };

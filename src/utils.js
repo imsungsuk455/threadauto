@@ -83,6 +83,7 @@ const PATHS = {
     affiliateConfig: path.join(__dirname, '..', 'data', 'affiliate-config.json'),
     pipelineQueue: path.join(__dirname, '..', 'data', 'pipeline-queue.json'),
     pipelineConfig: path.join(__dirname, '..', 'data', 'pipeline-config.json'),
+    cloudflareConfig: path.join(__dirname, '..', 'data', 'cloudflare-config.json'),
 };
 
 // 필요한 폴더 생성
@@ -90,6 +91,43 @@ function ensureDirectories() {
     [PATHS.config, PATHS.data, PATHS.sessions, PATHS.uploads].forEach(dir => {
         if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
     });
+}
+
+const { execSync } = require('child_process');
+
+// ===== Git 동기화 (Push) =====
+function gitSync(message = 'Sync data and uploads') {
+    try {
+        log('INFO', 'Git 동기화 시작...');
+        
+        // 1. Git 설치 확인
+        try {
+            execSync('git --version');
+        } catch (e) {
+            log('WARN', 'Git이 설치되어 있지 않거나 경로 설정이 되어 있지 않습니다.');
+            return { success: false, message: 'Git not found' };
+        }
+
+        // 2. Add, Commit, Push
+        // data/ 폴더와 uploads/ 폴더를 명시적으로 추가
+        execSync('git add data/schedules.json data/history.json uploads/* .gitignore');
+        
+        // 변경사항체크
+        const status = execSync('git status --porcelain').toString();
+        if (!status) {
+            log('INFO', 'Git: 변경사항이 없어 Push를 건너뜁니다.');
+            return { success: true, message: 'No changes' };
+        }
+
+        execSync(`git commit -m "${message}"`);
+        execSync('git push');
+        
+        log('INFO', '✅ Git Push 완료 (데이터 및 썸네일 업로드됨)');
+        return { success: true };
+    } catch (error) {
+        log('ERROR', `Git 동기화 실패: ${error.message}`);
+        return { success: false, message: error.message };
+    }
 }
 
 module.exports = {
@@ -101,5 +139,6 @@ module.exports = {
     getDateString,
     PATHS,
     ensureDirectories,
+    gitSync,
     LOG_LEVELS,
 };

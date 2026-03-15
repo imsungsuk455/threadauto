@@ -373,4 +373,4 @@ async function waitForMediaProcessing(accountId, containerId) {
     throw new Error('미디어 처리 대기 시간이 초과되었습니다.');
 }
 
-module.exports = { uploadPost, addToHistory, getHistory, replyToThread };
+module.exports = { uploadPost, addToHistory, getHistory, replyToThread, ensurePublicUrl };

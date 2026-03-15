@@ -2,8 +2,8 @@ name: Scheduled Threads Upload
 
 on:
   schedule:
-    # 3시간마다 실행 (0시, 3시, 6시 ... 정각 근처)
-    - cron: '0 */3 * * *'
+    # 5분마다 실행하여 예약된 게시물을 순차적으로(하나씩) 처리
+    - cron: '*/5 * * * *'
   workflow_dispatch: # 수동 실행 버튼 추가
 
 jobs:
