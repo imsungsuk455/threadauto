@@ -1,0 +1,13 @@
+name = "threads-auto-scheduler"
+main = "src/index.js"
+compatibility_date = "2024-03-15"
+
+[triggers]
+crons = ["* * * * *"] # Every minute
+
+[[kv_namespaces]]
+binding = "SCHEDULES_KV"
+id = "YOUR_KV_NAMESPACE_ID" # Will need to be updated after creation
+
+[vars]
+# API_SECRET = "your-secret-key" # For authentication between local and worker
