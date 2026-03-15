@@ -58,7 +58,7 @@
       "dateTime": "2026-03-15T11:00",
       "cronExpression": null,
       "repeatLabel": "",
-      "status": "active",
+      "status": "completed",
       "createdAt": "2026-03-15T01:29:51.502Z",
       "lastRun": null,
       "runCount": 0
@@ -80,8 +80,28 @@
       "dateTime": "2026-03-15T11:30",
       "cronExpression": null,
       "repeatLabel": "",
-      "status": "pending",
+      "status": "completed",
       "createdAt": "2026-03-15T01:37:12.733Z",
+      "lastRun": null,
+      "runCount": 0
+    },
+    {
+      "id": "b6130b15-cec1-4217-a689-830665382197",
+      "accountId": "3f858412-2fbf-433d-9cc7-f0546499c2f0",
+      "content": "너구리 라면속 다시마의 진실",
+      "imagePath": [
+        "C:\\Users\\iss59\\Desktop\\antigravity\\thread auto\\uploads\\1773543017989-designed-thumbnail.jpg",
+        "https://scontent-ssn1-1.cdninstagram.com/v/t51.82787-15/651658431_17889860280441323_1258156361024331015_n.jpg?stp=dst-jpg_e35_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InRocmVhZHMuQ0FST1VTRUxfSVRFTS5pbWFnZV91cmxnZW4uMTQ0MHgxODAwLnNkci5mODI3ODcuZGVmYXVsdF9pbWFnZS5jMiJ9&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=111&_nc_oc=Q6cZ2QHKahhKf2u9XQaK57VaA3WarJvYpD7dnXetc_4gtphOYnhOgYXRtaCb40TnTTDlgtw&_nc_ohc=x478bo3LpXEQ7kNvwH0h49S&_nc_gid=2mex_1NzYGGLDh66LELUdA&edm=APs17CUBAAAA&ccb=7-5&ig_cache_key=Mzg1MjMyMjIzNDA5NTQxODU3MA%3D%3D.3-ccb7-5&oh=00_AfwUuGRG6Ob8tp5q_rkrvDy9d1XAbqZmgZ3LsKI_peh3YQ&oe=69BBE120&_nc_sid=10d13b",
+        "https://scontent-ssn1-1.cdninstagram.com/v/t51.82787-15/651865418_17889860310441323_4128549612345789194_n.jpg?stp=dst-jpg_e35_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InRocmVhZHMuQ0FST1VTRUxfSVRFTS5pbWFnZV91cmxnZW4uMTQ0MHgxODAwLnNkci5mODI3ODcuZGVmYXVsdF9pbWFnZS5jMiJ9&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=111&_nc_oc=Q6cZ2QHKahhKf2u9XQaK57VaA3WarJvYpD7dnXetc_4gtphOYnhOgYXRtaCb40TnTTDlgtw&_nc_ohc=_sMuwerZxLEQ7kNvwF9bMHo&_nc_gid=2mex_1NzYGGLDh66LELUdA&edm=APs17CUBAAAA&ccb=7-5&ig_cache_key=Mzg1MjMyMjIzMTY3MTExMzQwMA%3D%3D.3-ccb7-5&oh=00_AfzDM-hfPW_RT08t_NEVb9ShW2fU-NEQTt8d4gsMcrJV2w&oe=69BC0818&_nc_sid=10d13b",
+        "https://scontent-ssn1-1.cdninstagram.com/v/t51.82787-15/651649825_17889860301441323_1651392355925131031_n.jpg?stp=dst-jpg_e35_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InRocmVhZHMuQ0FST1VTRUxfSVRFTS5pbWFnZV91cmxnZW4uMTQ0MHgxODAwLnNkci5mODI3ODcuZGVmYXVsdF9pbWFnZS5jMiJ9&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=111&_nc_oc=Q6cZ2QHKahhKf2u9XQaK57VaA3WarJvYpD7dnXetc_4gtphOYnhOgYXRtaCb40TnTTDlgtw&_nc_ohc=eJgVMrWzHa0Q7kNvwGMxlxV&_nc_gid=2mex_1NzYGGLDh66LELUdA&edm=APs17CUBAAAA&ccb=7-5&ig_cache_key=Mzg1MjMyMjIzMTM5NDI4MjgxMw%3D%3D.3-ccb7-5&oh=00_AfxPPQRja2hmYU39vbBmG-lReGsIyjfPhUEibiF2UhQikQ&oe=69BBF937&_nc_sid=10d13b",
+        "https://scontent-ssn1-1.cdninstagram.com/v/t51.82787-15/650696408_17889860319441323_2327634134321972454_n.jpg?stp=dst-jpg_e35_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InRocmVhZHMuQ0FST1VTRUxfSVRFTS5pbWFnZV91cmxnZW4uMTQ0MHgxODAwLnNkci5mODI3ODcuZGVmYXVsdF9pbWFnZS5jMiJ9&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=111&_nc_oc=Q6cZ2QHKahhKf2u9XQaK57VaA3WarJvYpD7dnXetc_4gtphOYnhOgYXRtaCb40TnTTDlgtw&_nc_ohc=alVZmGBdth4Q7kNvwHbY27o&_nc_gid=2mex_1NzYGGLDh66LELUdA&edm=APs17CUBAAAA&ccb=7-5&ig_cache_key=Mzg1MjMyMjIzMTY2MjcxNzI1MQ%3D%3D.3-ccb7-5&oh=00_Afxq-T7U-Qqn3W-_pbeN3PNPn9YnfcUvMbt8BGpAWB_9bA&oe=69BBFA39&_nc_sid=10d13b"
+      ],
+      "scheduleType": "once",
+      "dateTime": "2026-03-15T12:00",
+      "cronExpression": null,
+      "repeatLabel": "",
+      "status": "pending",
+      "createdAt": "2026-03-15T02:50:17.994Z",
       "lastRun": null,
       "runCount": 0
     }
