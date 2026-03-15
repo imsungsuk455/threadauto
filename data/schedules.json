@@ -22,7 +22,7 @@
       "accountId": "3f858412-2fbf-433d-9cc7-f0546499c2f0",
       "content": "아닠ㅋㅋㅋㅋㅋ 나만 웃긴가 이거🤣",
       "imagePath": [
-        "C:\\Users\\iss59\\Desktop\\antigravity\\thread auto\\uploads\\1773557863939-designed-thumbnail.jpg",
+        "/home/runner/work/threadauto/threadauto/uploads/1773557863939-designed-thumbnail.jpg",
         "https://scontent-ssn1-1.cdninstagram.com/v/t51.82787-15/651506686_18158851627426875_7253491276551170951_n.jpg?stp=dst-jpg_e15_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InRocmVhZHMuQ0FST1VTRUxfSVRFTS5pbWFnZV91cmxnZW4uNzIweDkwMC5zZHIuZjgyNzg3LmRlZmF1bHRfY292ZXJfZnJhbWUuYzIifQ&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=1&_nc_oc=Q6cZ2QFFY2W2xJLPJDWpB0z5Ch9nQ4_5aFlZJHDm_c1MOLzag6awLidSU3QwDIQVp9oQsc4&_nc_ohc=Dk0IZRbztGsQ7kNvwHzEoGh&_nc_gid=ndlyGB8qmJcViNK_vfeO9w&edm=APs17CUBAAAA&ccb=7-5&ig_cache_key=Mzg1MjUyNjYyMzc0NTI4Mjc1NA%3D%3D.3-ccb7-5&oh=00_AfzQ0F5vZLIKuEeXEeiSdBStAEJCzVKGdTjy6yBU9PomHw&oe=69BC27F8&_nc_sid=10d13b",
         "https://scontent-ssn1-1.cdninstagram.com/o1/v/t16/f2/m69/AQNUI0nk7EPMSDf7OAWnYNhXZ23SItgRorT4nxayJnWZrqEx3Q43jGY4cJ0CyPUF80MB34s9bqJU4lxSFdXKjz6U.mp4?strext=1&_nc_cat=111&_nc_sid=5e9851&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_ohc=0AYZARGiApAQ7kNvwFyO1cu&efg=eyJ2ZW5jb2RlX3RhZyI6Inhwdl9wcm9ncmVzc2l2ZS5JTlNUQUdSQU0uQ0FST1VTRUxfSVRFTS5DMy43MjAuZGFzaF9iYXNlbGluZV8xX3YxIiwieHB2X2Fzc2V0X2lkIjoxNzk1MTYyMTY3MDEwNTAyNCwiYXNzZXRfYWdlX2RheXMiOjAsInZpX3VzZWNhc2VfaWQiOjEwMTQ2LCJkdXJhdGlvbl9zIjo2MCwidXJsZ2VuX3NvdXJjZSI6Ind3dyJ9&ccb=17-1&vs=56f2afd88d1b2a4a&_nc_vs=HBksFQIYOnBhc3N0aHJvdWdoX2V2ZXJzdG9yZS9HRkptdVNheDE4RmNXVmdEQUZzdDVpQ0xCa2RYYnNwVEFRQUYVAALIARIAFQIYUWlnX3hwdl9wbGFjZW1lbnRfcGVybWFuZW50X3YyL0EwNDcyQjUwQ0VFNzlBODdBMDI4NDI5OENBNzlEMDlBX2F1ZGlvX2Rhc2hpbml0Lm1wNBUCAsgBEgAoABgAGwKIB3VzZV9vaWwBMRJwcm9ncmVzc2l2ZV9yZWNpcGUBMRUAACaAv8-M9LnjPxUCKAJDMywXQE4AAAAAAAAYEmRhc2hfYmFzZWxpbmVfMV92MREAde4HZcSeAQA&_nc_gid=ndlyGB8qmJcViNK_vfeO9w&_nc_ss=8&_nc_zt=28&oh=00_AfzZp_wlZZdqG7zW40nA0TrGjkRAdXBzBUEdhZZHSr5ywA&oe=69BC1C91",
         "https://scontent-ssn1-1.cdninstagram.com/v/t51.82787-15/651898040_18158851588426875_4503025685406608841_n.jpg?stp=dst-jpg_e15_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InRocmVhZHMuQ0FST1VTRUxfSVRFTS5pbWFnZV91cmxnZW4uNzIweDkwMC5zZHIuZjgyNzg3LmRlZmF1bHRfY292ZXJfZnJhbWUuYzIifQ&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=1&_nc_oc=Q6cZ2QFFY2W2xJLPJDWpB0z5Ch9nQ4_5aFlZJHDm_c1MOLzag6awLidSU3QwDIQVp9oQsc4&_nc_ohc=zCrRneM7oV4Q7kNvwF3XGhT&_nc_gid=ndlyGB8qmJcViNK_vfeO9w&edm=APs17CUBAAAA&ccb=7-5&ig_cache_key=Mzg1MjUyNjYyNDMxNTczMjU2MA%3D%3D.3-ccb7-5&oh=00_AfyqFKmyW9h3xwBL7CsoKGtP0iBVF6PeuTQNqtWDgNxcLg&oe=69BC4457&_nc_sid=10d13b",
@@ -34,10 +34,11 @@
       "dateTime": "2026-03-15T17:01",
       "cronExpression": null,
       "repeatLabel": "",
-      "status": "pending",
+      "status": "failed",
       "createdAt": "2026-03-15T06:57:43.943Z",
       "lastRun": null,
-      "runCount": 0
+      "runCount": 0,
+      "errorMessage": "계정을 찾을 수 없습니다."
     }
   ]
 }
