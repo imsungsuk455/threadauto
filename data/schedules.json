@@ -45,7 +45,7 @@
       "accountId": "3f858412-2fbf-433d-9cc7-f0546499c2f0",
       "content": "티파니 미모 무슨 일이야…✨",
       "imagePath": [
-        "C:\\Users\\iss59\\Desktop\\antigravity\\thread auto\\uploads\\1773572333504-designed-thumbnail.jpg",
+        "/home/runner/work/threadauto/threadauto/uploads/1773572333504-designed-thumbnail.jpg",
         "https://scontent-ssn1-1.cdninstagram.com/v/t51.82787-15/651855201_17954666376096108_7760641417573465790_n.heic?stp=dst-jpg_e35_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InRocmVhZHMuQ0FST1VTRUxfSVRFTS5pbWFnZV91cmxnZW4uMTQ0MHgxODAwLnNkci5mODI3ODcuZGVmYXVsdF9pbWFnZS5jMiJ9&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=100&_nc_oc=Q6cZ2QGkbnbOktZk9MgEjZm22ay3-eVAetVq9g6qyewSd3ZZO_q3f6YZfRq2k1X_aq0VoMk&_nc_ohc=FR3_puSqAVEQ7kNvwGzaGf1&_nc_gid=p7xekH-FA_BQQX02T1zStA&edm=APs17CUBAAAA&ccb=7-5&ig_cache_key=Mzg1MzE5OTc4NjE1ODE4MjYzNw%3D%3D.3-ccb7-5&oh=00_AfxUpe4E395e9vg8xCCE4xzsQKMwxu9nfEgszQHm7bT7vA&oe=69BC6A66&_nc_sid=10d13b",
         "https://scontent-ssn1-1.cdninstagram.com/v/t51.82787-15/651985978_17954666349096108_4950441118190918997_n.heic?stp=dst-jpg_e35_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InRocmVhZHMuQ0FST1VTRUxfSVRFTS5pbWFnZV91cmxnZW4uMTQ0MHgxODAwLnNkci5mODI3ODcuZGVmYXVsdF9pbWFnZS5jMiJ9&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=100&_nc_oc=Q6cZ2QGkbnbOktZk9MgEjZm22ay3-eVAetVq9g6qyewSd3ZZO_q3f6YZfRq2k1X_aq0VoMk&_nc_ohc=_aBqgb62XPwQ7kNvwFoFtk5&_nc_gid=p7xekH-FA_BQQX02T1zStA&edm=APs17CUBAAAA&ccb=7-5&ig_cache_key=Mzg1MzE5OTc4NjUxMDQ2MjI5MQ%3D%3D.3-ccb7-5&oh=00_Afy-9lLW91-tGLgWGsQFsDxp4FVhKI9Jg831v4LE7vHZ_w&oe=69BC6FCA&_nc_sid=10d13b",
         "https://scontent-ssn1-1.cdninstagram.com/v/t51.82787-15/653467186_17954666364096108_5422358800524277746_n.heic?stp=dst-jpg_e35_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InRocmVhZHMuQ0FST1VTRUxfSVRFTS5pbWFnZV91cmxnZW4uMTQ0MHgxODAwLnNkci5mODI3ODcuZGVmYXVsdF9pbWFnZS5jMiJ9&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=100&_nc_oc=Q6cZ2QGkbnbOktZk9MgEjZm22ay3-eVAetVq9g6qyewSd3ZZO_q3f6YZfRq2k1X_aq0VoMk&_nc_ohc=85hiZd2hSmsQ7kNvwGpxkaV&_nc_gid=p7xekH-FA_BQQX02T1zStA&edm=APs17CUBAAAA&ccb=7-5&ig_cache_key=Mzg1MzE5OTc4NTk0MDA1OTUxOA%3D%3D.3-ccb7-5&oh=00_AfzbwXUJcgjpYl0BtBJAgj8Mt54wYFg596aNOa5JTIlJuQ&oe=69BC510F&_nc_sid=10d13b",
@@ -55,10 +55,11 @@
       "dateTime": "2026-03-15T20:30",
       "cronExpression": null,
       "repeatLabel": "",
-      "status": "pending",
+      "status": "failed",
       "createdAt": "2026-03-15T10:58:53.514Z",
       "lastRun": null,
-      "runCount": 0
+      "runCount": 0,
+      "errorMessage": "계정을 찾을 수 없습니다."
     }
   ]
 }
