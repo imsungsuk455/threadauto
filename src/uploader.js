@@ -88,7 +88,7 @@ async function uploadPost(accountId, content, imagePath = null) {
             const childIds = [];
             for (let url of imagePath) {
                 if (childIds.length >= 10) {
-                    log('WARN', 'Carousel 항목이 10개를 초과하여 나머지는 제외되었습니다.');
+                    log('WARN', `Carousel 항목이 10개를 초과하여 ${imagePath.length - 10}개 항목은 제외되었습니다. (Threads API 제한)`);
                     break;
                 }
                 
@@ -339,7 +339,7 @@ async function replyToThread(accountId, threadId, commentText) {
 async function waitForMediaProcessing(accountId, containerId) {
     const account = accounts.getAccount(accountId);
     let attempts = 0;
-    const maxAttempts = 30; // 최대 60초 대기
+    const maxAttempts = 60; // 최대 120초(2분) 대기 (고용량/다중 미디어 대응)
 
     log('INFO', `미디어 상태 확인 시작: ${containerId}`);
 
