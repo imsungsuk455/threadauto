@@ -120,12 +120,23 @@ function gitSync(message = 'Sync data and uploads') {
         }
 
         execSync(`git commit -m "${message}"`);
-        execSync('git push');
+        
+        // 3. Remote 변경사항 반영 후 Push (동기화 충돌 방지)
+        log('INFO', 'Git: 최신 상태를 가져옵니다 (pull --rebase)...');
+        execSync('git pull --rebase origin main');
+        
+        execSync('git push origin main');
         
         log('INFO', '✅ Git Push 완료 (데이터 및 썸네일 업로드됨)');
         return { success: true };
     } catch (error) {
         log('ERROR', `Git 동기화 실패: ${error.message}`);
+        // 충돌 발생 시 리베이스를 취소하여 안전한 상태 유지
+        try {
+            if (error.message.includes('rebase')) {
+                execSync('git rebase --abort');
+            }
+        } catch (e) {}
         return { success: false, message: error.message };
     }
 }
