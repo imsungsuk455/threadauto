@@ -12,11 +12,10 @@
       "dateTime": "2026-03-15T15:30",
       "cronExpression": null,
       "repeatLabel": "",
-      "status": "failed",
+      "status": "completed",
       "createdAt": "2026-03-15T06:24:59.823Z",
-      "lastRun": null,
-      "runCount": 0,
-      "errorMessage": "계정을 찾을 수 없습니다."
+      "lastRun": "2026-03-15T06:44:39.638Z",
+      "runCount": 1
     }
   ]
 }
