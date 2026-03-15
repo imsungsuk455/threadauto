@@ -20,7 +20,8 @@
       "status": "pending",
       "createdAt": "2026-03-15T05:25:16.802Z",
       "lastRun": null,
-      "runCount": 0
+      "runCount": 0,
+      "errorMessage": "업로드 실패: 미디어 처리 대기 시간이 초과되었습니다."
     }
   ]
 }
