@@ -184,27 +184,7 @@ function getSchedules() {
  * 서버 시작 시 기존 활성 예약 복원
  */
 function restoreSchedules() {
-    const schedules = loadSchedules();
-    let restored = 0;
-
-    for (const schedule of schedules) {
-        if (schedule.status === 'active' || schedule.status === 'pending') {
-            if (schedule.scheduleType === 'repeat' && schedule.cronExpression) {
-                registerCronJob(schedule);
-                restored++;
-            } else if (schedule.scheduleType === 'once' && schedule.dateTime) {
-                const targetTime = new Date(schedule.dateTime);
-                if (targetTime > new Date()) {
-                    registerOnceJob(schedule);
-                    restored++;
-                } else {
-                    updateScheduleStatus(schedule.id, { status: 'completed' });
-                }
-            }
-        }
-    }
-
-    log('INFO', `예약 복원 완료: ${restored}개`);
+    log('INFO', 'GitHub Actions 전용 모드: 로컬 타이머를 등록하지 않습니다.');
 }
 
 /**
