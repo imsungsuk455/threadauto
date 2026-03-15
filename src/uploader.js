@@ -1,8 +1,28 @@
 const axios = require('axios');
 const fs = require('fs');
+const path = require('path');
+const crypto = require('crypto');
 const FormData = require('form-data');
 const accounts = require('./accounts');
 const { log, readJSON, writeJSON, PATHS, formatTimestamp } = require('./utils');
+
+async function downloadToTemp(url) {
+    try {
+        const ext = url.toLowerCase().includes('.mp4') ? '.mp4' : '.jpg';
+        const tempPath = path.join(PATHS.uploads, `temp-${crypto.randomBytes(4).toString('hex')}${ext}`);
+        const response = await axios({ method: 'GET', url: url, responseType: 'stream', timeout: 30000 });
+        const writer = fs.createWriteStream(tempPath);
+        response.data.pipe(writer);
+        await new Promise((resolve, reject) => {
+            writer.on('finish', resolve);
+            writer.on('error', reject);
+        });
+        return tempPath;
+    } catch (e) {
+        log('ERROR', `파일 다운로드 실패: ${url} -> ${e.message}`);
+        return null;
+    }
+}
 
 const THREADS_API_BASE = 'https://graph.threads.net/v1.0';
 
@@ -13,23 +33,40 @@ const THREADS_API_BASE = 'https://graph.threads.net/v1.0';
 async function ensurePublicUrl(pathOrUrl) {
     if (!pathOrUrl) return null;
     if (typeof pathOrUrl !== 'string') return null;
-    if (pathOrUrl.startsWith('http')) return pathOrUrl;
+
+    let targetFilePath = pathOrUrl;
+    let isTempFIle = false;
+
+    if (pathOrUrl.startsWith('http')) {
+        if (pathOrUrl.includes('cdninstagram.com') || pathOrUrl.includes('fbcdn.net')) {
+            log('INFO', '외부 플랫폼(Instagram/FB) 미디어 감지됨. 로컬 다운로드 후 Public URL 변환을 시도합니다.');
+            const tempFile = await downloadToTemp(pathOrUrl);
+            if (tempFile) {
+                targetFilePath = tempFile;
+                isTempFIle = true;
+            } else {
+                return pathOrUrl; // 실패 시 원래 링크 (도박)
+            }
+        } else {
+            return pathOrUrl;
+        }
+    }
 
     try {
-        log('INFO', `로컬 파일을 공용 URL로 변환 중 (Catbox): ${pathOrUrl}`);
+        log('INFO', `파일을 공용 URL로 변환 중 (Catbox): ${targetFilePath}`);
         
-        if (!fs.existsSync(pathOrUrl)) {
-            log('WARN', `파일이 존재하지 않습니다: ${pathOrUrl}`);
+        if (!fs.existsSync(targetFilePath)) {
+            log('WARN', `파일이 존재하지 않습니다: ${targetFilePath}`);
             return null;
         }
 
         const form = new FormData();
         form.append('reqtype', 'fileupload');
-        form.append('fileToUpload', fs.createReadStream(pathOrUrl));
+        form.append('fileToUpload', fs.createReadStream(targetFilePath));
 
         const res = await axios.post('https://catbox.moe/user/api.php', form, {
             headers: form.getHeaders(),
-            timeout: 30000
+            timeout: 60000
         });
 
         if (res.data && typeof res.data === 'string' && res.data.startsWith('http')) {
@@ -41,6 +78,10 @@ async function ensurePublicUrl(pathOrUrl) {
     } catch (e) {
         log('ERROR', `파일 공개 URL 변환 실패: ${e.message}`);
         return null;
+    } finally {
+        if (isTempFIle && fs.existsSync(targetFilePath)) {
+            try { fs.unlinkSync(targetFilePath); } catch (e) {}
+        }
     }
 }
 
@@ -92,15 +133,13 @@ async function uploadPost(accountId, content, imagePath = null) {
                     break;
                 }
                 
-                // 로컬 경로 변환 시도
-                if (!url.startsWith('http')) {
-                    const publicUrl = await ensurePublicUrl(url);
-                    if (publicUrl) {
-                        url = publicUrl;
-                    } else {
-                        log('WARN', `로컬 경로 변환 실패로 Carousel 항목 제외: ${url}`);
-                        continue;
-                    }
+                // 로컬/외부 경로 변환 시도 (Instagram 링크 등 우회 포함)
+                const publicUrl = await ensurePublicUrl(url);
+                if (publicUrl) {
+                    url = publicUrl;
+                } else {
+                    log('WARN', `경로 변환/다운로드 실패로 Carousel 항목 제외: ${url}`);
+                    continue;
                 }
 
                 const isVideo = url.toLowerCase().match(/\.(mp4|mov)/i) || url.toLowerCase().includes('video') || url.toLowerCase().includes('_v.');
@@ -136,8 +175,8 @@ async function uploadPost(accountId, content, imagePath = null) {
             // 단일 미디어 업로드
             let singlePath = isMultiple ? imagePath[0] : imagePath;
             
-            // 로컬 경로 변환 시도
-            if (singlePath && typeof singlePath === 'string' && !singlePath.startsWith('http')) {
+            // 로컬/외부 경로 변환 시도 (Instagram 등)
+            if (singlePath && typeof singlePath === 'string') {
                 const publicUrl = await ensurePublicUrl(singlePath);
                 if (publicUrl) {
                     singlePath = publicUrl;

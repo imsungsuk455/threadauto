@@ -4,6 +4,26 @@
       "type": "upload",
       "accountId": "3f858412-2fbf-433d-9cc7-f0546499c2f0",
       "accountUsername": "uzzatoday",
+      "content": "이광수 쉿이 나온 이유 ㅋㅋ",
+      "hasImage": true,
+      "status": "success",
+      "mediaId": "17934746022190987",
+      "timestamp": "2026-03-15T10:38:46.371Z"
+    },
+    {
+      "type": "upload",
+      "accountId": "3f858412-2fbf-433d-9cc7-f0546499c2f0",
+      "accountUsername": "uzzatoday",
+      "content": "이광수 쉿이 나온 이유 ㅋㅋ",
+      "hasImage": true,
+      "status": "failed",
+      "error": "미디어 처리 대기 시간이 초과되었습니다.",
+      "timestamp": "2026-03-15T10:33:53.309Z"
+    },
+    {
+      "type": "upload",
+      "accountId": "3f858412-2fbf-433d-9cc7-f0546499c2f0",
+      "accountUsername": "uzzatoday",
       "content": "광기의 초보운전 ㄷㄷ",
       "hasImage": true,
       "status": "success",

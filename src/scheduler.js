@@ -181,10 +181,23 @@ function getSchedules() {
 }
 
 /**
- * 서버 시작 시 기존 활성 예약 복원
+ * 서버 시작 시 기존 활성 예약 복원 (로컬 타이머를 통해 백업 스케줄링)
  */
 function restoreSchedules() {
-    log('INFO', 'GitHub Actions 전용 모드: 로컬 타이머를 등록하지 않습니다.');
+    log('INFO', 'GitHub Actions 보조 모드: 2분마다 로컬 서버에서 직접 예약 상태를 체크하여 지연을 방지합니다.');
+
+    cron.schedule('*/2 * * * *', () => {
+        const { exec } = require('child_process');
+        exec('node src/gh-actions-runner.js', (error, stdout, stderr) => {
+            if (stdout && stdout.includes('예약 실행 대상 발견')) {
+                log('INFO', '[로컬 런타임] 🚀 예약 작업이 실행되었습니다. 서버와 동기화합니다.');
+                gitSync('Auto-sync from local fallback runner');
+            }
+            if (error) {
+                log('ERROR', `로컬 스케줄러 실행 에러: ${error.message}`);
+            }
+        });
+    });
 }
 
 /**
