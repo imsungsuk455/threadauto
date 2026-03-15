@@ -49,19 +49,10 @@ function addSchedule({ accountId, content, imagePath, scheduleType, dateTime, cr
     // Cloudflare Worker와 동기화 (정밀 예약 업로드용)
     syncToCloudflare(schedule).catch(err => log('ERROR', `Cloudflare 동기화 실패: ${err.message}`));
 
-    // GitHub Actions 환경이 아닐 때만 로컬 타이머 등록 (GHA은 별도 러너가 처리)
-    const IS_GHA = process.env.GITHUB_ACTIONS === 'true';
+    // 로컬 환경에서는 더 이상 타이머를 돌리지 않고 오직 GitHub Actions(또는 Cloudflare) 서버에 위임합니다.
+    // 기존에 있던 registerCronJob, registerOnceJob 등은 로컬 충돌을 방지하기 위해 호출하지 않습니다.
 
-    // cron job 등록
-    if (!IS_GHA) {
-        if (scheduleType === 'repeat' && cronExpression) {
-            registerCronJob(schedule);
-        } else if (scheduleType === 'once' && dateTime) {
-            registerOnceJob(schedule);
-        }
-    }
-
-    log('INFO', `예약 추가: ${schedule.id} (${scheduleType})`);
+    log('INFO', `예약 추가 및 서버 전송 완료: ${schedule.id} (${scheduleType})`);
     return { success: true, schedule };
 }
 
