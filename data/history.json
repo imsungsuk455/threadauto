@@ -2,6 +2,16 @@
   "history": [
     {
       "type": "upload",
+      "accountId": "e335a502-ec69-4266-a517-1b0c29a248e7",
+      "accountUsername": "battleofwin45",
+      "content": "[디버깅 테스트] 서버 OFF 환경 예약 업로드 테스트입니다. (등록시간: 2026. 3. 16. PM 8:19:43, 예약시간: 2026-03-16T20:45)",
+      "hasImage": true,
+      "status": "success",
+      "mediaId": "18076905857625896",
+      "timestamp": "2026-03-16T11:57:46.240Z"
+    },
+    {
+      "type": "upload",
       "accountId": "3f858412-2fbf-433d-9cc7-f0546499c2f0",
       "accountUsername": "uzzatoday",
       "content": "앜ㅋㅋㅋㅋㅋ 마지막 반전 뭔데요 🤣",

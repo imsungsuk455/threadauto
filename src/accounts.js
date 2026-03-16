@@ -2,7 +2,11 @@ const { v4: uuidv4 } = require('uuid');
 const fs = require('fs');
 const { log, readJSON, writeJSON, PATHS, getDateString } = require('./utils');
 
-function loadAccounts() {
+let memoizedAccounts = null;
+
+function loadAccounts(bypassCache = false) {
+    if (memoizedAccounts && !bypassCache) return memoizedAccounts;
+    
     let data = readJSON(PATHS.accounts);
     let accounts = data ? data.accounts || [] : [];
 
@@ -24,8 +28,19 @@ function loadAccounts() {
         });
     }
 
+    memoizedAccounts = accounts;
     return accounts;
 }
+
+function updateAccountInMemory(threadsUserId, updates) {
+    const accs = loadAccounts();
+    const idx = accs.findIndex(a => a.threadsUserId === threadsUserId);
+    if (idx !== -1) {
+        accs[idx] = { ...accs[idx], ...updates };
+    }
+}
+
+
 
 function saveAccounts(accounts) {
     return writeJSON(PATHS.accounts, { accounts });
@@ -143,5 +158,5 @@ function canUpload(id) {
 module.exports = {
     loadAccounts, getAccounts, getAccount,
     addAccount, updateAccount, deleteAccount,
-    incrementUploadCount, canUpload,
+    incrementUploadCount, canUpload, updateAccountInMemory,
 };

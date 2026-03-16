@@ -8,16 +8,22 @@ async function runGhaTasks() {
     ensureDirectories();
     log('INFO', '🚀 GitHub Actions 예약 업로드 체크 시작');
 
-    // THREADS_USER_ID 가 없으면 토큰을 통해 자동 조회
-    if (process.env.THREADS_ACCESS_TOKEN && !process.env.THREADS_USER_ID) {
-        log('INFO', 'THREADS_USER_ID 가 없어 토큰으로 자동 조회를 시도합니다...');
+    // THREADS_ACCESS_TOKEN 이 환경 변수에 있으면 해당 계정의 토큰을 메모리에서 업데이트
+    if (process.env.THREADS_ACCESS_TOKEN) {
+        log('INFO', '환경 변수 THREADS_ACCESS_TOKEN 발견. 계정 정보를 동기화합니다...');
         const authInfo = await verifyAccessToken(process.env.THREADS_ACCESS_TOKEN);
         if (authInfo.success) {
-            process.env.THREADS_USER_ID = authInfo.threadsUserId;
-            process.env.THREADS_USERNAME = authInfo.username;
-            log('INFO', `계정 정보 자동 조회 성공: @${authInfo.username} (${authInfo.threadsUserId})`);
+            const { updateAccountInMemory } = require('./accounts');
+            updateAccountInMemory(authInfo.threadsUserId, {
+                accessToken: process.env.THREADS_ACCESS_TOKEN,
+                username: authInfo.username
+            });
+            log('INFO', `계정 토큰 로컬 업데이트 성공: @${authInfo.username}`);
+            
+            if (!process.env.THREADS_USER_ID) process.env.THREADS_USER_ID = authInfo.threadsUserId;
+            if (!process.env.THREADS_USERNAME) process.env.THREADS_USERNAME = authInfo.username;
         } else {
-            log('ERROR', `계정 정보 조회 실패: ${authInfo.message}`);
+            log('WARN', `환경 변수 토큰 검증 실패: ${authInfo.message}`);
         }
     }
 
@@ -51,10 +57,13 @@ async function runGhaTasks() {
         });
 
     if (targetSchedules.length > 0) {
-        // 이번 회차에는 가장 오래된 것 1 개만 처리 (도배 방지)
-        const schedule = targetSchedules[0];
-        log('INFO', `⏳ 예약 실행 대상 발견: ${schedule.id} (${schedule.dateTime})`);
-        log('INFO', `남은 대기 작업 수: ${targetSchedules.length - 1}`);
+        // 이번 회차에는 최대 3개까지 처리 (도배 방지 및 시간 내 완료 보장)
+        const batchSize = Math.min(targetSchedules.length, 3);
+        log('INFO', `⏳ 예약 실행 대상 ${batchSize}개 처리 시작 (총 대기: ${targetSchedules.length})`);
+
+        for (let i = 0; i < batchSize; i++) {
+            const schedule = targetSchedules[i];
+            log('INFO', `[${i + 1}/${batchSize}] 처리 중: ${schedule.id} (${schedule.dateTime})`);
 
         // 경로 변환 로직 추가 (로컬 절대 경로 -> GHA 상대 경로)
         if (schedule.imagePath) {
@@ -116,7 +125,8 @@ async function runGhaTasks() {
             schedule.errorMessage = error.message;
             log('ERROR', `❌ 예약 실행 중 치명적 오류: ${error.message}`);
         }
-        updated = true;
+            updated = true;
+        }
     }
 
     if (updated) {
