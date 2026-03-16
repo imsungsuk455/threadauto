@@ -3,6 +3,14 @@ const { readJSON, writeJSON, PATHS, log, ensureDirectories } = require('./utils'
 const { uploadPost } = require('./uploader');
 const { runFull } = require('./pipeline');
 const { verifyAccessToken } = require('./auth');
+const dayjs = require('dayjs');
+const utc = require('dayjs/plugin/utc');
+const timezone = require('dayjs/plugin/timezone');
+
+// dayjs 플러그인 설정
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
 
 async function runGhaTasks() {
     ensureDirectories();
@@ -34,7 +42,7 @@ async function runGhaTasks() {
     }
 
     const schedules = data.schedules;
-    const now = new Date();
+    const nowKst = dayjs().tz('Asia/Seoul');
     let updated = false;
 
     // 실행 대상 예약 필터링 (pending/active 상태이면서 시간이 지남)
@@ -42,18 +50,19 @@ async function runGhaTasks() {
         .filter(s => (s.status === 'pending' || s.status === 'active') && s.scheduleType === 'once')
         .filter(s => {
             if (!s.dateTime) return false;
-            let scheduledDate = new Date(s.dateTime);
-            // 날짜 문자열에 타임존 정보 (Z 또는 +) 가 없으면 한국 시간 (+09:00) 으로 처리
-            if (!s.dateTime.includes('Z') && !s.dateTime.includes('+')) {
-                scheduledDate = new Date(s.dateTime + '+09:00');
-            }
-            return scheduledDate <= now;
+            // 예약 시간을 KST 기준으로 파싱 (예: "2026-03-16T20:45")
+            // 문자열에 타임존 정보가 있으면 그대로 파싱, 없으면 Asia/Seoul로 간주
+            const scheduledTime = s.dateTime.includes('Z') || s.dateTime.includes('+') 
+                ? dayjs(s.dateTime) 
+                : dayjs.tz(s.dateTime, 'Asia/Seoul');
+            
+            return nowKst.isAfter(scheduledTime);
         })
         // 가장 오래된 예약이 먼저 오도록 정렬
         .sort((a, b) => {
-            const dateA = a.dateTime.includes('Z') || a.dateTime.includes('+') ? new Date(a.dateTime) : new Date(a.dateTime + '+09:00');
-            const dateB = b.dateTime.includes('Z') || b.dateTime.includes('+') ? new Date(b.dateTime) : new Date(b.dateTime + '+09:00');
-            return dateA - dateB;
+            const dateA = a.dateTime.includes('Z') || a.dateTime.includes('+') ? dayjs(a.dateTime) : dayjs.tz(a.dateTime, 'Asia/Seoul');
+            const dateB = b.dateTime.includes('Z') || b.dateTime.includes('+') ? dayjs(b.dateTime) : dayjs.tz(b.dateTime, 'Asia/Seoul');
+            return dateA.valueOf() - dateB.valueOf();
         });
 
     if (targetSchedules.length > 0) {
@@ -112,7 +121,7 @@ async function runGhaTasks() {
 
             if (result.success || (result.phases && result.success !== false)) {
                 schedule.status = 'completed';
-                schedule.lastRun = now.toISOString();
+                schedule.lastRun = nowKst.toISOString();
                 schedule.runCount = (schedule.runCount || 0) + 1;
                 log('INFO', `✅ 예약 실행 완료: ${schedule.id}`);
             } else {
