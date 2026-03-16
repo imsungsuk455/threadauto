@@ -4,6 +4,26 @@
       "type": "upload",
       "accountId": "e335a502-ec69-4266-a517-1b0c29a248e7",
       "accountUsername": "battleofwin45",
+      "content": "[Gemini Pro 패치 테스트] dayjs 타임존 및 Rebase 로직 적용 후 업로드 테스트입니다. (등록시간: 2026. 3. 16. PM 9:04:51)",
+      "hasImage": true,
+      "status": "success",
+      "mediaId": "18113697079593855",
+      "timestamp": "2026-03-16T12:50:25.769Z"
+    },
+    {
+      "type": "upload",
+      "accountId": "e335a502-ec69-4266-a517-1b0c29a248e7",
+      "accountUsername": "battleofwin45",
+      "content": "[최종 GHA 테스트] 토큰 동기화 패치 후 서버 OFF 예약 업로드 테스트입니다. (등록시간: 2026. 3. 16. PM 8:59:11)",
+      "hasImage": true,
+      "status": "success",
+      "mediaId": "18561967909051244",
+      "timestamp": "2026-03-16T12:50:12.140Z"
+    },
+    {
+      "type": "upload",
+      "accountId": "e335a502-ec69-4266-a517-1b0c29a248e7",
+      "accountUsername": "battleofwin45",
       "content": "[디버깅 테스트] 서버 OFF 환경 예약 업로드 테스트입니다. (등록시간: 2026. 3. 16. PM 8:19:43, 예약시간: 2026-03-16T20:45)",
       "hasImage": true,
       "status": "success",

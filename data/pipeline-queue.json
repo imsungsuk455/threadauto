@@ -61,6 +61,68 @@
       "processedAt": "2026-03-16T10:23:26.606Z",
       "publishedAt": null,
       "thumbTitle": "마지막 반전 미쳤다"
+    },
+    {
+      "id": "5ebc497c-8b59-4dfa-9ffd-002fb13cca34",
+      "type": "crawl",
+      "status": "processed",
+      "sourceData": {
+        "title": "Threads: @kutbba101",
+        "bodyText": "존경스럽다 와..",
+        "description": "Threads 게시물 수집 (https://www.threads.net/t/DV7-nqXCfmy)",
+        "sourceUrl": "https://www.threads.net/t/DV7-nqXCfmy",
+        "author": "kutbba101",
+        "platform": "threads"
+      },
+      "processedContent": "와... 진짜 존경스럽다… 👍 이런 긍정 에너지 나도 배우고 싶어짐! ✨ #존경 #에너지 #배우자 \n\n(이런 영상은 개인적으로 소장하면서 힘들 때마다 봐야 겠다…)",
+      "mediaUrls": [
+        "https://scontent-ssn1-1.cdninstagram.com/v/t51.82787-15/652748230_18205168789327712_3729038606295255825_n.webp?efg=eyJ2ZW5jb2RlX3RhZyI6InRocmVhZHMuQ0FST1VTRUxfSVRFTS5pbWFnZV91cmxnZW4uMTQ0MHgxODAwLnNkci5mODI3ODcuZGVmYXVsdF9pbWFnZS5jMiJ9&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=108&_nc_oc=Q6cZ2QFQxiia8mmy8QXuBKhZgGK2Cx-mYP4vWceTn2z9fU4HoerL2qmzZuKB5SpSrXE2EMk&_nc_ohc=ToATajODawQQ7kNvwHbxBak&_nc_gid=7zvRG9BBosMBpXSrh7p0rg&edm=APs17CUBAAAA&ccb=7-5&ig_cache_key=Mzg1Mzk0OTI5OTkzNTc5NjgxNw%3D%3D.3-ccb7-5&oh=00_Afwi78w3k04j-fvuSTw3Fl_DrPIWj3vcrsWZGlcenhzUWQ&oe=69BDEB6A&_nc_sid=10d13b",
+        "https://scontent-ssn1-1.cdninstagram.com/v/t51.82787-15/651991479_18205168780327712_3038901184684647546_n.webp?efg=eyJ2ZW5jb2RlX3RhZyI6InRocmVhZHMuQ0FST1VTRUxfSVRFTS5pbWFnZV91cmxnZW4uMTQ0MHgxODAwLnNkci5mODI3ODcuZGVmYXVsdF9pbWFnZS5jMiJ9&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=108&_nc_oc=Q6cZ2QFQxiia8mmy8QXuBKhZgGK2Cx-mYP4vWceTn2z9fU4HoerL2qmzZuKB5SpSrXE2EMk&_nc_ohc=YhoUb8K_48IQ7kNvwEvvz3L&_nc_gid=7zvRG9BBosMBpXSrh7p0rg&edm=APs17CUBAAAA&ccb=7-5&ig_cache_key=Mzg1Mzk0OTMwMDQxMzk1Mzc4Mg%3D%3D.3-ccb7-5&oh=00_Afz2IrII7wBWFHKf-T3TAbiruATfvDC4d7Uoh9ST19okYA&oe=69BDB699&_nc_sid=10d13b",
+        "https://scontent-ssn1-1.cdninstagram.com/v/t51.82787-15/652353759_18205168798327712_5786594468613180355_n.webp?efg=eyJ2ZW5jb2RlX3RhZyI6InRocmVhZHMuQ0FST1VTRUxfSVRFTS5pbWFnZV91cmxnZW4uMTQ0MHgxODAwLnNkci5mODI3ODcuZGVmYXVsdF9pbWFnZS5jMiJ9&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=108&_nc_oc=Q6cZ2QFQxiia8mmy8QXuBKhZgGK2Cx-mYP4vWceTn2z9fU4HoerL2qmzZuKB5SpSrXE2EMk&_nc_ohc=Y03AB3K0wNsQ7kNvwHvs-aP&_nc_gid=7zvRG9BBosMBpXSrh7p0rg&edm=APs17CUBAAAA&ccb=7-5&ig_cache_key=Mzg1Mzk0OTMwMTYzMDI4NTk0Nw%3D%3D.3-ccb7-5&oh=00_AfynD0kvMCmCVzVggPqoW3uuN1RwqR5dsIz8nenScFvSuA&oe=69BDE299&_nc_sid=10d13b",
+        "https://scontent-ssn1-1.cdninstagram.com/v/t51.82787-15/651669791_18205168816327712_2272397200014533662_n.webp?efg=eyJ2ZW5jb2RlX3RhZyI6InRocmVhZHMuQ0FST1VTRUxfSVRFTS5pbWFnZV91cmxnZW4uMTQ0MHgxODAwLnNkci5mODI3ODcuZGVmYXVsdF9pbWFnZS5jMiJ9&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=108&_nc_oc=Q6cZ2QFQxiia8mmy8QXuBKhZgGK2Cx-mYP4vWceTn2z9fU4HoerL2qmzZuKB5SpSrXE2EMk&_nc_ohc=CAR12Jml8NAQ7kNvwHqCE13&_nc_gid=7zvRG9BBosMBpXSrh7p0rg&edm=APs17CUBAAAA&ccb=7-5&ig_cache_key=Mzg1Mzk0OTI5OTg4NTQxMDMxMg%3D%3D.3-ccb7-5&oh=00_AfzZ5ZwXwVu3KQsSWEazqr6n4CqtsYHOSSzzSg0__ROlEA&oe=69BDEAB6&_nc_sid=10d13b",
+        "https://scontent-ssn1-1.cdninstagram.com/v/t51.82787-15/652768453_18205168807327712_5676674044734615874_n.webp?efg=eyJ2ZW5jb2RlX3RhZyI6InRocmVhZHMuQ0FST1VTRUxfSVRFTS5pbWFnZV91cmxnZW4uMTQ0MHgxODAwLnNkci5mODI3ODcuZGVmYXVsdF9pbWFnZS5jMiJ9&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=108&_nc_oc=Q6cZ2QFQxiia8mmy8QXuBKhZgGK2Cx-mYP4vWceTn2z9fU4HoerL2qmzZuKB5SpSrXE2EMk&_nc_ohc=wkWDf1mMqskQ7kNvwFjCcg9&_nc_gid=7zvRG9BBosMBpXSrh7p0rg&edm=APs17CUBAAAA&ccb=7-5&ig_cache_key=Mzg1Mzk0OTMwMDAwMjg2Mzg1MQ%3D%3D.3-ccb7-5&oh=00_AfyK0DWfvMLKhva5dE_PxhI3E2-G_Rvn2xqmfjMhTtd5Lg&oe=69BDE16D&_nc_sid=10d13b",
+        "https://scontent-ssn1-1.cdninstagram.com/v/t51.82787-15/652592012_18205168825327712_1012033719563216402_n.webp?efg=eyJ2ZW5jb2RlX3RhZyI6InRocmVhZHMuQ0FST1VTRUxfSVRFTS5pbWFnZV91cmxnZW4uMTQ0MHgxODAwLnNkci5mODI3ODcuZGVmYXVsdF9pbWFnZS5jMiJ9&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=108&_nc_oc=Q6cZ2QFQxiia8mmy8QXuBKhZgGK2Cx-mYP4vWceTn2z9fU4HoerL2qmzZuKB5SpSrXE2EMk&_nc_ohc=eZPjg7fo4MkQ7kNvwHXBi2x&_nc_gid=7zvRG9BBosMBpXSrh7p0rg&edm=APs17CUBAAAA&ccb=7-5&ig_cache_key=Mzg1Mzk0OTMwMDAyODAxNTEzMg%3D%3D.3-ccb7-5&oh=00_AfwaGNN3jTuV-OhWGi9kMkBQ7kJ0rKfy7Dym_n0wUIV68g&oe=69BDE531&_nc_sid=10d13b",
+        "https://scontent-ssn1-1.cdninstagram.com/v/t51.82787-15/652676130_18205168834327712_707187799677438956_n.webp?efg=eyJ2ZW5jb2RlX3RhZyI6InRocmVhZHMuQ0FST1VTRUxfSVRFTS5pbWFnZV91cmxnZW4uMTQ0MHgxODAwLnNkci5mODI3ODcuZGVmYXVsdF9pbWFnZS5jMiJ9&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=108&_nc_oc=Q6cZ2QFQxiia8mmy8QXuBKhZgGK2Cx-mYP4vWceTn2z9fU4HoerL2qmzZuKB5SpSrXE2EMk&_nc_ohc=nTNehm1CYSsQ7kNvwE4fR-Q&_nc_gid=7zvRG9BBosMBpXSrh7p0rg&edm=APs17CUBAAAA&ccb=7-5&ig_cache_key=Mzg1Mzk0OTMwMDgyNDkzNzYyNg%3D%3D.3-ccb7-5&oh=00_AfzM_OdC8tSBPUdsb5daNpS7ECk5N1Jaj0eE3sOSG8a7nA&oe=69BDDC8D&_nc_sid=10d13b"
+      ],
+      "affiliateLink": null,
+      "accountId": null,
+      "retryCount": 0,
+      "maxRetries": 3,
+      "errorMessage": null,
+      "collectedAt": "2026-03-16T12:54:17.938Z",
+      "processedAt": "2026-03-16T12:55:47.240Z",
+      "publishedAt": null,
+      "thumbTitle": "긍정 에너지 충전!"
+    },
+    {
+      "id": "a0d2d241-e8b1-42f9-ba2d-7807b61e5bc3",
+      "type": "crawl",
+      "status": "processed",
+      "sourceData": {
+        "title": "Threads: @purple_tv_",
+        "bodyText": "다들 생각이 비슷하네ㄷㄷ;;",
+        "description": "Threads 게시물 수집 (https://www.threads.net/t/DV8GPfNj_WZ)",
+        "sourceUrl": "https://www.threads.net/t/DV8GPfNj_WZ",
+        "author": "purple_tv_",
+        "platform": "threads"
+      },
+      "processedContent": "와... 색감 무슨 일이야🎨✨ 이런 분위기 사진은 무조건 저장 각! 나중에 내 방 꾸밀 때 참고해야지 🛌 #인테리어 #색감미쳤다 #분위기깡패",
+      "mediaUrls": [
+        "https://scontent-ssn1-1.cdninstagram.com/v/t51.82787-15/651962816_17952466452109722_7334093426709566749_n.heic?stp=dst-jpg_e35_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InRocmVhZHMuQ0FST1VTRUxfSVRFTS5pbWFnZV91cmxnZW4uMTQ0MHgxODAwLnNkci5mODI3ODcuZGVmYXVsdF9pbWFnZS5jMiJ9&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=106&_nc_oc=Q6cZ2QERb-I-QhBAjM1rH2M_Yb48K_hokOqSnCz1blWjYYdTBRQ8Q9gD7HkW2xY1B8BV198&_nc_ohc=J_SMTw-YrP0Q7kNvwGWi7Ab&_nc_gid=RRjW1jlUOrqmwoiavy7CAQ&edm=APs17CUBAAAA&ccb=7-5&ig_cache_key=Mzg1Mzk4MjgxNjA5MDkyMTc2Nw%3D%3D.3-ccb7-5&oh=00_AfwZkvnGWlDwFl3vGSwQAQPhXwdlB4S2ZR1zoGU3thdk-w&oe=69BDCBD6&_nc_sid=10d13b",
+        "https://scontent-ssn1-1.cdninstagram.com/v/t51.82787-15/652767220_17952466455109722_4377601669602680390_n.heic?stp=dst-jpg_e35_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InRocmVhZHMuQ0FST1VTRUxfSVRFTS5pbWFnZV91cmxnZW4uMTQ0MHgxODAwLnNkci5mODI3ODcuZGVmYXVsdF9pbWFnZS5jMiJ9&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=106&_nc_oc=Q6cZ2QERb-I-QhBAjM1rH2M_Yb48K_hokOqSnCz1blWjYYdTBRQ8Q9gD7HkW2xY1B8BV198&_nc_ohc=wUz7gsgpOrkQ7kNvwFnH2I5&_nc_gid=RRjW1jlUOrqmwoiavy7CAQ&edm=APs17CUBAAAA&ccb=7-5&ig_cache_key=Mzg1Mzk4MjgxNTkzMTU3NzQ2OQ%3D%3D.3-ccb7-5&oh=00_AfxmUj5qAkkQfmWDthh3x0nUM02m_y4R06kF3lflkGypmA&oe=69BDE901&_nc_sid=10d13b",
+        "https://scontent-ssn1-1.cdninstagram.com/v/t51.82787-15/652769887_17952466449109722_197222840165724270_n.heic?stp=dst-jpg_e35_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InRocmVhZHMuQ0FST1VTRUxfSVRFTS5pbWFnZV91cmxnZW4uMTQ0MHgxODAwLnNkci5mODI3ODcuZGVmYXVsdF9pbWFnZS5jMiJ9&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=106&_nc_oc=Q6cZ2QERb-I-QhBAjM1rH2M_Yb48K_hokOqSnCz1blWjYYdTBRQ8Q9gD7HkW2xY1B8BV198&_nc_ohc=wZRyHkkJPAEQ7kNvwEyycC7&_nc_gid=RRjW1jlUOrqmwoiavy7CAQ&edm=APs17CUBAAAA&ccb=7-5&ig_cache_key=Mzg1Mzk4MjgxNTg3Mjg3MTkzMw%3D%3D.3-ccb7-5&oh=00_AfyAwf64p4cUJy4U4f5Gba-8SYfZwhR-ML3MqO9RyUm7rQ&oe=69BDCABD&_nc_sid=10d13b",
+        "https://scontent-ssn1-1.cdninstagram.com/v/t51.82787-15/652767234_17952466419109722_3963985485980729690_n.heic?stp=dst-jpg_e35_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InRocmVhZHMuQ0FST1VTRUxfSVRFTS5pbWFnZV91cmxnZW4uMTQ0MHgxODAwLnNkci5mODI3ODcuZGVmYXVsdF9pbWFnZS5jMiJ9&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=106&_nc_oc=Q6cZ2QERb-I-QhBAjM1rH2M_Yb48K_hokOqSnCz1blWjYYdTBRQ8Q9gD7HkW2xY1B8BV198&_nc_ohc=hxEwRdkaUPMQ7kNvwEXTWI3&_nc_gid=RRjW1jlUOrqmwoiavy7CAQ&edm=APs17CUBAAAA&ccb=7-5&ig_cache_key=Mzg1Mzk4MjgxNTg3MjgxNjg0Mg%3D%3D.3-ccb7-5&oh=00_Afw1_tKaqygjSBTiSkqb4PtVSvISbRFjI_wC-Xjr9GPoUQ&oe=69BDD129&_nc_sid=10d13b",
+        "https://scontent-ssn1-1.cdninstagram.com/v/t51.82787-15/652767820_17952466446109722_1141825935640293750_n.heic?stp=dst-jpg_e35_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InRocmVhZHMuQ0FST1VTRUxfSVRFTS5pbWFnZV91cmxnZW4uMTQ0MHgxODAwLnNkci5mODI3ODcuZGVmYXVsdF9pbWFnZS5jMiJ9&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=106&_nc_oc=Q6cZ2QERb-I-QhBAjM1rH2M_Yb48K_hokOqSnCz1blWjYYdTBRQ8Q9gD7HkW2xY1B8BV198&_nc_ohc=Om3i1F8ItHQQ7kNvwGOJ_Rb&_nc_gid=RRjW1jlUOrqmwoiavy7CAQ&edm=APs17CUBAAAA&ccb=7-5&ig_cache_key=Mzg1Mzk4MjgxNjM1MTAxNDEwNQ%3D%3D.3-ccb7-5&oh=00_AfyNAwB5kz6x8ScOZ2uz6ZYyEApy_0z7xr4KVcUrbBj69g&oe=69BDD04A&_nc_sid=10d13b"
+      ],
+      "affiliateLink": null,
+      "accountId": null,
+      "retryCount": 0,
+      "maxRetries": 3,
+      "errorMessage": null,
+      "collectedAt": "2026-03-16T12:55:40.880Z",
+      "processedAt": "2026-03-16T12:55:49.792Z",
+      "publishedAt": null,
+      "thumbTitle": "색감 천재 만세!"
     }
   ]
 }
