@@ -70,6 +70,20 @@
       "createdAt": "2026-03-16T11:59:11.280Z",
       "lastRun": null,
       "runCount": 0
+    },
+    {
+      "id": "b037a27b-d324-4c8b-8dd7-8d6f63cfb28f",
+      "accountId": "e335a502-ec69-4266-a517-1b0c29a248e7",
+      "content": "[Gemini Pro 패치 테스트] dayjs 타임존 및 Rebase 로직 적용 후 업로드 테스트입니다. (등록시간: 2026. 3. 16. PM 9:04:51)",
+      "imagePath": "c:\\Users\\iss59\\Desktop\\antigravity\\thread auto\\uploads\\1773656719852-designed-thumbnail.jpg",
+      "scheduleType": "once",
+      "dateTime": "2026-03-16T21:20",
+      "cronExpression": null,
+      "repeatLabel": "",
+      "status": "pending",
+      "createdAt": "2026-03-16T12:04:51.461Z",
+      "lastRun": null,
+      "runCount": 0
     }
   ]
 }
