@@ -3,15 +3,13 @@ const { log } = require('./src/utils');
 
 async function test() {
     const accountId = 'e335a502-ec69-4266-a517-1b0c29a248e7'; // battleofwin45
+    const targetString = '2026-03-16T21:10'; 
     
-    // 한국 시간으로 20:45 KST를 명시적으로 설정
-    const targetString = '2026-03-16T20:45'; 
-    
-    log('INFO', `테스트 예약 등록 중: ${targetString} KST`);
+    log('INFO', `최종 GHA 테스트 예약 등록 중: ${targetString} KST`);
     
     const result = await addSchedule({
         accountId,
-        content: `[디버깅 테스트] 서버 OFF 환경 예약 업로드 테스트입니다. (등록시간: ${new Date().toLocaleString('ko-KR', {timeZone: 'Asia/Seoul'})}, 예약시간: ${targetString})`,
+        content: `[최종 GHA 테스트] 토큰 동기화 패치 후 서버 OFF 예약 업로드 테스트입니다. (등록시간: ${new Date().toLocaleString('ko-KR', {timeZone: 'Asia/Seoul'})})`,
         imagePath: 'c:\\Users\\iss59\\Desktop\\antigravity\\thread auto\\uploads\\1773656719852-designed-thumbnail.jpg',
         scheduleType: 'once',
         dateTime: targetString,
@@ -19,9 +17,9 @@ async function test() {
     });
 
     if (result.success) {
-        log('INFO', '✅ 테스트 예약 등록 및 Git Push 완료!');
+        log('INFO', '✅ 최종 테스트 예약 등록 완료!');
     } else {
-        log('ERROR', `❌ 테스트 예약 등록 실패: ${result.message}`);
+        log('ERROR', `❌ 최종 테스트 예약 등록 실패: ${result.message}`);
     }
 }
 
