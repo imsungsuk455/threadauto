@@ -42,6 +42,20 @@
       "createdAt": "2026-03-16T10:25:19.860Z",
       "lastRun": "2026-03-16T10:54:52.137Z",
       "runCount": 1
+    },
+    {
+      "id": "60e7d63a-71a8-4b78-a166-180f51654e30",
+      "accountId": "e335a502-ec69-4266-a517-1b0c29a248e7",
+      "content": "[디버깅 테스트] 서버 OFF 환경 예약 업로드 테스트입니다. (등록시간: 2026. 3. 16. PM 8:19:25, 예약시간: 2026-03-16T11:39)",
+      "imagePath": "c:\\Users\\iss59\\Desktop\\antigravity\\thread auto\\uploads\\1773656719852-designed-thumbnail.jpg",
+      "scheduleType": "once",
+      "dateTime": "2026-03-16T11:39",
+      "cronExpression": null,
+      "repeatLabel": "",
+      "status": "pending",
+      "createdAt": "2026-03-16T11:19:25.579Z",
+      "lastRun": null,
+      "runCount": 0
     }
   ]
 }
