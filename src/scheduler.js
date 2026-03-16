@@ -184,7 +184,20 @@ function getSchedules() {
  * 서버 시작 시 기존 활성 예약 복원
  */
 function restoreSchedules() {
-    log('INFO', 'GitHub Actions 전용 모드: 로컬 타이머를 등록하지 않습니다.');
+    log('INFO', '🔄 로컬 스케줄러 활성화 - 1 분마다 예약 체크 (GitHub Actions 보조)');
+
+    // 1 분마다 실행하여 예약된 게시물 처리
+    const job = cron.schedule('* * * * *', async () => {
+        log('INFO', '⏰ 로컬 스케줄러 체크 시작');
+        try {
+            const { runGhaTasks } = require('./gh-actions-runner');
+            await runGhaTasks();
+        } catch (error) {
+            log('ERROR', `로컬 스케줄러 실행 오류: ${error.message}`);
+        }
+    }, { timezone: 'Asia/Seoul' });
+
+    log('INFO', '✅ 로컬 스케줄러 시작됨 - 매 분 0 초에 실행 (한국 시간)');
 }
 
 /**

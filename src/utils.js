@@ -109,8 +109,8 @@ function gitSync(message = 'Sync data and uploads') {
         }
 
         // 2. Add, Commit, Push
-        // data/ 폴더와 uploads/ 폴더를 명시적으로 추가
-        execSync('git add data/schedules.json data/history.json uploads/* .gitignore');
+        // data/ 폴더와 uploads/ 폴더의 모든 변경사항을 추가
+        execSync('git add data/* uploads/* .gitignore');
         
         // 변경사항체크
         const status = execSync('git status --porcelain').toString();

@@ -8,9 +8,9 @@ async function runGhaTasks() {
     ensureDirectories();
     log('INFO', '🚀 GitHub Actions 예약 업로드 체크 시작');
 
-    // THREADS_USER_ID가 없으면 토큰을 통해 자동 조회
+    // THREADS_USER_ID 가 없으면 토큰을 통해 자동 조회
     if (process.env.THREADS_ACCESS_TOKEN && !process.env.THREADS_USER_ID) {
-        log('INFO', 'THREADS_USER_ID가 없어 토큰으로 자동 조회를 시도합니다...');
+        log('INFO', 'THREADS_USER_ID 가 없어 토큰으로 자동 조회를 시도합니다...');
         const authInfo = await verifyAccessToken(process.env.THREADS_ACCESS_TOKEN);
         if (authInfo.success) {
             process.env.THREADS_USER_ID = authInfo.threadsUserId;
@@ -20,7 +20,7 @@ async function runGhaTasks() {
             log('ERROR', `계정 정보 조회 실패: ${authInfo.message}`);
         }
     }
-    
+
     const data = readJSON(PATHS.schedules);
     if (!data || !data.schedules || data.schedules.length === 0) {
         log('INFO', '등록된 예약이 없습니다.');
@@ -37,7 +37,7 @@ async function runGhaTasks() {
         .filter(s => {
             if (!s.dateTime) return false;
             let scheduledDate = new Date(s.dateTime);
-            // 날짜 문자열에 타임존 정보(Z 또는 +)가 없으면 한국 시간(+09:00)으로 처리
+            // 날짜 문자열에 타임존 정보 (Z 또는 +) 가 없으면 한국 시간 (+09:00) 으로 처리
             if (!s.dateTime.includes('Z') && !s.dateTime.includes('+')) {
                 scheduledDate = new Date(s.dateTime + '+09:00');
             }
@@ -51,7 +51,7 @@ async function runGhaTasks() {
         });
 
     if (targetSchedules.length > 0) {
-        // 이번 회차에는 가장 오래된 것 1개만 처리 (도배 방지)
+        // 이번 회차에는 가장 오래된 것 1 개만 처리 (도배 방지)
         const schedule = targetSchedules[0];
         log('INFO', `⏳ 예약 실행 대상 발견: ${schedule.id} (${schedule.dateTime})`);
         log('INFO', `남은 대기 작업 수: ${targetSchedules.length - 1}`);
@@ -59,11 +59,20 @@ async function runGhaTasks() {
         // 경로 변환 로직 추가 (로컬 절대 경로 -> GHA 상대 경로)
         if (schedule.imagePath) {
             const fixPath = (p) => {
-                if (p && typeof p === 'string' && p.includes('\\thread auto\\')) {
-                    const relativePart = p.split('\\thread auto\\')[1].replace(/\\/g, '/');
-                    const newPath = path.join(PATHS.root, relativePart);
-                    log('INFO', `경로 변환: ${p} -> ${newPath}`);
-                    return newPath;
+                if (p && typeof p === 'string') {
+                    // Windows 경로 변환 (C:\Users\...\thread auto\...)
+                    if (p.includes('\\thread auto\\')) {
+                        const relativePart = p.split('\\thread auto\\')[1].replace(/\\/g, '/');
+                        const newPath = path.join(PATHS.root, relativePart);
+                        log('INFO', `경로 변환 (Windows): ${p} -> ${newPath}`);
+                        return newPath;
+                    }
+                    // Unix 스타일 경로지만 uploads 가 포함된 경우
+                    if (p.includes('/uploads/') && !p.startsWith('http')) {
+                        const newPath = path.join(PATHS.root, p.replace(/^\//, ''));
+                        log('INFO', `경로 변환 (Unix): ${p} -> ${newPath}`);
+                        return newPath;
+                    }
                 }
                 return p;
             };
@@ -74,7 +83,7 @@ async function runGhaTasks() {
                 schedule.imagePath = fixPath(schedule.imagePath);
             }
         }
-        
+
         try {
             let result;
             if (schedule.isPipeline) {
@@ -113,18 +122,20 @@ async function runGhaTasks() {
     if (updated) {
         writeJSON(PATHS.schedules, { schedules });
         log('INFO', '예약 상태 정보 업데이트 완료.');
-        
-        // 주의: GHA에서 파일이 업데이트되어도 다시 Push하지 않으면 다음 실행 때 반영되지 않음
-        // 워크플로우 파일에서 git commit & push를 수행하도록 구성해야 함
     } else {
         log('INFO', '실행할 예약 대상이 없습니다.');
     }
 }
 
-// 스크립트 실행
-runGhaTasks()
-    .then(() => log('INFO', 'GitHub Actions Task finished.'))
-    .catch(err => {
-        log('ERROR', `Runner Error: ${err.message}`);
-        process.exit(1);
-    });
+// 스크립트 실행 (단독 실행 시에만)
+if (require.main === module) {
+    runGhaTasks()
+        .then(() => log('INFO', 'GitHub Actions Task finished.'))
+        .catch(err => {
+            log('ERROR', `Runner Error: ${err.message}`);
+            process.exit(1);
+        });
+}
+
+// 다른 모듈에서 import 가능하도록 export
+module.exports = { runGhaTasks };
