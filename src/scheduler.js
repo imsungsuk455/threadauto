@@ -22,14 +22,28 @@ function saveSchedules(schedules) {
 /**
  * 예약 추가
  */
-function addSchedule({ accountId, content, imagePath, scheduleType, dateTime, cronExpression, repeatLabel }) {
+async function addSchedule({ accountId, content, imagePath, scheduleType, dateTime, cronExpression, repeatLabel }) {
     const schedules = loadSchedules();
+    const account = accounts.getAccount(accountId);
+    if (!account) throw new Error('계정을 찾을 수 없습니다.');
+
+    // 로컬 이미지 경로를 공용 URL로 미리 변환
+    let publicImagePath = imagePath;
+    if (imagePath) {
+        if (Array.isArray(imagePath)) {
+            publicImagePath = await Promise.all(imagePath.map(p => ensurePublicUrl(p)));
+        } else {
+            publicImagePath = await ensurePublicUrl(imagePath);
+        }
+        log('INFO', `예약 미디어 경로 변환 완료: ${Array.isArray(publicImagePath) ? publicImagePath.length + '개' : '1개'}`);
+    }
 
     const schedule = {
         id: uuidv4(),
         accountId,
+        threadsUserId: account.threadsUserId, // 서버 OFF 시 매칭을 위한 고유 ID 추가
         content,
-        imagePath: imagePath || null,
+        imagePath: publicImagePath || null,
         scheduleType, // 'once' 또는 'repeat'
         dateTime: dateTime || null, // 1회성 예약 시간
         cronExpression: cronExpression || null, // 반복 예약 cron

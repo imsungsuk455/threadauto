@@ -7,7 +7,7 @@ crons = ["* * * * *"] # Every minute
 
 [[kv_namespaces]]
 binding = "SCHEDULES_KV"
-id = "YOUR_KV_NAMESPACE_ID" # Will need to be updated after creation
+id = "993f06da43da4729b83fa750e3456df7"
 
 [vars]
-# API_SECRET = "your-secret-key" # For authentication between local and worker
+API_SECRET = "threads-auto-secret-2026"

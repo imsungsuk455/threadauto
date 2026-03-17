@@ -134,7 +134,7 @@ router.get('/schedules', (req, res) => {
     }
 });
 
-router.post('/schedules', upload.array('image'), (req, res) => {
+router.post('/schedules', upload.array('image'), async (req, res) => {
     try {
         const data = { ...req.body };
         
@@ -155,7 +155,7 @@ router.post('/schedules', upload.array('image'), (req, res) => {
             data.imagePath = mediaList.length > 1 ? mediaList : mediaList[0];
         }
 
-        const result = scheduler.addSchedule(data);
+        const result = await scheduler.addSchedule(data);
         res.json(result);
     } catch (e) {
         res.status(500).json({ success: false, message: e.message });

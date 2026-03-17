@@ -3,6 +3,7 @@ const { readJSON, writeJSON, PATHS, log, ensureDirectories } = require('./utils'
 const { uploadPost } = require('./uploader');
 const { runFull } = require('./pipeline');
 const { verifyAccessToken } = require('./auth');
+const accounts = require('./accounts');
 const dayjs = require('dayjs');
 const utc = require('dayjs/plugin/utc');
 const timezone = require('dayjs/plugin/timezone');
@@ -16,22 +17,23 @@ async function runGhaTasks() {
     ensureDirectories();
     log('INFO', '🚀 GitHub Actions 예약 업로드 체크 시작');
 
-    // THREADS_ACCESS_TOKEN 이 환경 변수에 있으면 해당 계정의 토큰을 메모리에서 업데이트
+    // THREADS_ACCESS_TOKEN 에 여러 개가 있으면 (쉼표 구분) 모두 검증하여 메모리에 등록
     if (process.env.THREADS_ACCESS_TOKEN) {
         log('INFO', '환경 변수 THREADS_ACCESS_TOKEN 발견. 계정 정보를 동기화합니다...');
-        const authInfo = await verifyAccessToken(process.env.THREADS_ACCESS_TOKEN);
-        if (authInfo.success) {
-            const { updateAccountInMemory } = require('./accounts');
-            updateAccountInMemory(authInfo.threadsUserId, {
-                accessToken: process.env.THREADS_ACCESS_TOKEN,
-                username: authInfo.username
-            });
-            log('INFO', `계정 토큰 로컬 업데이트 성공: @${authInfo.username}`);
-            
-            if (!process.env.THREADS_USER_ID) process.env.THREADS_USER_ID = authInfo.threadsUserId;
-            if (!process.env.THREADS_USERNAME) process.env.THREADS_USERNAME = authInfo.username;
-        } else {
-            log('WARN', `환경 변수 토큰 검증 실패: ${authInfo.message}`);
+        const tokens = process.env.THREADS_ACCESS_TOKEN.split(',').map(t => t.trim()).filter(t => t);
+        
+        for (const token of tokens) {
+            const authInfo = await verifyAccessToken(token);
+            if (authInfo.success) {
+                // threadsUserId를 기준으로 기존 placeholder 계정을 찾거나 없으면 임시 업데이트
+                accounts.updateAccountInMemory(authInfo.threadsUserId, {
+                    accessToken: token,
+                    username: authInfo.username
+                });
+                log('INFO', `계정 토큰 로컬 업데이트 성공: @${authInfo.username} (${authInfo.threadsUserId})`);
+            } else {
+                log('WARN', `토큰 검증 실패: ${authInfo.message}`);
+            }
         }
     }
 
@@ -104,10 +106,43 @@ async function runGhaTasks() {
 
         try {
             let result;
+
+            // === accountId/threadsUserId 매칭 로직 (GHA 전용) ===
+            let effectiveAccountId = schedule.accountId;
+            if (process.env.GITHUB_ACTIONS || process.env.THREADS_ACCESS_TOKEN) {
+                const allAccounts = accounts.getAccounts();
+                
+                // 1순위: threadsUserId로 직접 매칭 (가장 정확함)
+                let matchedAccount = allAccounts.find(a => a.threadsUserId === schedule.threadsUserId);
+                
+                // 2순위: 원래의 accountId로 매칭 (로컬 환경과 동일할 경우)
+                if (!matchedAccount) {
+                    matchedAccount = allAccounts.find(a => a.id === schedule.accountId);
+                }
+                
+                if (matchedAccount) {
+                    effectiveAccountId = matchedAccount.id;
+                    log('INFO', `[GHA Matching] 예약 계정 @${matchedAccount.username} (${matchedAccount.id}) 매칭 성공.`);
+                } else if (allAccounts.length > 0) {
+                    // 3순위: 매칭 실패 시 첫 번째 계정으로 fallback
+                    effectiveAccountId = allAccounts[0].id;
+                    log('WARN', 
+                        `[GHA Fallback] 매칭되는 계정(${schedule.threadsUserId})을 찾지 못해 ` +
+                        `첫 번째 가용 계정 '${allAccounts[0].username}'으로 대체합니다.`
+                    );
+                } else {
+                    log('ERROR', 'GHA 환경에서 사용 가능한 계정이 하나도 없습니다.');
+                    schedule.status = 'failed';
+                    schedule.errorMessage = 'GHA 환경에 사용 가능한 계정이 없습니다.';
+                    updated = true;
+                    continue;
+                }
+            }
+
             if (schedule.isPipeline) {
-                log('INFO', '파이프라인 전체 실행 모드로 진행합니다.');
+                log('INFO', `파이프라인 전체 실행 모드로 진행합니다. (Account: ${effectiveAccountId})`);
                 const options = {
-                    accountId: schedule.accountId,
+                    accountId: effectiveAccountId,
                     urls: schedule.pipelineUrls || [],
                     rssFeeds: schedule.pipelineRss || [],
                     coupangKeyword: schedule.pipelineCoupangKeyword || null,
@@ -115,8 +150,8 @@ async function runGhaTasks() {
                 };
                 result = await runFull(options);
             } else {
-                log('INFO', '일반 게시물 단독 업로드로 진행합니다.');
-                result = await uploadPost(schedule.accountId, schedule.content, schedule.imagePath);
+                log('INFO', `일반 게시물 단독 업로드로 진행합니다. (Account: ${effectiveAccountId})`);
+                result = await uploadPost(effectiveAccountId, schedule.content, schedule.imagePath);
             }
 
             if (result.success || (result.phases && result.success !== false)) {
