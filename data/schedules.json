@@ -90,7 +90,7 @@
       "accountId": "3f858412-2fbf-433d-9cc7-f0546499c2f0",
       "content": "와... 진짜 존경스럽다… 👍",
       "imagePath": [
-        "C:\\Users\\iss59\\Desktop\\antigravity\\thread auto\\uploads\\1773665827328-designed-thumbnail.jpg",
+        "/home/runner/work/threadauto/threadauto/uploads/1773665827328-designed-thumbnail.jpg",
         "https://scontent-ssn1-1.cdninstagram.com/v/t51.82787-15/651991479_18205168780327712_3038901184684647546_n.webp?efg=eyJ2ZW5jb2RlX3RhZyI6InRocmVhZHMuQ0FST1VTRUxfSVRFTS5pbWFnZV91cmxnZW4uMTQ0MHgxODAwLnNkci5mODI3ODcuZGVmYXVsdF9pbWFnZS5jMiJ9&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=108&_nc_oc=Q6cZ2QFQxiia8mmy8QXuBKhZgGK2Cx-mYP4vWceTn2z9fU4HoerL2qmzZuKB5SpSrXE2EMk&_nc_ohc=YhoUb8K_48IQ7kNvwEvvz3L&_nc_gid=7zvRG9BBosMBpXSrh7p0rg&edm=APs17CUBAAAA&ccb=7-5&ig_cache_key=Mzg1Mzk0OTMwMDQxMzk1Mzc4Mg%3D%3D.3-ccb7-5&oh=00_Afz2IrII7wBWFHKf-T3TAbiruATfvDC4d7Uoh9ST19okYA&oe=69BDB699&_nc_sid=10d13b",
         "https://scontent-ssn1-1.cdninstagram.com/v/t51.82787-15/652353759_18205168798327712_5786594468613180355_n.webp?efg=eyJ2ZW5jb2RlX3RhZyI6InRocmVhZHMuQ0FST1VTRUxfSVRFTS5pbWFnZV91cmxnZW4uMTQ0MHgxODAwLnNkci5mODI3ODcuZGVmYXVsdF9pbWFnZS5jMiJ9&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=108&_nc_oc=Q6cZ2QFQxiia8mmy8QXuBKhZgGK2Cx-mYP4vWceTn2z9fU4HoerL2qmzZuKB5SpSrXE2EMk&_nc_ohc=Y03AB3K0wNsQ7kNvwHvs-aP&_nc_gid=7zvRG9BBosMBpXSrh7p0rg&edm=APs17CUBAAAA&ccb=7-5&ig_cache_key=Mzg1Mzk0OTMwMTYzMDI4NTk0Nw%3D%3D.3-ccb7-5&oh=00_AfynD0kvMCmCVzVggPqoW3uuN1RwqR5dsIz8nenScFvSuA&oe=69BDE299&_nc_sid=10d13b",
         "https://scontent-ssn1-1.cdninstagram.com/v/t51.82787-15/651669791_18205168816327712_2272397200014533662_n.webp?efg=eyJ2ZW5jb2RlX3RhZyI6InRocmVhZHMuQ0FST1VTRUxfSVRFTS5pbWFnZV91cmxnZW4uMTQ0MHgxODAwLnNkci5mODI3ODcuZGVmYXVsdF9pbWFnZS5jMiJ9&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=108&_nc_oc=Q6cZ2QFQxiia8mmy8QXuBKhZgGK2Cx-mYP4vWceTn2z9fU4HoerL2qmzZuKB5SpSrXE2EMk&_nc_ohc=CAR12Jml8NAQ7kNvwHqCE13&_nc_gid=7zvRG9BBosMBpXSrh7p0rg&edm=APs17CUBAAAA&ccb=7-5&ig_cache_key=Mzg1Mzk0OTI5OTg4NTQxMDMxMg%3D%3D.3-ccb7-5&oh=00_AfzZ5ZwXwVu3KQsSWEazqr6n4CqtsYHOSSzzSg0__ROlEA&oe=69BDEAB6&_nc_sid=10d13b",
@@ -102,10 +102,11 @@
       "dateTime": "2026-03-17T09:01",
       "cronExpression": null,
       "repeatLabel": "",
-      "status": "pending",
+      "status": "failed",
       "createdAt": "2026-03-16T12:57:07.341Z",
       "lastRun": null,
-      "runCount": 0
+      "runCount": 0,
+      "errorMessage": "계정을 찾을 수 없습니다."
     },
     {
       "id": "318e1cf8-dd48-481d-9c34-4195216a0ef1",
