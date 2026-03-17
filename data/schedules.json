@@ -102,10 +102,10 @@
       "dateTime": "2026-03-17T09:01",
       "cronExpression": null,
       "repeatLabel": "",
-      "status": "pending",
+      "status": "completed",
       "createdAt": "2026-03-16T12:57:07.341Z",
-      "lastRun": null,
-      "runCount": 0
+      "lastRun": "2026-03-17T10:42:00.139Z",
+      "runCount": 1
     },
     {
       "id": "318e1cf8-dd48-481d-9c34-4195216a0ef1",
@@ -122,8 +122,27 @@
       "dateTime": "2026-03-17T13:02",
       "cronExpression": null,
       "repeatLabel": "",
-      "status": "pending",
+      "status": "completed",
       "createdAt": "2026-03-16T12:58:46.139Z",
+      "lastRun": "2026-03-17T10:42:00.139Z",
+      "runCount": 1
+    },
+    {
+      "id": "7f3a704a-1793-4e8b-9231-c23245e6cf98",
+      "accountId": "3f858412-2fbf-433d-9cc7-f0546499c2f0",
+      "threadsUserId": "26244459098515676",
+      "content": "너무 감동이다",
+      "imagePath": [
+        "https://files.catbox.moe/17q0k9.jpg",
+        "https://files.catbox.moe/i49bjw.jpg",
+        "https://files.catbox.moe/396crw.mp4"
+      ],
+      "scheduleType": "once",
+      "dateTime": "2026-03-17T21:00",
+      "cronExpression": null,
+      "repeatLabel": "",
+      "status": "pending",
+      "createdAt": "2026-03-17T10:50:46.960Z",
       "lastRun": null,
       "runCount": 0
     }

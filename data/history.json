@@ -2,6 +2,46 @@
   "history": [
     {
       "type": "upload",
+      "accountId": "3f858412-2fbf-433d-9cc7-f0546499c2f0",
+      "accountUsername": "uzzatoday",
+      "content": "여자들이 1순위로 보는 남자 조건",
+      "hasImage": true,
+      "status": "success",
+      "mediaId": "17867235087597172",
+      "timestamp": "2026-03-17T10:43:19.666Z"
+    },
+    {
+      "type": "upload",
+      "accountId": "3f858412-2fbf-433d-9cc7-f0546499c2f0",
+      "accountUsername": "uzzatoday",
+      "content": "와... 진짜 존경스럽다… 👍",
+      "hasImage": true,
+      "status": "success",
+      "mediaId": "18178770322343392",
+      "timestamp": "2026-03-17T10:42:46.115Z"
+    },
+    {
+      "type": "upload",
+      "accountId": "3f858412-2fbf-433d-9cc7-f0546499c2f0",
+      "accountUsername": "uzzatoday",
+      "content": "여자들이 1순위로 보는 남자 조건",
+      "hasImage": true,
+      "status": "success",
+      "mediaId": "17945837081983625",
+      "timestamp": "2026-03-17T10:42:34.542Z"
+    },
+    {
+      "type": "upload",
+      "accountId": "3f858412-2fbf-433d-9cc7-f0546499c2f0",
+      "accountUsername": "uzzatoday",
+      "content": "와... 진짜 존경스럽다… 👍",
+      "hasImage": true,
+      "status": "success",
+      "mediaId": "18114721198735460",
+      "timestamp": "2026-03-17T10:41:56.896Z"
+    },
+    {
+      "type": "upload",
       "accountId": "e335a502-ec69-4266-a517-1b0c29a248e7",
       "accountUsername": "battleofwin45",
       "content": "[Gemini Pro 패치 테스트] dayjs 타임존 및 Rebase 로직 적용 후 업로드 테스트입니다. (등록시간: 2026. 3. 16. PM 9:04:51)",
