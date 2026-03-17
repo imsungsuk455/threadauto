@@ -1,0 +1,56 @@
+name: Scheduled Threads Upload
+
+on:
+  schedule:
+    # 5분마다 실행하여 예약된 게시물을 순차적으로(하나씩) 처리
+    - cron: '*/5 * * * *'
+  workflow_dispatch: # 수동 실행 버튼 추가
+
+env:
+  TZ: Asia/Seoul # 서버 타임존을 한국 시간으로 고정
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write # 갱신된 schedule.json을 다시 push하기 위해 필요
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          fetch-depth: 0 # 재시도 및 병합을 위해 전체 히스토리 가져오기
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci || npm install # package-lock.json이 있으면 ci, 없으면 install
+
+      - name: Run scheduler
+        env:
+          # GitHub Secrets에서 보안 키를 가져와 환경 변수로 주입
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
+        run: node src/gh-actions-runner.js
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/schedules.json data/history.json || true
+          
+          # 변경사항이 있을 때만 커밋 및 푸시
+          if ! git diff --quiet --staged; then
+            git commit -m "Update schedule and history [skip ci]"
+            git pull --rebase origin main
+            git push origin main
+          else
+            echo "No changes to commit"
+          fi
+
