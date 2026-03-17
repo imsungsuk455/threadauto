@@ -151,6 +151,40 @@
       "processedAt": "2026-03-17T10:48:59.001Z",
       "publishedAt": null,
       "thumbTitle": "이건 못 참지 🥹"
+    },
+    {
+      "id": "b049cef4-c0cc-4e72-b668-c3ca1405f17b",
+      "type": "crawl",
+      "status": "processed",
+      "sourceData": {
+        "title": "Threads: @purple_tv_",
+        "bodyText": "너무 홀리하다...🥹",
+        "description": "Threads 게시물 수집 (https://www.threads.net/t/DV--Vn-D6lB)",
+        "sourceUrl": "https://www.threads.net/t/DV--Vn-D6lB",
+        "author": "purple_tv_",
+        "platform": "threads"
+      },
+      "processedContent": "와... 이건 진짜 소장각이다 ✨ 보고만 있어도 마음이 정화되는 느낌 뭔데?! 힐링 영상 필요할 때 무조건 꺼내봐야지 😌 #힐링 #ASMR #소장각 #무릉도원",
+      "mediaUrls": [
+        "https://scontent-ssn1-1.cdninstagram.com/v/t51.82787-15/652727321_18401146027180391_988334716794645341_n.webp?efg=eyJ2ZW5jb2RlX3RhZyI6InRocmVhZHMuQ0FST1VTRUxfSVRFTS5pbWFnZV91cmxnZW4uMTQ0MHgxODAwLnNkci5mODI3ODcuZGVmYXVsdF9pbWFnZS5jMSJ9&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=111&_nc_oc=Q6cZ2QFCd0S049hoq0Sf5oi7sXZFceB_-yGFL6RynbSNglQN1kHKRKDKqW2OsKB_ZegB3To&_nc_ohc=o7YZ6l6njMIQ7kNvwF1_MJp&_nc_gid=k5TxNiTGz5za73jrLHpOnw&edm=APs17CUBAAAA&ccb=7-5&ig_cache_key=Mzg1NDc5MjQ4MTE4ODA2MzE0Nw%3D%3D.3-ccb7-5&oh=00_AfxKWJwsfIwzqUtpcsu8k4KtMg8kV0JRI_PcSjO7IFF6xw&oe=69BF1CF1&_nc_sid=10d13b",
+        "https://scontent-ssn1-1.cdninstagram.com/v/t51.82787-15/652763659_18401146030180391_8358547055869541172_n.webp?efg=eyJ2ZW5jb2RlX3RhZyI6InRocmVhZHMuQ0FST1VTRUxfSVRFTS5pbWFnZV91cmxnZW4uMTQ0MHgxNzk5LnNkci5mODI3ODcuZGVmYXVsdF9pbWFnZS5jMSJ9&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=111&_nc_oc=Q6cZ2QFCd0S049hoq0Sf5oi7sXZFceB_-yGFL6RynbSNglQN1kHKRKDKqW2OsKB_ZegB3To&_nc_ohc=HIxe3woAJRoQ7kNvwFEN8Up&_nc_gid=k5TxNiTGz5za73jrLHpOnw&edm=APs17CUBAAAA&ccb=7-5&ig_cache_key=Mzg1NDc5MjQ4NDQ5MzE0NTkxNg%3D%3D.3-ccb7-5&oh=00_AfzCJwDvkEGapKuYBnS7j_RgYPBC4n80k4eNJMYS6H9CUg&oe=69BF2BA4&_nc_sid=10d13b",
+        "https://scontent-ssn1-1.cdninstagram.com/v/t51.82787-15/652366896_18401146048180391_3764721992531272970_n.webp?efg=eyJ2ZW5jb2RlX3RhZyI6InRocmVhZHMuQ0FST1VTRUxfSVRFTS5pbWFnZV91cmxnZW4uMTQ0MHgxNzk5LnNkci5mODI3ODcuZGVmYXVsdF9pbWFnZS5jMSJ9&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=111&_nc_oc=Q6cZ2QFCd0S049hoq0Sf5oi7sXZFceB_-yGFL6RynbSNglQN1kHKRKDKqW2OsKB_ZegB3To&_nc_ohc=uXTdgExBlsUQ7kNvwEj6ARe&_nc_gid=k5TxNiTGz5za73jrLHpOnw&edm=APs17CUBAAAA&ccb=7-5&ig_cache_key=Mzg1NDc5MjQ4Mzc3MTc1MzMwOA%3D%3D.3-ccb7-5&oh=00_Afxq2hWvQXqluEp0pHf1GZINcs7_vJ8ZsCq-g5Afx8lXhw&oe=69BF2CE7&_nc_sid=10d13b",
+        "https://scontent-ssn1-1.cdninstagram.com/v/t51.82787-15/652768838_18401146045180391_3707086984658781801_n.webp?efg=eyJ2ZW5jb2RlX3RhZyI6InRocmVhZHMuQ0FST1VTRUxfSVRFTS5pbWFnZV91cmxnZW4uMTQ0MHgxNzk5LnNkci5mODI3ODcuZGVmYXVsdF9pbWFnZS5jMSJ9&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=111&_nc_oc=Q6cZ2QFCd0S049hoq0Sf5oi7sXZFceB_-yGFL6RynbSNglQN1kHKRKDKqW2OsKB_ZegB3To&_nc_ohc=BDoCH4sFKocQ7kNvwELuzV5&_nc_gid=k5TxNiTGz5za73jrLHpOnw&edm=APs17CUBAAAA&ccb=7-5&ig_cache_key=Mzg1NDc5MjQ4Mzc3MTc3Mzg4Mw%3D%3D.3-ccb7-5&oh=00_AfwL6odb5ywcUb8r6LO8qyK54iuoy2Jac8yj-jdzYKIKbQ&oe=69BF3747&_nc_sid=10d13b",
+        "https://scontent-ssn1-1.cdninstagram.com/v/t51.82787-15/652767748_18401146066180391_258082728830200857_n.webp?efg=eyJ2ZW5jb2RlX3RhZyI6InRocmVhZHMuQ0FST1VTRUxfSVRFTS5pbWFnZV91cmxnZW4uMTQ0MHgxNzk5LnNkci5mODI3ODcuZGVmYXVsdF9pbWFnZS5jMSJ9&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=111&_nc_oc=Q6cZ2QFCd0S049hoq0Sf5oi7sXZFceB_-yGFL6RynbSNglQN1kHKRKDKqW2OsKB_ZegB3To&_nc_ohc=HO5vKpC4N2IQ7kNvwF86BnO&_nc_gid=k5TxNiTGz5za73jrLHpOnw&edm=APs17CUBAAAA&ccb=7-5&ig_cache_key=Mzg1NDc5MjQ4NTIwNjIxMjk0NA%3D%3D.3-ccb7-5&oh=00_AfzW7igtfL-uHz7lHqrY2fq-YlAWGKxUFlwsJ3aIHFQMYQ&oe=69BF30B9&_nc_sid=10d13b",
+        "https://scontent-ssn1-1.cdninstagram.com/v/t51.82787-15/653662329_18401146057180391_7752861528113786548_n.webp?efg=eyJ2ZW5jb2RlX3RhZyI6InRocmVhZHMuQ0FST1VTRUxfSVRFTS5pbWFnZV91cmxnZW4uMTQ0MHgxNzk5LnNkci5mODI3ODcuZGVmYXVsdF9pbWFnZS5jMSJ9&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=111&_nc_oc=Q6cZ2QFCd0S049hoq0Sf5oi7sXZFceB_-yGFL6RynbSNglQN1kHKRKDKqW2OsKB_ZegB3To&_nc_ohc=wg2lheXYAscQ7kNvwGdcl0x&_nc_gid=k5TxNiTGz5za73jrLHpOnw&edm=APs17CUBAAAA&ccb=7-5&ig_cache_key=Mzg1NDc5MjQ4MTYxNTg3NTc0Nw%3D%3D.3-ccb7-5&oh=00_AfzyB2hu2AvVc7li6660yNZ5HcTRqHxG8yOHobKHRWDGNA&oe=69BF1DE3&_nc_sid=10d13b",
+        "https://scontent-ssn1-1.cdninstagram.com/v/t51.82787-15/653527194_18401146075180391_2703432332494011919_n.webp?efg=eyJ2ZW5jb2RlX3RhZyI6InRocmVhZHMuQ0FST1VTRUxfSVRFTS5pbWFnZV91cmxnZW4uMTQ0MHgxNzk5LnNkci5mODI3ODcuZGVmYXVsdF9pbWFnZS5jMSJ9&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=111&_nc_oc=Q6cZ2QFCd0S049hoq0Sf5oi7sXZFceB_-yGFL6RynbSNglQN1kHKRKDKqW2OsKB_ZegB3To&_nc_ohc=YcJhvkfr-ZIQ7kNvwFBkp_A&_nc_gid=k5TxNiTGz5za73jrLHpOnw&edm=APs17CUBAAAA&ccb=7-5&ig_cache_key=Mzg1NDc5MjQ4NTY5MjczMjUzNA%3D%3D.3-ccb7-5&oh=00_AfyoMueloYrEwIgYsdfLV7v_fuyri843GuzeciGUhqCSpA&oe=69BF256D&_nc_sid=10d13b",
+        "https://scontent-ssn1-1.cdninstagram.com/v/t51.82787-15/652144650_18401146093180391_4556713215037714926_n.webp?efg=eyJ2ZW5jb2RlX3RhZyI6InRocmVhZHMuQ0FST1VTRUxfSVRFTS5pbWFnZV91cmxnZW4uMTQ0MHgxNzk5LnNkci5mODI3ODcuZGVmYXVsdF9pbWFnZS5jMSJ9&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=111&_nc_oc=Q6cZ2QFCd0S049hoq0Sf5oi7sXZFceB_-yGFL6RynbSNglQN1kHKRKDKqW2OsKB_ZegB3To&_nc_ohc=3Pvw8FM9xZsQ7kNvwHF78xL&_nc_gid=k5TxNiTGz5za73jrLHpOnw&edm=APs17CUBAAAA&ccb=7-5&ig_cache_key=Mzg1NDc5MjQ4NDI1ODI2ODA4MA%3D%3D.3-ccb7-5&oh=00_Afz-hUknt4IzXl5xguRp0psFarN30xNajtrNRVkA_P6aNg&oe=69BF3A9B&_nc_sid=10d13b",
+        "https://scontent-ssn1-1.cdninstagram.com/v/t51.82787-15/652770890_18401146084180391_3110998499098268822_n.webp?efg=eyJ2ZW5jb2RlX3RhZyI6InRocmVhZHMuQ0FST1VTRUxfSVRFTS5pbWFnZV91cmxnZW4uMTQ0MHgxNzk5LnNkci5mODI3ODcuZGVmYXVsdF9pbWFnZS5jMSJ9&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=111&_nc_oc=Q6cZ2QFCd0S049hoq0Sf5oi7sXZFceB_-yGFL6RynbSNglQN1kHKRKDKqW2OsKB_ZegB3To&_nc_ohc=qkIfnqFlSDUQ7kNvwFWAywD&_nc_gid=k5TxNiTGz5za73jrLHpOnw&edm=APs17CUBAAAA&ccb=7-5&ig_cache_key=Mzg1NDc5MjQ4NDMyNTM5MzMwMw%3D%3D.3-ccb7-5&oh=00_AfyyGl2nDgAH0mvpZOTf0ywuQ3AmslO2V6ezvxvbLF_eoQ&oe=69BF27F6&_nc_sid=10d13b"
+      ],
+      "affiliateLink": null,
+      "accountId": null,
+      "retryCount": 0,
+      "maxRetries": 3,
+      "errorMessage": null,
+      "collectedAt": "2026-03-17T13:01:48.612Z",
+      "processedAt": "2026-03-17T13:03:54.492Z",
+      "publishedAt": null,
+      "thumbTitle": "✨극락왕생✨"
     }
   ]
 }
