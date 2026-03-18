@@ -15,8 +15,14 @@ export default {
     if (request.method === "POST" && url.pathname === "/add-schedule") {
       try {
         const schedule = await request.json();
-        // 타임스탬프를 키에 포함하여 시간 순으로 정렬하기 쉽게 저장
-        const targetTime = new Date(schedule.dateTime).getTime();
+        
+        // 타임존 보정: ISO 형식이 아니고 타임존 정보가 없으면 +09:00(서울) 추가
+        let dateTimeStr = schedule.dateTime;
+        if (dateTimeStr && !dateTimeStr.includes('Z') && !dateTimeStr.includes('+')) {
+          dateTimeStr += "+09:00";
+        }
+
+        const targetTime = new Date(dateTimeStr).getTime();
         const key = `sch:${targetTime}:${schedule.id}`;
         
         await env.SCHEDULES_KV.put(key, JSON.stringify({
@@ -40,6 +46,19 @@ export default {
       return new Response(JSON.stringify({ success: true }));
     }
 
+    // 4. 상태 확인 (로컬 앱에서 동기화용)
+    if (request.method === "GET" && url.pathname === "/list-schedules") {
+      const list = await env.SCHEDULES_KV.list({ prefix: "sch:" });
+      const results = [];
+      for (const k of list.keys) {
+        const val = await env.SCHEDULES_KV.get(k.name, { type: "json" });
+        if (val) results.push(val);
+      }
+      return new Response(JSON.stringify({ success: true, schedules: results }), {
+        headers: { "Content-Type": "application/json" }
+      });
+    }
+
     return new Response("Threads Cloud Server is Running", { status: 200 });
   },
 
@@ -51,7 +70,6 @@ export default {
 
 async function handleScheduler(env) {
   const now = Date.now();
-  // 모든 예약 리스트 가져오기 (prefix 'sch:')
   const list = await env.SCHEDULES_KV.list({ prefix: "sch:" });
   
   for (const keyObj of list.keys) {
@@ -65,6 +83,10 @@ async function handleScheduler(env) {
       if (schedule && schedule.status === 'pending') {
         console.log(`[Scheduler] Executing task: ${schedule.id}`);
         
+        // 상태를 'processing'으로 먼저 업데이트하여 중복 실행 방지
+        schedule.status = 'processing';
+        await env.SCHEDULES_KV.put(key, JSON.stringify(schedule));
+
         const result = await uploadToThreads(schedule);
         
         if (result.success) {
@@ -75,9 +97,9 @@ async function handleScheduler(env) {
             status: 'completed',
             completedAt: new Date().toISOString(),
             mediaId: result.mediaId
-          }), { expirationTtl: 60 * 60 * 24 * 30 }); // 30일 후 자동 삭제
+          }), { expirationTtl: 60 * 60 * 24 * 30 });
         } else {
-          // 실패 시 상태 업데이트 (로그 기록)
+          // 실패 시 상태 업데이트
           schedule.status = 'failed';
           schedule.error = result.message;
           await env.SCHEDULES_KV.put(key, JSON.stringify(schedule));
@@ -87,9 +109,6 @@ async function handleScheduler(env) {
   }
 }
 
-/**
- * Threads API 업로드 로직 (로컬 uploader.js의 워커 버전)
- */
 async function uploadToThreads(data) {
   const { content, imagePath, accessToken, threadsUserId } = data;
   const API_BASE = 'https://graph.threads.net/v1.0';
@@ -100,7 +119,6 @@ async function uploadToThreads(data) {
     const hasMedia = imagePath && (Array.isArray(imagePath) ? imagePath.length > 0 : true);
 
     if (!hasMedia) {
-      // 1. 텍스트만 업로드
       const res = await threadsApiCall(`${API_BASE}/${threadsUserId}/threads`, {
         media_type: 'TEXT',
         text: content,
@@ -108,22 +126,21 @@ async function uploadToThreads(data) {
       });
       containerId = res.id;
     } else if (isCarousel) {
-      // 2. 캐러셀 업로드 (다중 이미지)
       const childIds = [];
       for (const url of imagePath.slice(0, 10)) {
-        const isVideo = url.toLowerCase().includes('.mp4');
+        const isVideo = url.toLowerCase().match(/\.(mp4|mov|m4v)/i);
         const childRes = await threadsApiCall(`${API_BASE}/${threadsUserId}/threads`, {
           media_type: isVideo ? 'VIDEO' : 'IMAGE',
           [isVideo ? 'video_url' : 'image_url']: url,
           is_carousel_item: 'true',
           access_token: accessToken
         });
+        
+        // 각각의 아이템이 처리될 때까지 대기
+        await waitForMediaProcessing(childRes.id, accessToken);
         childIds.push(childRes.id);
       }
       
-      // 처리 대기 (워커에서는 간단히 10초 대기)
-      await new Promise(r => setTimeout(r, 10000));
-
       const carRes = await threadsApiCall(`${API_BASE}/${threadsUserId}/threads`, {
         media_type: 'CAROUSEL',
         children: childIds.join(','),
@@ -132,9 +149,8 @@ async function uploadToThreads(data) {
       });
       containerId = carRes.id;
     } else {
-      // 3. 단일 미디어 업로드
       const url = Array.isArray(imagePath) ? imagePath[0] : imagePath;
-      const isVideo = url.toLowerCase().includes('.mp4');
+      const isVideo = url.toLowerCase().match(/\.(mp4|mov|m4v)/i);
       const res = await threadsApiCall(`${API_BASE}/${threadsUserId}/threads`, {
         media_type: isVideo ? 'VIDEO' : 'IMAGE',
         [isVideo ? 'video_url' : 'image_url']: url,
@@ -146,8 +162,9 @@ async function uploadToThreads(data) {
 
     if (!containerId) throw new Error("컨테이너 생성 실패");
 
-    // 처리 대기 후 발행
-    await new Promise(r => setTimeout(r, 8000));
+    // 최종 컨테이너 처리 완료 대기 후 발행
+    await waitForMediaProcessing(containerId, accessToken);
+    
     const publish = await threadsApiCall(`${API_BASE}/${threadsUserId}/threads_publish`, {
       creation_id: containerId,
       access_token: accessToken
@@ -159,6 +176,26 @@ async function uploadToThreads(data) {
     console.error("Upload error:", e.message);
     return { success: false, message: e.message };
   }
+}
+
+async function waitForMediaProcessing(containerId, accessToken) {
+  const API_BASE = 'https://graph.threads.net/v1.0';
+  let attempts = 0;
+  const maxAttempts = 15; // 최대 약 45초 대기
+
+  while (attempts < maxAttempts) {
+    const res = await fetch(`${API_BASE}/${containerId}?fields=status,error_message&access_token=${accessToken}`);
+    const data = await res.json();
+    
+    if (data.status === 'FINISHED') return true;
+    if (data.status === 'ERROR') throw new Error(data.error_message || "미디어 처리 중 오류가 발생했습니다.");
+    
+    attempts++;
+    await new Promise(r => setTimeout(r, 3000)); // 3초 간격
+  }
+  
+  // 타임아웃되어도 일단 진행 시도 (때로는 Finished 직전일 수 있음)
+  return true;
 }
 
 async function threadsApiCall(url, params) {
