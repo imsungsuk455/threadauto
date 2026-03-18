@@ -34,6 +34,10 @@
     {
       "input": "purple_tv_",
       "type": "user"
+    },
+    {
+      "input": "hot.ttopic",
+      "type": "user"
     }
   ]
 }
