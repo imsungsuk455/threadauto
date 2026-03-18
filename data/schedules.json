@@ -40,6 +40,28 @@
       "createdAt": "2026-03-18T11:19:50.796Z",
       "lastRun": null,
       "runCount": 0
+    },
+    {
+      "id": "2d8eac81-5056-4fe1-bfc4-9daea504b039",
+      "accountId": "3f858412-2fbf-433d-9cc7-f0546499c2f0",
+      "threadsUserId": "26244459098515676",
+      "content": "와... 첫날부터 이러시면 아주 땡큐죠",
+      "imagePath": [
+        "https://files.catbox.moe/d8806j.jpg",
+        "https://files.catbox.moe/ldlpqo.jpg",
+        "https://files.catbox.moe/38d1rg.jpg",
+        "https://files.catbox.moe/go3pqi.jpg",
+        "https://files.catbox.moe/fvppcs.jpg",
+        "https://files.catbox.moe/06mgo1.jpg"
+      ],
+      "scheduleType": "once",
+      "dateTime": "2026-03-19T16:29",
+      "cronExpression": null,
+      "repeatLabel": "",
+      "status": "pending",
+      "createdAt": "2026-03-18T11:24:34.983Z",
+      "lastRun": null,
+      "runCount": 0
     }
   ]
 }

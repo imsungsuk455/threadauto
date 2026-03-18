@@ -38,6 +38,10 @@
     {
       "input": "hot.ttopic",
       "type": "user"
+    },
+    {
+      "input": "healing.storage",
+      "type": "user"
     }
   ]
 }
