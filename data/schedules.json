@@ -20,6 +20,26 @@
       "createdAt": "2026-03-18T11:18:05.655Z",
       "lastRun": null,
       "runCount": 0
+    },
+    {
+      "id": "55a09841-ee59-4558-a9bb-182bbfdf1c85",
+      "accountId": "3f858412-2fbf-433d-9cc7-f0546499c2f0",
+      "threadsUserId": "26244459098515676",
+      "content": "와 진짜 관상은 무시 못 한다니까",
+      "imagePath": [
+        "https://files.catbox.moe/tjafq0.jpg",
+        "https://files.catbox.moe/ys95zr.jpg",
+        "https://files.catbox.moe/95awpj.jpg",
+        "https://files.catbox.moe/0oknn0.jpg"
+      ],
+      "scheduleType": "once",
+      "dateTime": "2026-03-19T11:24",
+      "cronExpression": null,
+      "repeatLabel": "",
+      "status": "pending",
+      "createdAt": "2026-03-18T11:19:50.796Z",
+      "lastRun": null,
+      "runCount": 0
     }
   ]
 }
