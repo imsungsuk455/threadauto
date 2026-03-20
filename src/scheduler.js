@@ -1,6 +1,6 @@
 const cron = require('node-cron');
 const { v4: uuidv4 } = require('uuid');
-const { log, readJSON, writeJSON, PATHS, formatTimestamp, gitSync } = require('./utils');
+const { log, readJSON, writeJSON, PATHS, formatTimestamp } = require('./utils');
 const { uploadPost, ensurePublicUrl } = require('./uploader');
 const accounts = require('./accounts');
 const axios = require('axios');
@@ -57,21 +57,17 @@ async function addSchedule({ accountId, content, imagePath, scheduleType, dateTi
     schedules.push(schedule);
     saveSchedules(schedules);
 
-    // GitHub Actions를 위한 로컬 변경사항 푸시 (썸네일 포함)
-    gitSync(`Add schedule: ${schedule.id}`);
+    // GitHub Actions를 더 이상 사용하지 않으므로 gitSync 호출 제거
 
     // Cloudflare Worker와 동기화 (정밀 예약 업로드용)
     syncToCloudflare(schedule).catch(err => log('ERROR', `Cloudflare 동기화 실패: ${err.message}`));
-
-    // 로컬 환경에서는 더 이상 타이머를 돌리지 않고 오직 GitHub Actions(또는 Cloudflare) 서버에 위임합니다.
-    // 기존에 있던 registerCronJob, registerOnceJob 등은 로컬 충돌을 방지하기 위해 호출하지 않습니다.
 
     log('INFO', `예약 추가 및 서버 전송 완료: ${schedule.id} (${scheduleType})`);
     return { success: true, schedule };
 }
 
 /**
- * 반복 예약 cron job 등록
+ * 반복 예약 cron job 등록 (로컬 타이머용)
  */
 function registerCronJob(schedule) {
     if (!cron.validate(schedule.cronExpression)) {
@@ -173,7 +169,7 @@ function updateScheduleStatus(id, updates) {
 function deleteSchedule(id) {
     const job = activeJobs.get(id);
     if (job) {
-        job.stop();
+        if (job.stop) job.stop();
         activeJobs.delete(id);
     }
 
@@ -195,23 +191,16 @@ function getSchedules() {
 }
 
 /**
- * 서버 시작 시 기존 활성 예약 복원
+ * 서버 시작 시 환경 체크
  */
 function restoreSchedules() {
-    log('INFO', '🔄 로컬 스케줄러 활성화 - 1 분마다 예약 체크 (GitHub Actions 보조)');
-
-    // 1 분마다 실행하여 예약된 게시물 처리
-    const job = cron.schedule('* * * * *', async () => {
-        log('INFO', '⏰ 로컬 스케줄러 체크 시작');
-        try {
-            const { runGhaTasks } = require('./gh-actions-runner');
-            await runGhaTasks();
-        } catch (error) {
-            log('ERROR', `로컬 스케줄러 실행 오류: ${error.message}`);
-        }
-    }, { timezone: 'Asia/Seoul' });
-
-    log('INFO', '✅ 로컬 스케줄러 시작됨 - 매 분 0 초에 실행 (한국 시간)');
+    const config = readJSON(PATHS.cloudflareConfig);
+    if (config && config.workerUrl && config.apiSecret) {
+        log('INFO', '☁️ Cloudflare Worker 모드 활성화됨 (모든 예약은 Worker가 처리합니다)');
+        return;
+    }
+    
+    log('WARN', '⚠️ Cloudflare 설정이 없습니다. 로컬 서버가 켜져 있을 때만 예약이 처리됩니다.');
 }
 
 /**
@@ -230,19 +219,8 @@ async function syncToCloudflare(schedule) {
         const account = accounts.getAccount(schedule.accountId);
         if (!account) throw new Error('계정 정보를 찾을 수 없습니다.');
 
-        // 미디어 경로가 로컬인 경우 공용 URL로 변환
-        let publicImagePath = schedule.imagePath;
-        if (schedule.imagePath) {
-            if (Array.isArray(schedule.imagePath)) {
-                publicImagePath = await Promise.all(schedule.imagePath.map(p => ensurePublicUrl(p)));
-            } else {
-                publicImagePath = await ensurePublicUrl(schedule.imagePath);
-            }
-        }
-
         const payload = {
             ...schedule,
-            imagePath: publicImagePath,
             accessToken: account.accessToken,
             threadsUserId: account.threadsUserId
         };

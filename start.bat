@@ -33,11 +33,11 @@ if not exist "%USERPROFILE%\AppData\Local\ms-playwright\" (
 )
 
 echo [3/3] 서버를 실행하는 중입니다...
-echo 대시보드 주소: http://localhost:3000
+echo 대시보드 주소: http://localhost:3010
 echo.
 
 :: Start the browser and the server
-start http://localhost:3000
+start http://localhost:3010
 call npm start
 
 pause

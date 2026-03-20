@@ -93,54 +93,6 @@ function ensureDirectories() {
     });
 }
 
-const { execSync } = require('child_process');
-
-// ===== Git 동기화 (Push) =====
-function gitSync(message = 'Sync data and uploads') {
-    try {
-        log('INFO', 'Git 동기화 시작...');
-        
-        // 1. Git 설치 확인
-        try {
-            execSync('git --version');
-        } catch (e) {
-            log('WARN', 'Git이 설치되어 있지 않거나 경로 설정이 되어 있지 않습니다.');
-            return { success: false, message: 'Git not found' };
-        }
-
-        // 2. Add, Commit, Push
-        // data/ 폴더와 uploads/ 폴더의 모든 변경사항을 추가
-        execSync('git add data/* uploads/* .gitignore');
-        
-        // 변경사항체크
-        const status = execSync('git status --porcelain').toString();
-        if (!status) {
-            log('INFO', 'Git: 변경사항이 없어 Push를 건너뜁니다.');
-            return { success: true, message: 'No changes' };
-        }
-
-        execSync(`git commit -m "${message}"`);
-        
-        // 3. Remote 변경사항 반영 후 Push (동기화 충돌 방지)
-        log('INFO', 'Git: 최신 상태를 가져옵니다 (pull --rebase)...');
-        execSync('git pull --rebase origin main');
-        
-        execSync('git push origin main');
-        
-        log('INFO', '✅ Git Push 완료 (데이터 및 썸네일 업로드됨)');
-        return { success: true };
-    } catch (error) {
-        log('ERROR', `Git 동기화 실패: ${error.message}`);
-        // 충돌 발생 시 리베이스를 취소하여 안전한 상태 유지
-        try {
-            if (error.message.includes('rebase')) {
-                execSync('git rebase --abort');
-            }
-        } catch (e) {}
-        return { success: false, message: error.message };
-    }
-}
-
 module.exports = {
     randomDelay,
     log,
@@ -150,6 +102,5 @@ module.exports = {
     getDateString,
     PATHS,
     ensureDirectories,
-    gitSync,
     LOG_LEVELS,
 };

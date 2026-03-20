@@ -16,10 +16,10 @@
       "dateTime": "2026-03-18T22:22",
       "cronExpression": null,
       "repeatLabel": "",
-      "status": "pending",
+      "status": "completed",
       "createdAt": "2026-03-18T11:18:05.655Z",
-      "lastRun": null,
-      "runCount": 0
+      "lastRun": "2026-03-20T00:53:00.129Z",
+      "runCount": 1
     },
     {
       "id": "55a09841-ee59-4558-a9bb-182bbfdf1c85",
@@ -36,10 +36,10 @@
       "dateTime": "2026-03-19T11:24",
       "cronExpression": null,
       "repeatLabel": "",
-      "status": "pending",
+      "status": "completed",
       "createdAt": "2026-03-18T11:19:50.796Z",
-      "lastRun": null,
-      "runCount": 0
+      "lastRun": "2026-03-20T00:53:00.129Z",
+      "runCount": 1
     },
     {
       "id": "2d8eac81-5056-4fe1-bfc4-9daea504b039",
@@ -58,10 +58,10 @@
       "dateTime": "2026-03-19T16:29",
       "cronExpression": null,
       "repeatLabel": "",
-      "status": "pending",
+      "status": "completed",
       "createdAt": "2026-03-18T11:24:34.983Z",
-      "lastRun": null,
-      "runCount": 0
+      "lastRun": "2026-03-20T00:53:00.129Z",
+      "runCount": 1
     },
     {
       "id": "5bc94881-1101-44d2-b5ec-f87f6b7138cd",
@@ -78,10 +78,10 @@
       "dateTime": "2026-03-19T21:30",
       "cronExpression": null,
       "repeatLabel": "",
-      "status": "pending",
+      "status": "completed",
       "createdAt": "2026-03-18T11:25:44.691Z",
-      "lastRun": null,
-      "runCount": 0
+      "lastRun": "2026-03-20T00:55:00.996Z",
+      "runCount": 1
     }
   ]
 }
