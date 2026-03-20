@@ -1,87 +1,29 @@
 {
   "schedules": [
     {
-      "id": "d6d3da74-771e-4d28-b3b1-a143d88f5370",
+      "id": "46f2f6d8-eb09-4f23-9610-5d0a446c4ec5",
       "accountId": "3f858412-2fbf-433d-9cc7-f0546499c2f0",
       "threadsUserId": "26244459098515676",
-      "content": "ㄹㅇ 돈주고 스트레스 받는",
+      "content": "고양이 만지면 생기는 현상... 마지막 반전 ㅋㅋ",
       "imagePath": [
-        "https://files.catbox.moe/83ocgr.jpg",
-        "https://files.catbox.moe/v5fzvz.jpg",
-        "https://files.catbox.moe/k5f9c9.jpg",
-        "https://files.catbox.moe/liibio.jpg",
-        "https://files.catbox.moe/8nnyr9.jpg"
+        "https://files.catbox.moe/1h3si7.jpg",
+        "https://files.catbox.moe/8pi2ni.jpg",
+        "https://files.catbox.moe/4jccft.jpg",
+        "https://files.catbox.moe/bdmh0s.jpg",
+        "https://files.catbox.moe/q7yy7l.jpg",
+        "https://files.catbox.moe/tjrpqt.jpg",
+        "https://files.catbox.moe/06syf9.jpg",
+        "https://files.catbox.moe/80t2kt.jpg",
+        "https://files.catbox.moe/0fc5b2.jpg"
       ],
       "scheduleType": "once",
-      "dateTime": "2026-03-18T22:22",
+      "dateTime": "2026-03-21T09:14",
       "cronExpression": null,
       "repeatLabel": "",
-      "status": "completed",
-      "createdAt": "2026-03-18T11:18:05.655Z",
-      "lastRun": "2026-03-20T00:53:00.129Z",
-      "runCount": 1
-    },
-    {
-      "id": "55a09841-ee59-4558-a9bb-182bbfdf1c85",
-      "accountId": "3f858412-2fbf-433d-9cc7-f0546499c2f0",
-      "threadsUserId": "26244459098515676",
-      "content": "와 진짜 관상은 무시 못 한다니까",
-      "imagePath": [
-        "https://files.catbox.moe/tjafq0.jpg",
-        "https://files.catbox.moe/ys95zr.jpg",
-        "https://files.catbox.moe/95awpj.jpg",
-        "https://files.catbox.moe/0oknn0.jpg"
-      ],
-      "scheduleType": "once",
-      "dateTime": "2026-03-19T11:24",
-      "cronExpression": null,
-      "repeatLabel": "",
-      "status": "completed",
-      "createdAt": "2026-03-18T11:19:50.796Z",
-      "lastRun": "2026-03-20T00:53:00.129Z",
-      "runCount": 1
-    },
-    {
-      "id": "2d8eac81-5056-4fe1-bfc4-9daea504b039",
-      "accountId": "3f858412-2fbf-433d-9cc7-f0546499c2f0",
-      "threadsUserId": "26244459098515676",
-      "content": "와... 첫날부터 이러시면 아주 땡큐죠",
-      "imagePath": [
-        "https://files.catbox.moe/d8806j.jpg",
-        "https://files.catbox.moe/ldlpqo.jpg",
-        "https://files.catbox.moe/38d1rg.jpg",
-        "https://files.catbox.moe/go3pqi.jpg",
-        "https://files.catbox.moe/fvppcs.jpg",
-        "https://files.catbox.moe/06mgo1.jpg"
-      ],
-      "scheduleType": "once",
-      "dateTime": "2026-03-19T16:29",
-      "cronExpression": null,
-      "repeatLabel": "",
-      "status": "completed",
-      "createdAt": "2026-03-18T11:24:34.983Z",
-      "lastRun": "2026-03-20T00:53:00.129Z",
-      "runCount": 1
-    },
-    {
-      "id": "5bc94881-1101-44d2-b5ec-f87f6b7138cd",
-      "accountId": "3f858412-2fbf-433d-9cc7-f0546499c2f0",
-      "threadsUserId": "26244459098515676",
-      "content": "ㅎㄷㄷ 소름",
-      "imagePath": [
-        "https://files.catbox.moe/75uj7n.jpg",
-        "https://files.catbox.moe/81qt6w.jpg",
-        "https://files.catbox.moe/2hu8kp.jpg",
-        "https://files.catbox.moe/0scewm.jpg"
-      ],
-      "scheduleType": "once",
-      "dateTime": "2026-03-19T21:30",
-      "cronExpression": null,
-      "repeatLabel": "",
-      "status": "completed",
-      "createdAt": "2026-03-18T11:25:44.691Z",
-      "lastRun": "2026-03-20T00:55:00.996Z",
-      "runCount": 1
+      "status": "pending",
+      "createdAt": "2026-03-20T02:10:28.513Z",
+      "lastRun": null,
+      "runCount": 0
     }
   ]
 }
