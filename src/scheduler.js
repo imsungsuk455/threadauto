@@ -5,7 +5,7 @@ const { uploadPost, ensurePublicUrl } = require('./uploader');
 const accounts = require('./accounts');
 const axios = require('axios');
 
-const activeJobs = new Map(); // scheduleId -> cron job
+const activeJobs = new Map(); // scheduleId -> { stop: fn } or cron job
 
 /**
  * 스케줄 데이터 로드
@@ -17,6 +17,14 @@ function loadSchedules() {
 
 function saveSchedules(schedules) {
     return writeJSON(PATHS.schedules, { schedules });
+}
+
+/**
+ * Cloudflare 설정 확인용 헬퍼
+ */
+function isCloudflareEnabled() {
+    const config = readJSON(PATHS.cloudflareConfig);
+    return !!(config && config.workerUrl && config.apiSecret);
 }
 
 /**
@@ -38,17 +46,22 @@ async function addSchedule({ accountId, content, imagePath, scheduleType, dateTi
         log('INFO', `예약 미디어 경로 변환 완료: ${Array.isArray(publicImagePath) ? publicImagePath.length + '개' : '1개'}`);
     }
 
+    let finalDateTime = dateTime || null;
+    if (finalDateTime && !finalDateTime.includes('Z') && !finalDateTime.includes('+')) {
+        finalDateTime += "+09:00";
+    }
+
     const schedule = {
         id: uuidv4(),
         accountId,
-        threadsUserId: account.threadsUserId, // 서버 OFF 시 매칭을 위한 고유 ID 추가
+        threadsUserId: account.threadsUserId,
         content,
         imagePath: publicImagePath || null,
         scheduleType, // 'once' 또는 'repeat'
-        dateTime: dateTime || null, // 1회성 예약 시간
+        dateTime: finalDateTime, // 1회성 예약 시간
         cronExpression: cronExpression || null, // 반복 예약 cron
-        repeatLabel: repeatLabel || '', // 반복 레이블 (예: "매일 오전 9시")
-        status: 'pending', // pending, active, completed, failed, cancelled
+        repeatLabel: repeatLabel || '',
+        status: 'pending',
         createdAt: new Date().toISOString(),
         lastRun: null,
         runCount: 0,
@@ -57,17 +70,24 @@ async function addSchedule({ accountId, content, imagePath, scheduleType, dateTi
     schedules.push(schedule);
     saveSchedules(schedules);
 
-    // GitHub Actions를 더 이상 사용하지 않으므로 gitSync 호출 제거
+    // 구동 모드에 따라 처리 주체 결정 (완전 분리)
+    if (isCloudflareEnabled()) {
+        log('INFO', `[Cloudflare 모드] Worker로 예약 전송: ${schedule.id}`);
+        syncToCloudflare(schedule).catch(err => log('ERROR', `Cloudflare 동기화 실패: ${err.message}`));
+    } else {
+        log('INFO', `[로컬 모드] 로컬 타이머 등록: ${schedule.id}`);
+        if (scheduleType === 'repeat' && cronExpression) {
+            registerCronJob(schedule);
+        } else if (scheduleType === 'once' && dateTime) {
+            registerOnceJob(schedule);
+        }
+    }
 
-    // Cloudflare Worker와 동기화 (정밀 예약 업로드용)
-    syncToCloudflare(schedule).catch(err => log('ERROR', `Cloudflare 동기화 실패: ${err.message}`));
-
-    log('INFO', `예약 추가 및 서버 전송 완료: ${schedule.id} (${scheduleType})`);
     return { success: true, schedule };
 }
 
 /**
- * 반복 예약 cron job 등록 (로컬 타이머용)
+ * 반복 예약 cron job 등록
  */
 function registerCronJob(schedule) {
     if (!cron.validate(schedule.cronExpression)) {
@@ -75,62 +95,52 @@ function registerCronJob(schedule) {
         return;
     }
 
+    // 기존 작업이 있으면 정지
+    const oldJob = activeJobs.get(schedule.id);
+    if (oldJob && oldJob.stop) oldJob.stop();
+
     const job = cron.schedule(schedule.cronExpression, async () => {
-        log('INFO', `예약 실행: ${schedule.id}`);
+        log('INFO', `로컬 예약 실행: ${schedule.id}`);
         try {
-            let result;
-            if (schedule.isPipeline) {
-                // 파이프라인 자동 실행
-                const { runFull } = require('./pipeline');
-                const pipelineConfig = require('./collector').loadPipelineConfig();
-
-                const options = {
-                    accountId: schedule.accountId,
-                    urls: schedule.pipelineUrls || [],
-                    rssFeeds: schedule.pipelineRss || pipelineConfig.defaultRssFeeds || [],
-                    coupangKeyword: schedule.pipelineCoupangKeyword || null,
-                    naverKeyword: schedule.pipelineNaverKeyword || null,
-                };
-
-                result = await runFull(options);
-            } else {
-                // 일반 게시물 예약
-                result = await uploadPost(schedule.accountId, schedule.content, schedule.imagePath);
-            }
-
+            const result = await uploadPost(schedule.accountId, schedule.content, schedule.imagePath);
             updateScheduleStatus(schedule.id, {
                 status: 'active',
                 lastRun: new Date().toISOString(),
                 runCount: (schedule.runCount || 0) + 1,
             });
-            log('INFO', `예약 완료: ${schedule.id} - ${result.success ? '성공' : '실패'}`);
+            log('INFO', `로컬 예약 완료: ${schedule.id} - ${result.success ? '성공' : '실패'}`);
         } catch (error) {
-            log('ERROR', `예약 실패: ${error.message}`);
+            log('ERROR', `로컬 예약 실패: ${error.message}`);
             updateScheduleStatus(schedule.id, { status: 'failed', lastRun: new Date().toISOString() });
         }
     }, { timezone: 'Asia/Seoul' });
 
     activeJobs.set(schedule.id, job);
     updateScheduleStatus(schedule.id, { status: 'active' });
-    log('INFO', `Cron job 등록: ${schedule.id} (${schedule.cronExpression})`);
 }
 
 /**
  * 1회성 예약 등록
  */
 function registerOnceJob(schedule) {
-    const targetTime = new Date(schedule.dateTime);
+    // 타임존 보정: ISO 형식이 아니고 타임존 정보가 없으면 +09:00(서울) 추가
+    let dateTimeStr = schedule.dateTime;
+    if (dateTimeStr && !dateTimeStr.includes('Z') && !dateTimeStr.includes('+')) {
+        dateTimeStr += "+09:00";
+    }
+
+    const targetTime = new Date(dateTimeStr);
     const now = new Date();
     const delay = targetTime.getTime() - now.getTime();
 
     if (delay <= 0) {
-        log('WARN', `이미 지난 시간입니다: ${schedule.dateTime}`);
+        log('WARN', `이미 지난 시간입니다 (로컬): ${schedule.dateTime}`);
         updateScheduleStatus(schedule.id, { status: 'failed' });
         return;
     }
 
     const timer = setTimeout(async () => {
-        log('INFO', `1회성 예약 실행: ${schedule.id}`);
+        log('INFO', `로컬 1회성 예약 실행: ${schedule.id}`);
         try {
             const result = await uploadPost(schedule.accountId, schedule.content, schedule.imagePath);
             updateScheduleStatus(schedule.id, {
@@ -138,9 +148,9 @@ function registerOnceJob(schedule) {
                 lastRun: new Date().toISOString(),
                 runCount: 1,
             });
-            log('INFO', `1회성 업로드 완료: ${schedule.id} - ${result.success ? '성공' : '실패'}`);
+            log('INFO', `로컬 1회성 성공: ${schedule.id}`);
         } catch (error) {
-            log('ERROR', `1회성 업로드 실패: ${error.message}`);
+            log('ERROR', `로컬 1회성 실패: ${error.message}`);
             updateScheduleStatus(schedule.id, { status: 'failed', lastRun: new Date().toISOString() });
         }
         activeJobs.delete(schedule.id);
@@ -148,7 +158,6 @@ function registerOnceJob(schedule) {
 
     activeJobs.set(schedule.id, { stop: () => clearTimeout(timer) });
     updateScheduleStatus(schedule.id, { status: 'active' });
-    log('INFO', `1회성 예약 등록: ${schedule.id} (${schedule.dateTime})`);
 }
 
 /**
@@ -191,16 +200,28 @@ function getSchedules() {
 }
 
 /**
- * 서버 시작 시 환경 체크
+ * 서버 시작 시 기존 활성 예약 복원
  */
 function restoreSchedules() {
-    const config = readJSON(PATHS.cloudflareConfig);
-    if (config && config.workerUrl && config.apiSecret) {
-        log('INFO', '☁️ Cloudflare Worker 모드 활성화됨 (모든 예약은 Worker가 처리합니다)');
+    if (isCloudflareEnabled()) {
+        log('INFO', '☁️ Cloudflare Worker 모드 활성화됨 (로컬 업로드는 중단됩니다)');
+        // 로컬 타이머 모두 제거 (혹시 있다면)
+        activeJobs.forEach(job => { if (job.stop) job.stop(); });
+        activeJobs.clear();
         return;
     }
     
-    log('WARN', '⚠️ Cloudflare 설정이 없습니다. 로컬 서버가 켜져 있을 때만 예약이 처리됩니다.');
+    log('INFO', '🏠 로컬 타임스케줄러 활성화 (기존 예약 복원 중...)');
+    const schedules = loadSchedules();
+    schedules.forEach(schedule => {
+        if (schedule.status === 'active' || schedule.status === 'pending') {
+            if (schedule.scheduleType === 'repeat' && schedule.cronExpression) {
+                registerCronJob(schedule);
+            } else if (schedule.scheduleType === 'once' && schedule.dateTime) {
+                registerOnceJob(schedule);
+            }
+        }
+    });
 }
 
 /**
@@ -208,16 +229,11 @@ function restoreSchedules() {
  */
 async function syncToCloudflare(schedule) {
     const config = readJSON(PATHS.cloudflareConfig);
-    if (!config || !config.workerUrl || !config.apiSecret) {
-        log('INFO', 'Cloudflare 설정이 없어 Worker 동기화를 건너뜁니다.');
-        return;
-    }
-
-    log('INFO', `Cloudflare Worker로 예약 전송 중: ${schedule.id}`);
+    if (!config || !config.workerUrl || !config.apiSecret) return;
 
     try {
         const account = accounts.getAccount(schedule.accountId);
-        if (!account) throw new Error('계정 정보를 찾을 수 없습니다.');
+        if (!account) throw new Error('계정 정보 없음');
 
         const payload = {
             ...schedule,
@@ -236,8 +252,7 @@ async function syncToCloudflare(schedule) {
             log('INFO', `✅ Cloudflare Worker 예약 등록 완료: ${schedule.id}`);
         }
     } catch (e) {
-        const msg = e.response?.data || e.message;
-        throw new Error(`Worker API 오류: ${msg}`);
+        log('ERROR', `Worker API 오류: ${e.message}`);
     }
 }
 

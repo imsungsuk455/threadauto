@@ -23,7 +23,7 @@ const storage = multer.diskStorage({
     destination: (req, file, cb) => cb(null, path.join(__dirname, '..', 'uploads')),
     filename: (req, file, cb) => cb(null, `${Date.now()}-${file.originalname}`),
 });
-const upload = multer({ storage, limits: { fileSize: 10 * 1024 * 1024 } }); // 10MB
+const upload = multer({ storage, limits: { fileSize: 50 * 1024 * 1024, files: 10 } }); // 50MB, 최대 10개
 
 // ===== 계정 API =====
 router.get('/accounts', (req, res) => {

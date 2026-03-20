@@ -157,10 +157,8 @@ async function uploadPost(accountId, content, imagePath = null) {
             if (childIds.length === 0) throw new Error('Carousel 아이템 생성에 실패했습니다.');
 
             // Child processing wait (Polling)
-            log('INFO', 'Carousel 아이템 처리 대기 중...');
-            for (const cId of childIds) {
-                await waitForMediaProcessing(accountId, cId);
-            }
+            log('INFO', 'Carousel 아이템 처리 대기 중(병렬)...');
+            await Promise.all(childIds.map(cId => waitForMediaProcessing(accountId, cId)));
 
             const carouselRes = await axios.post(`${THREADS_API_BASE}/${account.threadsUserId}/threads`, null, {
                 params: {
