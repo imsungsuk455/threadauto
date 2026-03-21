@@ -193,26 +193,72 @@ function deleteSchedule(id) {
 }
 
 /**
- * 예약 목록 조회
+ * 예약 목록 조회 (Cloudflare 연동 포함)
  */
-function getSchedules() {
-    return loadSchedules();
+async function getSchedules() {
+    const localSchedules = loadSchedules();
+    if (!isCloudflareEnabled()) return localSchedules;
+
+    try {
+        const config = readJSON(PATHS.cloudflareConfig);
+        const res = await axios.get(`${config.workerUrl}/list-schedules`, {
+            headers: { 'Authorization': `Bearer ${config.apiSecret}` }
+        });
+
+        if (res.data && res.data.success) {
+            const remoteSchedules = res.data.schedules || [];
+            // 로컬 데이터와 리모트 데이터를 매칭하여 상태 최신화
+            const merged = localSchedules.map(local => {
+                const remote = remoteSchedules.find(r => r.id === local.id);
+                if (remote) {
+                    return { ...local, status: remote.status, error: remote.error };
+                }
+                // Worker에 없고 만료되었으면(완료/실패) 그대로 유지, 
+                // Worker에 없는데 여전히 Pending/Active라면 완료된 것으로 간주 (Worker는 완료 후 삭제하므로)
+                if (local.status === 'pending' || local.status === 'active') {
+                    // 단, 생성된지 1분 미만인 경우는 아직 Worker에 등록 중일 수 있으므로 제외
+                    const age = Date.now() - new Date(local.createdAt).getTime();
+                    if (age > 60000) {
+                        return { ...local, status: 'completed' };
+                    }
+                }
+                return local;
+            });
+
+            // 변경된 상태가 있다면 로컬에도 저장 (배치 업데이트)
+            saveSchedules(merged);
+            return merged;
+        }
+    } catch (e) {
+        log('WARN', `Cloudflare 예약 목록 동기화 실패: ${e.message}`);
+    }
+    return localSchedules;
 }
 
 /**
  * 서버 시작 시 기존 활성 예약 복원
  */
-function restoreSchedules() {
-    if (isCloudflareEnabled()) {
-        log('INFO', '☁️ Cloudflare Worker 모드 활성화됨 (로컬 업로드는 중단됩니다)');
-        // 로컬 타이머 모두 제거 (혹시 있다면)
+async function restoreSchedules() {
+    const schedules = loadSchedules();
+    const cloudMode = isCloudflareEnabled();
+
+    if (cloudMode) {
+        log('INFO', '☁️ Cloudflare Worker 모드 활성화됨 (연동 및 동기화 시작)');
+        // 로컬 타이머 모두 제거 (중복 실행 방지)
         activeJobs.forEach(job => { if (job.stop) job.stop(); });
         activeJobs.clear();
+
+        // Pending 상태인 모든 예약이 Worker에 등록되어 있는지 확인 및 재전송
+        for (const schedule of schedules) {
+            if (schedule.status === 'pending' || schedule.status === 'active') {
+                log('INFO', `[Cloudflare] 기존 예약 재동기화 시도: ${schedule.id}`);
+                syncToCloudflare(schedule).catch(() => { });
+            }
+        }
         return;
     }
     
     log('INFO', '🏠 로컬 타임스케줄러 활성화 (기존 예약 복원 중...)');
-    const schedules = loadSchedules();
     schedules.forEach(schedule => {
         if (schedule.status === 'active' || schedule.status === 'pending') {
             if (schedule.scheduleType === 'repeat' && schedule.cronExpression) {

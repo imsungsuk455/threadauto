@@ -13,9 +13,24 @@ function randomDelay(min = 1000, max = 3000) {
 const LOG_LEVELS = { DEBUG: 0, INFO: 1, WARN: 2, ERROR: 3 };
 let currentLogLevel = LOG_LEVELS.INFO;
 
+function getKSTDate() {
+    const now = new Date();
+    // 시스템 오프셋을 제거하고 UTC로 만든 뒤 +9시간
+    const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+    return new Date(utc + (9 * 3600000));
+}
+
 function log(level, message, data = null) {
     if (LOG_LEVELS[level] < currentLogLevel) return;
-    const timestamp = new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
+    
+    // 타임존 데이터가 없는 환경에서도 강제로 KST 계산
+    const kst = getKSTDate();
+    const timestamp = kst.toLocaleString('ko-KR', {
+        year: 'numeric', month: '2-digit', day: '2-digit',
+        hour: '2-digit', minute: '2-digit', second: '2-digit',
+        hour12: true
+    }).replace(/\. /g, '.'); // 2026.03.21. AM 10:00... 형식
+
     const prefix = { DEBUG: '🔍', INFO: '📋', WARN: '⚠️', ERROR: '❌' };
     const logLine = `[${timestamp}] ${prefix[level] || '📋'} ${message}`;
     console.log(logLine);
@@ -57,8 +72,9 @@ function writeJSON(filePath, data) {
 
 // ===== 타임스탬프 =====
 function formatTimestamp(date = new Date()) {
-    return date.toLocaleString('ko-KR', {
-        timeZone: 'Asia/Seoul',
+    const utc = date.getTime() + (date.getTimezoneOffset() * 60000);
+    const kst = new Date(utc + (9 * 3600000));
+    return kst.toLocaleString('ko-KR', {
         year: 'numeric', month: '2-digit', day: '2-digit',
         hour: '2-digit', minute: '2-digit', second: '2-digit'
     });

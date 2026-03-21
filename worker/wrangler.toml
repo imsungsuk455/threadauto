@@ -3,7 +3,7 @@ main = "src/index.js"
 compatibility_date = "2024-03-15"
 
 [triggers]
-crons = ["*/5 * * * *"] # Every 5 minutes (to stay within free tier KV limits)
+crons = ["*/5 * * * *"] # Every 5 minutes (standard for free tier safety)
 
 [[kv_namespaces]]
 binding = "SCHEDULES_KV"

@@ -125,9 +125,9 @@ router.get('/history', (req, res) => {
 });
 
 // ===== 예약 API =====
-router.get('/schedules', (req, res) => {
+router.get('/schedules', async (req, res) => {
     try {
-        const schedules = scheduler.getSchedules();
+        const schedules = await scheduler.getSchedules();
         res.json({ success: true, schedules });
     } catch (e) {
         res.status(500).json({ success: false, message: e.message });
